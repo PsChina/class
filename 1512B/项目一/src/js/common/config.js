@@ -11,7 +11,6 @@ app.config(['$stateProvider',function($stateProvider){
                     data:'userId=001&id='+item.id
                 })
                 .then(function(result){
-                    console.log(result.data);
                     if( result.data.state === 1 ){
                         angular.forEach($scope.data,function(value,index,arr){
                             if(value === item) {
@@ -33,16 +32,36 @@ app.config(['$stateProvider',function($stateProvider){
                 .then(function(result){
                     return result.data;
                 },function(error){
-                    throw error
+                    throw error;
                 })
             }]
         }
     }).state('history',{
         url:'/history',
         templateUrl:'./src/template/router/history.html',
-        controller:['$scope',function($scope){
-            
-        }]
+        controller:['$scope','data','maxPage','pageControlManager',function($scope,data,maxPage,pageControlManager){
+            $scope.maxPage = maxPage;
+            $scope.manager = pageControlManager;
+            pageControlManager.initArray($scope.maxPage,$scope);
+        }],
+        resolve:{ //解决器
+            data:['$http','base',function($http,base){
+                return $http({url:base.url+'/history'})
+                .then(function(result){
+                    return result.data;
+                },function(error){
+                    throw error;
+                })
+            }],
+            maxPage:['$http','base','appValue',function($http,base,appValue){
+                return $http({url:base.url+'/listlength'})
+                .then(function(result){
+                    return Math.ceil(result.data.length/appValue.pageNum);
+                },function(error){
+                    throw error;
+                })
+            }]
+        }
     }).state('tooldownload',{
         url:'/tooldownload',
         templateUrl:'./src/template/router/tooldownload.html',

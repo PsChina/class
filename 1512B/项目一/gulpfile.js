@@ -14,6 +14,9 @@ function mockData(){
     var data = Mock.mock({
         'list|20':[
             { examName:'单页面开发','startTime|+86400000':time,'endTime|+86400':time+3600*1000, 'isOpen|1-1':true,'id|+1':1 }
+        ],
+        'history|50-200':[
+            { examName:'单页面开发','startTime|+86400000':time,'endTime|+86400':time+3600*1000, 'score|60-100':0,'id|+1':1 }
         ]
     })
     fs.writeFileSync('./json.json',JSON.stringify(data));
@@ -54,6 +57,17 @@ gulp.task('mockServer',function(){
                             res.write(JSON.stringify(data.list));
                             res.end();
                         break;
+                        case '/history':
+                        res.setHeader('content-type','application/json;charset=utf-8');
+                        res.write(JSON.stringify(data.history));
+                        res.end();                        
+                        break;
+                        case '/listlength':
+                        res.setHeader('content-type','application/json;charset=utf-8');
+                        console.log(data.history.length)
+                        res.write(JSON.stringify({ length:data.history.length }));
+                        res.end();
+                        break;
                         default:
                             res.end('暂未提供该接口')
                         break;
@@ -92,6 +106,14 @@ gulp.task('mockServer',function(){
                            }
 
                            break;
+                           case '/singlepagedata':
+                                var dataNumberPerPage = postParams.number;
+                                var currentPage = postParams.currentPage;
+                                var array = data.history.slice((currentPage-1)*dataNumberPerPage,currentPage*dataNumberPerPage)
+                                res.setHeader('content-type','application/json;charset=utf-8');
+                                res.write(JSON.stringify(array));
+                                res.end();
+                           break;
                            default:
                            res.end('暂未提供该接口')
                            break;
@@ -128,3 +150,31 @@ gulp.task('watch',function(){
 
 
 gulp.task('default',['mockServer','httpServer','watch'])
+
+//
+//                       _oo0oo_
+//                      o8888888o
+//                      88" . "88
+//                      (| -_- |)
+//                      0\  =  /0
+//                    ___/`---'\___
+//                  .' \\|     |// '.
+//                 / \\|||  :  |||// \
+//                / _||||| -:- |||||- \
+//               |   | \\\  -  /// |   |
+//               | \_|  ''\---/''  |_/ |
+//               \  .-\__  '-'  ___/-. /
+//             ___'. .'  /--.--\  `. .'___
+//          ."" '<  `.___\_<|>_/___.' >' "".
+//         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+//         \  \ `_.   \_ __\ /__ _/   .-` /  /
+//     =====`-.____`.___ \_____/___.-`___.-'=====
+//                       `=---='
+//
+//
+//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+//               佛祖保佑         永无BUG
+//
+//
+//
