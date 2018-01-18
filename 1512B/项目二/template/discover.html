@@ -1,0 +1,27 @@
+<div>
+    <style lang="">
+        /* 命名空间 discover */
+        .discover-nav {
+            display: flex;
+            height: .8rem;
+        }
+        .discover-nav-item {
+            flex: 1;
+            text-align: center;
+            line-height: .8rem;
+            height: .8rem;
+        }
+        .discover-active {
+            color: #cc3e3d;
+            border-bottom: 0.04rem solid #cc3e3d;
+            box-sizing: border-box;
+        }
+    </style>
+    <div>
+        <div class="discover-nav">
+            <!-- DRY -->
+            <div class="discover-nav-item" ui-sref-active="discover-active" ui-sref="{{item.routerName}}" ng-repeat="item in constant.discover.nav" ng-bind="item.text"> </div>
+        </div>
+        <ui-view></ui-view>
+    </div>
+</div>

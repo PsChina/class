@@ -1,0 +1,16 @@
+<div>
+    <style lang="">
+    </style>
+    <div>
+        <ion-slide-box 
+        auto-play="true" 
+        slide-interval="2000"
+        does-continue="true"
+        pager-click="to(index)"
+        >
+            <ion-slide ng-repeat=" src in constant.discover.personalization.imgs ">
+                <img ng-src="{{src}}" alt="">
+            </ion-slide>
+        </ion-slide-box>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+[
+ {"src": "./music/王力宏 - 你不知道的事.mp3", "songName": "你不知道的事", "singer": "王力宏","songIcon":"./img/icon_01.png"},
+ {"src": "./music/周杰伦 - 爱我别走.m4a", "songName": "爱我别走", "singer": "周杰伦","songIcon":"./img/icon_02.png"},
+ {"src":"./music/周杰伦 - 告白气球.m4a", "songName": "告白气球", "singer": "周杰伦","songIcon":"./img/icon_03.png"},
+ {"src": "./music/周杰伦 - 听妈妈的话.m4a", "songName": "听妈妈的话", "singer": "周杰伦","songIcon":"./img/icon_04.png"}
+]
