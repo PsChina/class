@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 含有 -->
+    <div ng-app="app">
+        <div ng-controller="main">
+            <div>含有</div>
+            <input type="text" ng-model="msg">
+            <!-- ng-model 生效 -->
+            <p>{{ msg }}</p>
+            <button ng-click="click()">点击事件</button>     
+                   <!-- view 层 -->
+        </div>
+
+
+    </div>
+<br>
+    <!-- 没有 -->
+    <div>
+        <div>含有</div>
+        <input type="text" ng-model="msg">
+        <!-- ng-model 能直接绑定model 层的数据 绑定了一个数据叫做msg -->
+        <!-- ng-model 是双向绑定的 视图->数据 数据->视图 -->
+        <!-- ng-model 不生效 因为没有ng-app包裹-->
+        <p>{{ msg }}</p>
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    // $ jQuery
+    // angular
+    // console.log(angular);
+    var app = angular.module('app',[]);
+
+    app.controller('main',function($scope){ // controller 层
+        // $scope 就是 model 层
+        $scope.click=function(){
+            console.log('点击了')
+            $scope.msg = '测试';
+            //  数据层的 改变会导致 视图层的改变  单向
+        }
+    })
+
+    // 指令1  ng-app="app" => angular.module('app',[])
+    // ng-app="taobao" = angular.module('taobao',[]) // 要对映起来
+
+    /*
+    angular 自带很多指令 比如 ng-click ng-class ng-style 等等
+    但是他们是不生效的 
+    要让他们生效的话
+    必须让他们被 含有 ng-app 的元素所包裹 所以我们在html 上写上了 ng-app
+
+
+    也就是说 ng-app 是 angular 的管理边界 在这之内 angular 生效 之外 不生效
+    */
+
+
+    //angular 是 一个 MVC 框架  MV*框架   还有一个框架 是MVVM(大家可以自己了解下什么是MVVM)
+
+    //什么是 MVC 它原本是 后端开发里面的概念 后来被引入到前端开发中来了
+    // M model 数据层           理解为 json数据 或者是 html 数据
+    // V view 视图层            css 样式 或者是 html 结构
+    // C controller 控制器层    就是 js
+
+    // V->C->M  没有 V=>M
+    // M->C->V  也没有 M=>V
+
+    // 模块划分  讲一个 app 划分成 若干个模块
+
+    // 我们的mvc 是将 某个模块 划分为 三个部分 分为  数据层 视图层 控制器层
+    // 也就是说它进一步的 划分 和 分工
+
+
+
+    // MVC =>  MVVM 
+
+    // controller 特别臃肿 
+
+    // 弄一个 view-model 来弱化 controller
+    
+    // 就是说 不要把所有的代码都放在 控制器里面
+
+    // 把 与view 相近的代码 放在 视图层
+
+    // 把 与model 相近的代码 放在 view-model里
+
+    // 这样就 减少了 controller 的臃肿
+
+    // 这就是 mvvm 框架
+
+// 以上只要了解就可以 
+
+    // ng-click 是用来取代 onclick的
+</script>

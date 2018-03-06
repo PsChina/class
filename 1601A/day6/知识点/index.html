@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style lang="">
+        .red{
+            background: red;
+        }
+        .green{
+            background: green;
+        }
+        .orange{
+            background: orange;
+        }
+        .yellow{
+            background: yellow;
+        }
+    </style>
+</head>
+<body ng-controller="controller">
+    <!-- 用{{}}语法双向绑定 msg -->
+        {{ msg }}
+        <input type="text" placeholder="class" ng-model="myClass" >
+
+        <input type="text" ng-model="num" ng-change="didChange(num)">
+        <!-- 将msg 进行一个双向绑定 -->
+        <!-- onchange -->
+        <!-- ng-change 一定要和 ng-model 一起使用 -->
+        <div ng-if="num>20">
+            显示一个大于20的数 {{ num }}
+        </div>
+        <div ng-show="num>20">
+            显示一个大于20的数 {{ num }}
+        </div>
+        <div ng-hide="num>20">  <!-- display:block/none 来实现显示隐藏的 -->
+            <!-- 它的原理 和 ng-show 是一样的 但是效果是相反的 -->
+            显示一个小于等于20的 {{num}}
+        </div>
+
+        <div ng-repeat=" goods in goodsList " ng-style="goods.style"> 
+
+          <p style="float:left;width:50%"> <span>名称:</span> <span> {{ goods.name }} </span> </p> 
+          <p style="float:left;width:50%"> <span>价格:</span> <span> {{ goods.price }} </span> <span>元素在数组中的索引</span><span>{{$index}}</span> </p> 
+            <div style="clear:both"></div>
+        </div>
+
+        <div ng-repeat="number in [0,0,0,0,0]  track by $index">
+            <!-- 报错 -->
+            <!-- 加上track by $index 意思是 这么多 重复的0 可以通过下标去 区分他们  -->
+            <!-- 因为他们长得都一个样 -->
+            {{ number }}
+        </div>
+
+        <div ng-class="myClass">
+            测试ng-class
+        </div>
+        <div ng-click=" myClass='red' ">改成红色</div>
+        <!-- 函数的简写  直接写函数体 -->
+        <div ng-click=" change() ">改成绿色</div>
+        <!-- 写一个函数名 调用一下 -->
+
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    // app 也是一个模块 只不过他是一个特殊的模块 
+    // 它是一个最大的模块
+
+    var app = angular.module('app',[])  // 定义一个模块 这个数组 是用来依赖注入其他模块的 以后我们会用到
+
+    app.controller('controller',function($scope,$rootScope){ // 定义controller控制器
+        //$scope // 数据层
+        $scope.msg = 'Hello';
+
+       console.log($rootScope.msg); 
+
+       $scope.didChange = function(val){
+           console.log(val)
+       }
+
+       $scope.change = function(){
+           //$scope // 是我们的数据模型层
+           $scope.myClass = 'green';
+       }
+    })
+
+    app.run(['$rootScope',function($rootScope){
+        //$rootScope // 数据模型层 //  它起作用的范围 就是 ng-app 起作用的范围。
+        $rootScope.msg = 'Hello this is root Scope!';
+        $rootScope.goodsList = [
+            {
+                name:'苹果1',
+                price:100,
+                style:{
+                    background:'red'
+                }
+            },
+            {
+                name:'苹果2',
+                price:200,
+                style:{
+                    background:'orange'
+                }
+            },{
+                name:'苹果3',
+                price:400,
+                style:{
+                    background:'yellow'
+                }
+            },{
+                name:'苹果4',
+                price:800,
+                style:{
+                    background:'green'
+                }
+            }
+        ]
+    } ]);
+
+// 这样的操作比较麻烦 而且消耗性能
+    //var dom = document.getElementsByClassName('red') // 它要一个一个去比较 dom元是否含有red 这个类名
+
+    //dom.className = 'green';
+
+// 复习上一周学的内容
+
+</script>

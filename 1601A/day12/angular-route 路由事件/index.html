@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>路由事件</title>
+</head>
+<body ng-controller="main">
+    <span ng-bind="msg"></span>
+
+    <a href="#!/home">home</a>
+    <a href="#!/about">about</a>
+    <a href="#!/me">me</a>
+    <ng-view></ng-view>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-route.js"></script>
+</html>
+<script>
+    angular.module('app',['ngRoute'])
+            .controller('main',['$scope',function($scope){ 
+                $scope.msg = 'Hello ngRoute Events!';
+            }])
+            .config(['$routeProvider',function($routeProvider){
+                $routeProvider.when('/home',{
+                    template:'<div>home</div>',
+                    reloadOnSearch:false
+                }).when('/about',{
+                    template:'<div>about</div>',
+                    reloadOnSearch:false
+                }).when('/me',{
+                    templateUrl:'<div>me</div>',
+                    reloadOnSearch:false
+                }).when('/404',{
+                    template:'<div>页面找不到</div>',
+                    reloadOnSearch:false
+                })
+            }])
+            .run(['$rootScope','$location',function($rootScope,$location){
+                $rootScope.$on('$routeChangeStart',function(event,newRoute,oldRoute){
+                    
+                    if(oldRoute){
+                        console.log(`用户将要从${oldRoute.$$route.originalPath}跳到${newRoute.$$route.originalPath}`)
+                    }
+                    
+                })
+                $rootScope.$on('$routeChangeSuccess',function(event,newRoute,oldRoute){
+                    console.log('路由跳转成功')
+                })
+                $rootScope.$on('$routeChangeError',function(event,newRoute,oldRoute,errorMsg){
+                    console.log(errorMsg);
+                    $location.url('/404')
+                })
+                $rootScope.$on('$routeUpdate',function(event,currentRoute){
+                    console.log('路由发生更新')
+                })
+            }])
+
+</script>

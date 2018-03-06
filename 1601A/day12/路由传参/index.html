@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{ msg }}
+    <!--  
+        非传参 写法
+    <a href="#!/home">home</a>
+    <a href="#!/about">about</a>
+    <a href="#!/me">me</a>
+    -->
+
+    <!-- 传参的写法1 -->
+    <!-- <a href="#!/publicview/主页">home</a>
+    <a href="#!/publicview/关于">about</a>
+    <a href="#!/publicview/个人中心">me</a> -->
+
+    <!-- 传参写法2 -->
+    <!-- <a href="#!/publicview?value=主页&id=001&age=18">home</a>
+    <a href="#!/publicview?value=关于">about</a>
+    <a href="#!/publicview?value=个人中心">me</a>     -->
+
+    <!-- 传参写法3 -->
+    <button ng-click="to('home')">home</button>
+    <button ng-click="to('about')">about</button>
+    <button ng-click="to('me')">me</button>
+
+    <!-- 以上 是按钮 -->
+    <ng-view></ng-view>
+    <!-- ng-view 是存放 template 的容器 -->
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-route.js"></script>
+</html>
+<script>
+    angular.module('app',['ngRoute']) // 你可以背下来 ngRoute
+            .controller('main',['$scope', '$location',function($scope , $location){
+                $scope.msg = 'Hello World!';
+                $scope.to = function(params){
+                    var path = '/publicview?value=' + params
+                    console.log(path)
+                    $location.url( path );
+                }
+            }]) 
+            // .config(['$routeProvider',function($routeProvider){ // 配置路由
+            //     $routeProvider.when('/home',{
+            //         template:'<div>主页</div>' // 1   <div>{{msg}}</div>
+            //     })
+            //     .when('/about',{ // 链式调用
+            //         template:'<div>关于</div>' // 2
+            //     })
+            //     .when('/me',{
+            //         template:'<div>个人中心</div>' // 3
+            //     })
+            // }])
+            // .config(['$routeProvider',function($routeProvider){
+            //     $routeProvider.when('/publicview/:value',{  // 重点  把 /publicview 改成 /publicview/:value 就可以传递参数了
+            //         template:'<div> {{ value }} </div>', // 这个 value 是变化的  1 个template 
+            //         controller:['$scope','$routeParams',function($scope,$routeParams){ // 需要注入 服务来接收参数
+            //             console.log( $routeParams )
+            //             $scope.value = $routeParams.value; // 赋值 给 模版里面的value
+            //         }]
+            //     })
+            // }])
+            // .config(['$routeProvider',function($routeProvider){
+            //     $routeProvider.when('/publicview',{
+            //         template:'<div> {{ value.value }} {{ value.age }} {{ value.id }} </div>',
+            //         controller:['$scope',function($scope){
+            //             var arr = window.location.href.split('?')[1].split('&') ;// 分割字符串
+                        
+            //             var params = {};
+
+            //             angular.forEach(arr,function(value,index,arr){
+            //                 var item = value.split('=')
+            //                 params[item[0]] = decodeURI(item[1]) ;
+            //             })
+
+            //             console.log( params );
+
+            //             $scope.value = params;
+                        
+            //         }]
+            //     })
+            // }])
+            // .config(['$routeProvider',function($routeProvider){
+            //     $routeProvider.when('/publicview',{
+            //         template:'<div> {{ value.value }} {{ value.age }} {{ value.id }} </div>',
+            //         controller:['$scope', '$location',function($scope ,$location){
+                        
+            //             console.log($location.search())
+            //             $scope.value = $location.search();
+                        
+            //         }]
+            //     })
+            // }])
+            .config(['$routeProvider',function($routeProvider){ // 配置路由
+                $routeProvider.when('/publicview',{ // 
+                    template:'<div> {{ params.value }} </div>',
+                    controller:['$location','$scope',function($location ,$scope){ // 通过控制器来接收参数
+                       console.log($location.search())
+                        $scope.params = $location.search(); // 接收 参数
+                    }]
+                })
+            }])
+            // 这个 自己看一下
+            // template 是模版的意思
+
+            // 路由传参的 3中方式
+</script>

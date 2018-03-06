@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .nav-box{
+            display: flex
+        }
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            line-height: 80px;
+        }
+        .active{
+            background: rebeccapurple;
+            color: white;
+        }
+    </style>
+</head>
+<body ng-controller="main">
+
+    <div class="nav-box">
+        <span class="nav-item" ui-sref="home" ui-sref-active="active">home</span>
+        <span class="nav-item" ui-sref="about" ui-sref-active="active">about</span>
+        <span class="nav-item" ui-sref="me" ui-sref-active="active">me</span>        
+    </div>
+
+
+   <ui-view></ui-view>
+
+</body>
+<script src="./node_modules/angular/angular.js"></script>
+<script src="./node_modules/_@uirouter_angularjs@1.0.15@@uirouter/angularjs/release/angular-ui-router.js"></script>
+</html>
+<script>
+    var app = angular.module('app',['ui.router']);
+
+    app.controller('main',['$scope','$http',function($scope,$http){
+        $scope.msg = 'hello';
+        console.log('控制器运行了')
+        $http({
+            url:'http://localhost:3000/test',
+            method:'GET'
+        })
+        .then(function(result) {
+            console.log('成功')
+            $scope.result = result.data;
+        }, function(error) {
+            console.log('失败')
+            throw new Error(error)
+        })
+    }])
+
+
+    app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
+
+        $urlRouterProvider.otherwise('/home') // 默认一级路由
+
+        $urlRouterProvider.when('/home','/home/room1') // 默认二级路由 
+
+
+        $stateProvider.state('home',{
+            url:'/home',
+            templateUrl:'./template/home.html'
+        }).state('about',{
+            url:'/about',
+            templateUrl:'./template/about.html'
+        }).state('me',{
+            url:'/me',
+            templateUrl:'./template/me.html'
+        })
+        // 二级路由
+        .state('home.room1',{
+            url:'/room1',
+            templateUrl:'./template/home/room1.html',
+            controller:['$http','$scope',function($http,$scope){
+                $http({
+                    url:'http://localhost:3000/page1',
+                    method:'GET'
+                })
+                .then( function(result){
+                    $scope.value = result.data.value;
+                },function(error){
+                    throw new Error( error );
+                } )
+            }]
+        })
+        .state('home.room2',{
+            url:'/room2',
+            templateUrl:'./template/home/room2.html',
+            resolve:{
+                data:[ '$http',function($http){
+                    return $http({
+                        url:'http://localhost:3000/page2',
+                        method:'GET'
+                    })
+                    .then( function(result){
+
+                        return result.data.value;
+
+                    }, function(error){
+
+                        throw new Error(error)
+
+                    } )
+
+                } ]
+            },
+            controller:['$scope','data',function($scope,data){
+                $scope.data = data;
+            }]
+        })
+        .state('home.room3',{
+            url:'/room3',
+            templateUrl:'./template/home/room3.html'
+        })
+    }])
+
+</script>

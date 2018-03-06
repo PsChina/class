@@ -1,0 +1,42 @@
+<div>
+    <style>
+        .css-app-song-item-box{
+            width: 100%;
+            height: 1rem;
+            display: flex;
+        }
+        .css-app-song-item-icon{
+            flex: 2;
+            height: 1rem;
+            margin: .1rem;
+        }
+        .css-app-song-item-text{
+            flex: 8;
+            height: 1rem;
+        }
+        .css-app-song-item-song-name{
+            height: .6rem;
+            line-height: .6rem;
+            font-size: .24rem;
+            color:#313131
+        }
+        .css-app-song-item-singer{
+            color: #808485;
+            font-size: .18rem;
+            height: .4rem;
+        }
+        .css-app-active-song{
+            border: 0.01rem solid #cd3d3d;
+            background: rgb(218, 183, 25)
+        }
+    </style>
+    <div class="css-app-song-item-box" ng-touchend="play()" ng-class="{'css-app-active-song': show() }">
+        <div class="css-app-song-item-icon"> 
+            <img ng-src="{{songIcon}}" alt=""> 
+        </div>
+        <div class="css-app-song-item-text">
+            <div class="css-app-song-item-song-name" ng-bind="songName"></div>
+            <div class="css-app-song-item-singer" ng-bind="singer"></div>
+        </div>
+    </div>
+</div>

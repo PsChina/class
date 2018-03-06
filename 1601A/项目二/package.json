@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "angular": "^1.5.3",
+    "eslint-plugin-html": "^4.0.1",
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.5.0",
+    "gulp-webserver": "^0.9.1"
+  }
+}

@@ -1,0 +1,60 @@
+<div class="myclass">
+    <style lang="">
+        .myclass{
+            position: absolute;
+            left: 0;
+            top:0;
+            right: 0;
+            bottom:0;
+        }
+        .myfooter{
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 80px;
+            background: green;
+            display: flex;
+        }
+        .item{
+            flex: 1;
+            text-align: center;
+            line-height: 80px;
+            color: white;
+            font-size: 24px;
+            border: 1px solid orange;
+        }
+        .listItem{
+            display: flex;
+            height: 50px;
+        }
+        .inRow{
+            flex: 1;
+            text-align: center;
+            line-height: 50px;
+        }
+        .active{
+            background: red;
+        }
+    </style>
+    <div>
+        <div class="content">
+            <div ng-repeat=" value in content " class="listItem">
+               
+                <span ng-bind="value.name" class="inRow"></span> <span ng-bind="value.price | currency:'¥'" class="inRow"></span>
+               
+            </div>
+        </div>
+
+        <div class="myfooter">
+            <div 
+            class="item" 
+            ng-repeat=" item in data " 
+            ng-bind="item.type"
+            ng-click="selected(item)" 
+            ng-class="{ active:item.type === type }" 
+            >
+            </div>
+        </div>
+    </div>
+</div>

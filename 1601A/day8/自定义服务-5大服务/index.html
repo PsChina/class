@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{ msg }}
+    {{ time | date :'mm:ss' }}
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    //污染全变量 导致 obj 以后 不被 使用 因为一旦使用obj 定义变量 将会使得这个obj 被覆盖
+
+    //污染全变量
+    // var obj =  {  // 存储常量
+    //     baseUrl:'http://localhost:3000',
+    //     router:[{
+    //         path:'/home',
+    //         routerName:'主页'
+    //     },{
+    //         path:'/about',
+    //         routerName:'关于'
+    //     },{
+    //         path:'/me',
+    //         routerName:'我'
+    //     }]
+    // }
+
+    angular.module('app',[])
+            .controller('main',['$scope','constant','value','myInterval','$timeout','quchong','boss','dogface',function($scope,obj,value,myInterval,$timeout,quchong,boss,dogface){ // 数组注释法
+                $scope.msg = 'Hello World!';
+
+                $scope.time = new Date().getTime()
+                // console.log(obj,'main');
+                var timerId = myInterval( function(){
+                    $scope.time = new Date().getTime() // 刷新 时间
+                }, 1000 )
+
+                $timeout(function(){
+                    myInterval.cancel( timerId )
+                } ,1000*10)
+
+                console.log(value);
+
+                var arr = [1,2,3,4,5,4,3,5,1,3,7,8,10,9,2,5,10]
+
+                console.log( '去重:', quchong(arr).sort( function(val1,val2){
+                    return val1 - val2;
+                } ) )
+               console.log(boss,dogface) 
+               boss.masterStroke(dogface) 
+               
+            }])
+            .config(['constant','valueProvider',function(constant,valueProvider){ // 当我们app 初始的时候 最先运行的函数就是 config 它用于提前配置我们app 的信息
+                console.log(constant);
+                console.log(valueProvider.$get());
+            }])
+            .run(['constant',function(obj){ // 数组注释法
+                // console.log(obj,'run')
+            }])
+            .constant('constant',{  // 存储常量
+            // 1 减少冗余代码
+            // 2 避免了全局变量名的污染
+            // 3 它是一个单例 任何地方呼叫它都是他本人 不是他的拷贝 或者替身 意味着它可以做为跨作用域通信的媒介  例如$rootScope 
+                baseUrl:'http://localhost:3000',
+                router:[{
+                    path:'/home',
+                    routerName:'主页'
+                },{
+                    path:'/about',
+                    routerName:'关于'
+                },{
+                    path:'/me',
+                    routerName:'我'
+                }]
+            })
+            .value('value',{ // 第二大服务 格式 和constant 一毛一样   'value' 这个字符串可以自定义
+                //  定义一个 全局 变量
+                userName:'admin', // 发送 登录网络请求 返回用户姓名再覆盖这个 默认值 'admin';
+                mainStyle:'简约' // 默认 节约风格的皮肤 用户一换主题是不是 这个就变了
+            })
+            .factory('myInterval',['$rootScope',function($rootScope){  // 普通的函数   工厂函数 定义一个全局的 定时器  
+                 function $interval(fn,time){
+                    return setInterval( function(){ // 返回定时器id
+                        try{
+                            fn()
+                        }catch(error){
+                            throw new Error(error);
+                        } finally{
+                            $rootScope.$apply();
+                        }
+                    } ,time)
+                 }
+
+                 $interval.cancel = function(id){
+                    clearInterval(id)
+                 }
+                 return $interval;
+            }])
+            .factory('quchong',function(){ // 定义一个全局的数组去重函数
+                
+                function qc(array){
+                    var result = [];
+
+                    angular.forEach(array,function(value,index,arr){
+                        if( result.indexOf(value)===-1 ){
+                            result.push( value );
+                        }
+                    });
+
+                    return result
+
+                }
+
+                return qc;
+
+            })
+            .service('dogface',[function(){
+                this.name="小兵";
+                this.hp = 600; //生命值
+                this.DEF = 10; // 物理防御                
+            }])
+            .service('boss',[function(){ // 定义一个全局 构造函数 boss
+
+                this.name = '暗黑主宰';
+                this.hp = 10000; //生命值
+                this.DEF = 100; // 物理防御
+                this.Mdef = 100; // 魔法防御
+                this.attack = 300 // 普攻
+                this.normalAttack = function(obj){
+                    obj.hp =  obj.hp - (this.attack - obj.DEF) //攻击某个单位
+                }
+                this.masterStroke = function(obj){
+                    obj.hp =  obj.hp - (this.attack*10 - obj.DEF); // 大招 
+                }
+
+            }])
+            .provider('provider1',[function(){ // 高阶函数
+
+                // 这是一个构造函数
+                this.$get = function(){ // 这是一个构造函数
+
+                    return function (){  // 返回一个工厂函数  也就是 普通函数
+
+                    }
+
+                }
+
+            }])
+            .provider('provider2',[function(){ // 高阶函数
+
+                this.$get = function(){ // 
+
+                    return new function (){  // 返回一个构造函数
+
+                    }
+
+                }
+
+            }])
+            .provider('provider3',[function(){ // 高阶函数
+
+                this.$get = function(){ 
+
+                    return { //返回一个value
+
+                    }
+                }
+
+            }])
+
+    //js里都有什么
+    // 常量
+    // 变量
+    // 函数
+    // 构造函数
+    // 高阶函数 // 一个返回函数的函数
+
+    //分别对应 5大服务
+
+
+    //  constant 和 value 的区别 
+
+    // 1 本质区别 constant 能在config 注入 value不行
+    // 2 constant 被用来存常量 value 被用来存变量 但是 你也可以改变constant 的值 也即是说只是规定而已 不会在程序上报错
+
+    // 解决value 不能注入config 的办法是 在value后面加 Provider
+</script>

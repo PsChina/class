@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.5.0",
+    "gulp-webserver": "^0.9.1",
+    "html-webpack-plugin": "^2.30.1"
+  },
+  "dependencies": {
+    "@uirouter/angularjs": "^1.0.15",
+    "angular": "^1.6.9"
+  }
+}

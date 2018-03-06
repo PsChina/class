@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>控制器之间通讯</title>
+</head>
+<body ng-controller="main"> 
+    <!-- main 是主要模块 里面含有2 个模块 1个是 A 一个是B 分别属于不同的控制器 -->
+    <!-- 自然也就拥有不同的作用域 -->
+    <!-- 不同的作用域会带来通讯问题 -->
+    <!-- 子作用域可以访问父作用域 除此之外无法访问 兄弟关系的作用域更是无法访问 -->
+    <span>这是控制器main</span>
+    mainValue:{{ mainValue }}
+    <div ng-controller="A">
+            <span>这是控制器A</span>
+        <input ng-model="valueA" ng-change="change(valueA)">
+    </div>
+    <br>
+    <div ng-controller="B">
+        <span>这是控制器B</span>
+        value:{{ value }}
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope',function($scope){
+                $scope.msg = 'Hello World!';
+                $scope.$on('send',function(event,value){
+                    $scope.mainValue = value;// 父控制接收到了来自 子控制器的 数据 // 接下来开广播
+                    // 目的在于让它的兄弟 接收到这个数据 达到 兄弟控制器通信的目的
+                     
+                      //在这个函数内部 进行广播
+                      $scope.$broadcast('broadcast',$scope.mainValue)// 传递数据
+                })
+            }])
+            .controller('A',['$scope',function($scope){// 定义控制器A
+                $scope.change = function(newValue){
+                   $scope.$emit('send',newValue) // 'send 是事件名称'
+                }
+            }])
+            .controller('B',['$scope',function($scope){// 定义控制器B
+                // 在另一个兄弟控制器接收 也就是 B控制器
+                
+                $scope.$on('broadcast',function(event , value){
+                    $scope.value = value;
+                })
+
+            }])
+
+            // A 和 B 是 main 的儿子 
+            // 儿子可以访问 父作用域 的属性
+            // 父作用域不能直接访问 儿子的属性
+            // 兄弟作用域也不能直接访问
+            // 需要三个工具来帮忙 
+            // $emit $on $broadcast
+            // 发射 接收 广播
+            
+            // $emit 发射 自下而上 顾名思义 它是向上 发送消息 意味着 子作用域可以通过它 发送数据给 父作用域
+            // $on 收受工具
+            // $broadcast 广播  自上而下 父控制器 想子控制器 广播发送消息
+            // 请想一想 广播 是 只对一个人广播吗
+            // 广播 意味着 在操场上的人都能听到. 
+            // 在这里 main 控制器有2个儿子 广播一下 所有的儿子都能接收
+            // 只有在 子控制器 使用了$scope.$on 这个事件 才算是接收了。
+
+
+            // 注意
+            // $emit 能 一直向上发送
+            // $broadcast 发广播给 每一个子控制器
+
+</script>

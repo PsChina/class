@@ -1,0 +1,30 @@
+<div>
+    <style>
+        .css-app-change-mode{
+            width: 2rem;
+            height: .5rem;
+            color: #cd3d3d;
+            text-align: center;
+            line-height: .5rem;
+            font-size: .28rem;
+        }
+    </style>
+    <div>
+        <ion-slide-box
+        auto-play="true"
+        slide-interval="2000"
+        does-continue="true"
+        pager-click="to(index)"
+        >
+            <ion-slide ng-repeat=" img in appConst.banner ">
+                <img ng-src="{{img.src}}" alt="">
+            </ion-slide>
+        </ion-slide-box>
+
+        <change-mode class="css-app-change-mode" modes="playerManager.playModeList" index="playerManager.modeIndex"></change-mode>
+        <div style="width:50%">
+            <volume-control player-volume="playerManager.audio.volume"></volume-control>
+        </div>
+        
+    </div>
+</div>

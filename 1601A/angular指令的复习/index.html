@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .red{
+            background: red;
+        }
+        .green{
+            background: green;
+        }
+    </style>
+    <script type="text/ng-template" id="mytemplate">
+        <div> ng-template组件 </div>
+    </script>
+</head>
+<body ng-controller="main">
+    <div ng-bind="msg">
+        <!-- ng-bind -->
+    </div>
+    <!-- 表单元素 -->
+    <input type="text" ng-model="msg" ng-change="change(msg)">
+    <textarea ng-model="msg" ></textarea>
+    <!-- ng-model 使得视图层与数据层双向绑定 -->
+    <!-- 在这个例子中 视图层就是 input 的 vlue  数据层就是控制器中 $scope 的 msg -->
+    <select name="" id="" ng-model="msg" ng-options=" item for item in optionsArr">
+       
+    </select>
+    
+    <button ng-click="click($event)"  ng-class="myClass">按钮</button>
+
+    <p ng-style="{ color:'pink',fontSize:'24px' }">粉红色的文字</p>
+    
+    <a ng-href="{{url}}">百度</a>
+
+    <div ng-include="'mytemplate'"></div>
+    <div ng-bind="checked"></div>
+    <input type="radio" name="a" ng-checked="checked">  <input type="radio" name="a" id="">
+
+    <br>
+
+    <item> <span>被item包裹的元素</span> </item>
+    <item2> <mytitle>头部</mytitle>  <myfooter>脚部</myfooter> </item2>
+</body>
+<script src="./node_modules/angular/angular.js"></script>
+</html>
+<script>
+    // ng-app 规定 angularjs 的管理边界
+    // ng-controller 规定控制器 起作用的范围
+    // ng-model 实现数据层与视图层的双向绑定
+    // ng-change 绑定onchange事件并做了兼容处理
+    // ng-options // 用于在select遍历渲染option
+
+    // ng-click 绑定click 事件 这个太简单了 如果你要拿到事件对像 只需传递 $event
+    // ng-class 绑定一个变量 变量内存className 的字符串  当这个变量的值变化的时候 样式也会随之变化
+    // ng-style 绑定一个js对象 这个对象内部可以写css属性
+    // ng-href  绑定一个变量 变量内存储的是 连接地址 ng-href="{{url}}"
+    // ng-src   用法与ng-href
+    // ng-if    控制元素的显示与隐藏 （移除元素 插入元素）
+    // ng-show/ng-hide  控制元素的显示与隐藏  ( display:block / none )
+    // ng-repeat 遍历循环 重复的dom解构
+    // ng-init  初始化元素(作用不大)
+    // ng-bind 代替{{}}语法
+    // ng-template / ng-include 
+    // ng-checked  input type = radio/checkbox
+
+    // ng-transclude 这个指令是用于解决 自定义指令包裹普通元素或指令的解决方案
+
+    // 初始化app
+    var app = angular.module('app',[]);
+
+    // 控制器
+    app.controller('main',['$scope',function($scope){ // $scope 数据模型层  model层
+
+        $scope.msg = 'Hello world!';
+
+        $scope.optionsArr = [ 'value1','value2','value3' ]
+
+        $scope.change = function(newVal){
+            // ng-change 相当于 onchange 事件
+            console.log( newVal )
+        }
+
+        $scope.click = function(event){
+            // console.log( event.target );
+            if( $scope.myClass === 'green' ) {
+                $scope.myClass = 'red';
+            } else {
+                $scope.myClass = 'green';
+            }
+            
+        }
+
+        // 控制器加载的时候
+        $scope.url = 'http://www.baidu.com'
+        $scope.myClass = 'green';
+        $scope.checked = false;
+
+    }])
+            
+    // 
+
+    app.directive('item',[function(){
+        return {
+            template:`
+            <div> 自定义指令 <span ng-transclude></span> </div>
+            `,
+            transclude:true
+        }
+    }])
+
+    .directive('item2',[function(){
+        return {
+            template:`
+            <div> <div ng-transclude="title"></div> 自定义指令 <div ng-transclude="footer"></div> </div>
+            `,
+            transclude:{
+                title:'mytitle',
+                footer:'myfooter',
+            }
+        }
+    }])
+
+
+</script>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <div ng-bind="randomNumber">
+
+    </div>
+    <h3>随机数范围</h3>
+    <label for="">min: <input type="text" ng-model="min"></label>
+    <br>
+    <label for="">max: <input type="text" ng-model="max"></label>
+    <br>
+    <div for="">
+        type: 
+        <br> 
+        <span ng-click="setType('integer')"><label for=""> 1、整数<input type="radio" name="1" value="false" ng-checked="false"> </label></span>
+        <br> 
+        <span ng-click="setType('real')"><label for=""> 2、实数<input type="radio" value="true" ng-checked="true" name="1" > </label>  </span>
+    </div>
+    <br>
+    <button ng-click="click()">生成随机数</button>
+</body>
+<script src="./src/angular.js"></script>
+<script src="./src/model1.js"></script>
+</html>
+<script>
+    angular.module('app',['随机数模块'])
+           .controller('main',['getRondom','$scope',function(getRondom,$scope){
+               $scope.randomNumber = 0;
+                $scope.type = 'real';
+                $scope.setType = function(value){
+                    $scope.type = value;
+                }
+
+               $scope.click = function(){
+                $scope.randomNumber = getRondom($scope.min,$scope.max,$scope.type);
+               }
+           }])
+</script>

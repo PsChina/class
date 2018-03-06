@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <!--在 视图层 用 {{}} 语法 或者 ng-bind 来使用model层的数据 -->
+    {{ msg }}
+    {{ data }}
+    <div ng-controller="A">
+        <!-- {{ Amsg }} -->
+        {{ init }} 
+        <!-- 现在在自己的作用域搜索 init 不存在的话 会 去父作用域查找 知道$rootScope不存在 才是undefiend -->
+    </div>
+    <div ng-controller="B">
+        <!-- {{ Amsg }} -->
+        <!-- AAAA -->
+        {{ Ra }}
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .run(['$rootScope','$http',function($rootScope,$http){
+                $rootScope.init="initVal"
+                $http({  // 和我们的$.ajax 用法一样 数据用data 传递
+                    url:'./json.json',
+                    method:'GET'
+                })
+                .then(function(result){
+                    console.log(result.data)
+                    $rootScope.data = result.data.data;
+                },function(error){
+                    throw new Error(error);
+                })
+                // var ajax = new XMLHttpRequest();
+                // ajax.open('GET','./json.json');
+                // ajax.onreadystatechange = function(){
+                   
+                //     if(this.readyState !== 4){
+                //         return
+                //     }
+
+                //     if(this.status === 200){
+                //         var result = {
+                //             data:JSON.parse(this.responseText)
+                //         }
+                //         console.log(result.data.data)
+                //         $rootScope.data = result.data.data;
+                //         $rootScope.$apply() // 加上这句代码就显示了 手动脏检查
+                //     } else {
+                //         console.log( this.responseText );
+                //     }
+
+                // }
+                // ajax.send();
+            }])
+            .controller('main',['$scope',function($scope){  // 它是一个内置服务 可以被依赖注入
+                    $scope.init= "Ainit"
+                    $scope.msg = 'Hello' // 数据模型层   在数据模型层新建了一个属性 msg 值为 'Hello'
+
+            }]) 
+            .controller('A',['$scope','$rootScope',function($scope,$rootScope){
+                // $scope.Amsg = 'AAAA'
+                $rootScope.Ra = 'AAAA' // ng-app 所在的范围都生效
+                // 这个$scope 是属于控制器A的
+            }])
+            .controller('B',['$scope',function($scope){
+                // $scope 下 没有Amsg 所以是undefined
+            }])
+            
+</script>

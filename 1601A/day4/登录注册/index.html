@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <input type="text" id="rUserName">
+    <input type="password" id="rPassword">
+    <div onclick="register()">注册</div>
+    <br>
+    <input type="text" id="lUserName">
+    <input type="password" id="lPassword">
+    <div onclick="login()">登录</div>
+</body>
+<script src="./jquery.js"></script>
+</html>
+<script>
+    function register(){
+        $.ajax({
+        url:'http://localhost:3001/register',
+        method:'POST',
+        data:{
+            userName:rUserName.value,
+            password:rPassword.value
+        }
+    })
+    .then(function(result){ // 网络请求success
+        result = JSON.parse(result)
+        console.log(result)
+        switch(result.state){
+            case 0:
+            console.log('注册失败')
+            break;
+            case 1:
+            console.log('注册成功')
+            break;
+            case 2:
+            console.log('用户已经存在')
+            break;
+            default:
+            break;
+        }
+    },function(error){ // error
+        console.log(error)
+    })
+    }
+
+    function login(){
+        $.ajax({
+            url:'http://localhost:3001/login',
+            method:'POST',
+            data:{
+                userName:lUserName.value,
+                password:lPassword.value
+            }
+        })
+        .then(function(result){
+            console.log(result)
+        },function(error){
+
+        })
+    }
+</script>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .bg{
+            background-color: rebeccapurple;
+            color: white;
+        }
+    </style>
+</head>
+<body ng-controller="main">
+
+    <span ng-click="to('publicview','home')" ng-class="{bg:currentRoute==='home'}">页面1</span>
+    <span ng-click="to('publicview','about')" ng-class="{bg:currentRoute==='about'}">页面2</span>
+    <span ng-click="to('publicview','me')" ng-class="{bg:currentRoute==='me'}">页面3</span>
+
+    <ui-view></ui-view>
+
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-ui-router.js"></script>
+</html>
+<script>
+    // angular.module angular做模块化的api
+    angular.module('app',['ui.router']) //  ui-router 依赖注入的名字是 ui.router
+            .controller('main',['$scope', '$state',function($scope ,$state){
+                $scope.currentRoute = ''; // 当前路由为空
+                $scope.to=function(routerName,params){ 
+                    // console.log(`跳转到${routerName}参数是${params}`);
+                    $state.go( routerName , { value: params } );
+                    //         路由名称        路由参数
+
+                    // 缺点是 需要自己写高亮 
+
+                    // 自己写高亮
+                    $scope.currentRoute = params // 把当前路由的参数 接收一下
+                }
+            }])
+            .config(['$stateProvider',function($stateProvider){ // 可以猜测到 它一定有一个服务叫 $state
+                $stateProvider
+                // .state('home',{
+                //     url:'/home',
+                //     template:'<div>home</div>'
+                // }).state('about',{
+                //     url:'/about',
+                //     template:'<div>about</div>'
+                // }).state('me',{
+                //     url:'/me',
+                //     template:'<div>me</div>'
+                // })
+                .state('publicview',{
+                    url:'/publicview',
+                    template:`<div ng-bind="value"></div>`,
+                    controller:['$scope','$stateParams',function($scope,$stateParams){
+                        $scope.value = $stateParams.value;
+                    }],
+                    params:{ // 配置参数
+                        value:'' // 默认参数
+                    }
+                })
+            }])
+</script>

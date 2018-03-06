@@ -1,0 +1,99 @@
+<div class="css-app-player" id="playerUI">
+    <style>
+        .css-app-player{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1.2rem;
+        }
+        .css-app-player-content{
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+        .css-app-player-left{
+            flex: 6;
+        }
+        .css-app-player-right{
+            flex: 4;
+        }
+        .css-app-player-img{
+            width: .8rem;
+            height: .8rem;
+            margin: .1rem;
+           float: left;
+        }
+        .css-app-player-song-name{
+            height: .6rem;
+            font-size: .24rem;
+            line-height: .6rem;
+            color:#313131
+        }
+        .css-app-player-singer{
+            color: #808485;
+            font-size: .18rem;
+            height: .4rem;
+        }
+        .icon-quanjuxiayiqu{
+            float: right;
+            width: .88rem;
+            height: 1rem;
+            line-height: 1rem;
+            text-align: center;
+            color: #d03e3e;
+            font-size: .35rem;
+        }
+        .css-app-player-btn{
+            float: right;
+            width: .88rem;
+            height: 1rem;
+            line-height: 1rem;
+            text-align: center;
+            color: #d03e3e;
+            font-size: .6rem;
+        }
+        .css-app-progress-bar{
+            position: relative ;
+            top:.05rem;
+            width: 100%;
+            height: .2rem;
+            float: left;
+        }
+        .css-app-progress{
+            background-color: #d03e3e;
+            height: .02rem;
+            width: 0;
+            margin-top: .1rem;
+        }
+        .css-app-song-time{
+            position: absolute;
+            right: 0;
+            top: -.2rem;
+            width: auto;
+            height: .3px;
+            color: orange;
+        }
+    </style>
+    <div class="css-app-progress-bar" 
+    ng-touchstart="playerManager.fingerTouchStart($event)"
+    ng-touchmove="playerManager.fingerTouchMove($event)"
+    ng-touchend="playerManager.fingerTouchEnd($event)"
+    >
+        <div class="css-app-progress" let-dom='progress'></div>
+        <span class="css-app-song-time" ng-bind="playerManager.currentTime | formatTime "></span>
+    </div>
+    <div class="css-app-player-content">
+        
+        <div class="css-app-player-left">
+            <img class="css-app-player-img" ng-src="{{playerManager.songIcon}}" alt="">
+            <div class="css-app-player-song-name" ng-bind="playerManager.songName"></div>
+            <div class="css-app-player-singer" ng-bind="playerManager.singer"></div>
+        </div>
+
+        <div class="css-app-player-right">
+            <div class="icon-quanjuxiayiqu iconfont" ng-touchend="playerManager.playNextSongWithMode(true)"></div>
+            <div class="css-app-player-btn iconfont" ng-class="[{'icon-bofang':playerManager.audio.paused},{'icon-stop':!playerManager.audio.paused}]" ng-touchend="playerManager.playOrPause()"></div>
+        </div>
+    </div>
+</div>

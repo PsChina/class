@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .bg{
+            background-color: rebeccapurple;
+            color: white;
+        }
+    </style>
+</head>
+<body ng-controller="main">
+
+    <span ui-sref="publicview({value:'home'})" ui-sref-active="bg">页面1</span>
+    <span ui-sref="publicview({value:'about'})" ui-sref-active="bg">页面2</span>
+    <span ui-sref="publicview({value:'me'})" ui-sref-active="bg">页面3</span>
+
+    <ui-view></ui-view>
+
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-ui-router.js"></script>
+</html>
+<script>
+    // angular.module angular做模块化的api
+    angular.module('app',['ui.router']) //  ui-router 依赖注入的名字是 ui.router
+            .controller('main',['$scope',function($scope){
+            }])
+            .config(['$stateProvider',function($stateProvider){ // 可以猜测到 它一定有一个服务叫 $state
+                $stateProvider
+                // .state('home',{
+                //     url:'/home',
+                //     template:'<div>home</div>'
+                // }).state('about',{
+                //     url:'/about',
+                //     template:'<div>about</div>'
+                // }).state('me',{
+                //     url:'/me',
+                //     template:'<div>me</div>'
+                // })
+                .state('publicview',{
+                    url:'/publicview',
+                    template:`<div ng-bind="value"></div>`,
+                    controller:['$scope','$stateParams',function($scope,$stateParams){
+                        $scope.value = $stateParams.value;
+                    }],
+                    params:{ // 配置参数
+                        value:'' // 默认参数
+                    }
+                })
+            }])
+</script>

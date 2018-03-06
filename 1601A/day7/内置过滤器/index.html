@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <!-- currency -->
+    {{ money | currency :'¥' }} 
+    <!--小键盘 alt + 0165 -->
+
+    <!-- date -->
+    <p>
+        {{ 1517281006251 | date :' y 年 M 月  d 日' }}
+    </p>
+    <input type="text" ng-model="condition" >
+
+    <!-- filter -->
+    <p>
+        {{ array | filter:condition }}
+    </p>
+
+    <!-- json -->
+    <p>
+        {{ obj | json }}
+    </p>
+
+    <!-- limitTo -->
+    <p>
+        {{ array | limitTo:1 }}
+    </p>
+    <!-- 对字符串也生效 -->
+    <p>
+        {{ 'Hello World' | limitTo:2 }}
+    </p>
+
+    <!-- uppercase -->
+    <p>
+        {{ 'Hello World' | uppercase }}
+    </p>
+    <!-- lowercase -->
+    <p>
+        {{ 'Hello World' | lowercase }}
+    </p>
+    <!-- number -->
+    <p>
+        {{ 1000000 | number }}
+    </p>
+    <p>
+        {{ 1000000.1415926 | number }}
+    </p>
+    <p>
+        {{ 1000000.141592653 | number :6 }}
+    </p>
+
+    <input type="text" ng-model="attr" >
+
+    <table>
+        <tr> <th ng-click="orderBy('name')">姓名</th> <th ng-click="orderBy('age')">年龄</th> </tr>
+        <tr ng-repeat="child in array | orderBy:attr "  >
+            <td>{{ child.name }}</td>
+            <td>{{ child.age }}</td>
+        </tr>
+    </table>
+
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+
+    
+
+    angular.module('app',[])
+            // .filter('myJson',[function(){
+            //     return function(input){ // obj
+            //       return JSON.parse(JSON.stringify(input));
+            //     }
+            // }])
+            .controller('main',['$scope',function(n){ // 用数组注释法 注释一下就好了
+                n.money = 1000.1111; // 货币 只精确到小数点后两位
+
+                n.array=  [
+                        {name:'kimi',age:3},
+                        {name:'cindy',age:4},
+                        {name:'anglar',age:4},
+                        {name:'shitou',age:6},
+                        {name:'tiantian',age:5}
+                    ] 
+
+                n.obj = {
+                    name:'张三',
+                    age:18,
+                    eat:function(){
+                        console.log('吃饭')
+                    }
+                }   
+                
+                n.orderBy = function(val){
+                        n.attr = val;
+                }
+
+            }]) 
+    // gulp 这种工具 可以打包压缩 js
+
+    // 一旦打包压缩 js 的变量名 就会变成 a,b,c,d,e 这些字母 去语义化 以便节省磁盘空间 和内存
+
+
+    // date
+
+    /**
+    1 y  年  yy 简写 18 代表2018 当前这个世纪 会被省略掉  yyyy 2018
+    2 M  月  MM
+    3 d  日  dd 
+    4 h  时  hh
+    5 m  分  mm
+    6 s  秒  ss
+    7 E  星期 EEEE => Tuesday  EEE => Tue
+
+    可以自由组合 比如 mm - ss
+    比如 y 年 M 月  d 日 ....
+    */
+
+    
+
+
+</script>

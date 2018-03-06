@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    
+    <div ng-style="style"> 测试 ng-style </div>
+
+    <div ng-click="changeStyle()">changeStyle</div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    var app = angular.module('app',[])
+    app.controller('main',function($scope){
+        var style1 = {background:'green',width:'100px',height:'100px'};
+        var style2 = {background:'red',width:'200px',height:'200px'};
+        $scope.style = style1;
+       
+        $scope.changeStyle = function(){
+            if( $scope.style === style1){
+                $scope.style = style2;
+            }else{
+                $scope.style = style1;
+            }
+        }
+    })
+</script>

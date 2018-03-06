@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    
+    <my-direcrive 
+    ng-repeat=" goods in arr "  
+    name=" goods.name "  
+    price=" goods.price " 
+    mystyle=" goods.style "
+    >
+    </my-direcrive>
+
+</body>
+<script src="./node_modules/angular/angular.js"></script>
+</html>
+<script>
+    var app = angular.module('app',[])
+
+    app.controller('main',['$scope',function($scope){
+        $scope.arr = [ {
+            name:'商品一',
+            price:1,
+            style:{
+                background:'red'
+            }
+        } , {
+            name:'商品二',
+            price:2,
+            style:{
+                background:'orange'
+            }
+        }  ,{
+            name:'商品三',
+            price:3,
+            style:{
+                background:'blue'
+            }
+        }  ]
+    }])
+
+    app.directive('myDirecrive',[function(){
+        return {
+            template:`<div>
+                <style>
+                    .box{
+                        display:flex;
+                    }
+                    .item {
+                        flex:1
+                    }
+                </style>
+                <div class="box" ng-style="mystyle">
+                    <div class="item"> 商品名称:{{ name }} </div>
+                    <div class="item"> 商品价格:{{ price }} </div>
+                </div>
+             </div>`,
+             scope:{ // scope 的复习 传值
+                 name:'=', //双向绑定
+                 price:'=',
+                 mystyle:'='
+             }
+        }
+    }])
+</script>

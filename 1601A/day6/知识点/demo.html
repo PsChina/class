@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <img ng-src="{{src}}" alt="">
+    <!-- ng-src 比较特别 需要用到 {{}} -->
+    <button ng-click="changeSrc()">
+        改变图片路径
+    </button>
+    
+    <a ng-href="{{currentRoute.url}}">{{currentRoute.name}}</a>
+    <button ng-click="changeUrl()">改变链接</button>
+
+    <div ng-init=" a=1;b=2 ">
+            <!-- 1 把不存在的数据 变成存在  -->
+            <!-- 2 把已经存在的数据 改成其他的 -->
+            ng-init {{ a + b }}
+    </div>
+
+    <div ng-init=" a=1;b=2 ">
+            <!-- 1 把不存在的数据 变成存在  -->
+            <!-- 2 把已经存在的数据 改成其他的 -->
+            ng-init <span ng-bind="a+b"></span>
+    </div>
+
+    <div ng-bind="currentRoute"></div>
+    <div> {{ currentRoute }} </div>
+
+    <div ng-bind="checked"></div>
+
+    <input type="checkbox" ng-checked="checked">
+
+    <button ng-click="checked=!checked">
+        changeBox
+    </button>
+</body>
+<script src="./angular.js"></script>
+</html> 
+<script>
+
+    var app = angular.module('app',[])
+        app.controller('main',['$scope',function($scope){ // 数组注释法  可以不用 也可以用 （更加规范）
+
+            $scope.src='./banner1.jpg'
+
+            var router1 = {
+                name:'百度',
+                url:'http://www.baidu.com'
+            }
+
+            var router2 = {
+                name:'网易',
+                url:'http://www.163.com'
+            }
+
+            $scope.currentRoute = router1;
+            
+            $scope.changeSrc = function(){
+                if($scope.src === './banner1.jpg') {
+                    $scope.src = './banner2.jpg'
+                } else {
+                    $scope.src = './banner1.jpg'
+                }
+            }
+
+            $scope.changeUrl = function(){
+                if( $scope.currentRoute === router1 ){
+                    $scope.currentRoute = router2;
+                }else {
+                    $scope.currentRoute = router1;
+                }
+            }
+
+        }])
+           
+
+        // app.controller('main',function($scope){ // 没用数组注释法
+
+        // })
+
+
+</script>

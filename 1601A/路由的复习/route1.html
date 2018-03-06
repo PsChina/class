@@ -1,0 +1,15 @@
+<div>
+    <style>
+        .sub-active{
+            background-color: rebeccapurple;
+            color:white
+        }
+    </style>
+    <div>
+        <span ui-sref="route1.publickpage({value:'子页面1'})" ui-sref-active="sub-active">子页面1</span>
+        <span ui-sref="route1.publickpage({value:'子页面2'})" ui-sref-active="sub-active">子页面2</span>
+        <span ui-sref="route1.publickpage({value:'子页面3'})" ui-sref-active="sub-active">子页面3</span>
+        <ui-view></ui-view>
+        <!-- 这是二级路由 -->
+    </div>
+</div>

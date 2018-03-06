@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义指令弹窗</title>
+    <style>
+    </style>
+</head>
+<body ng-controller="main">
+    <tool-tip msg="'这是弹窗内容'"></tool-tip>
+</body>
+<script src="./node_modules/angular/angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope',function($scope){
+                $scope.msg='hello!'
+            }])
+            .directive('toolTip',[function(){
+                return {
+                    restrict:'ECMA',
+                    template:`
+                    <div>
+                        <style>
+                            .box{
+                                position:absolute;
+                                left:0;
+                                top:0;
+                                border: 1px solid #f66;
+                                border-radius: 10px;
+                                box-sizing: border-box;
+                                text-align:center;
+                                width:100%;
+                                height:200px;
+                                line-height:200px;
+                            }
+                            .close{
+                                position:absolute;
+                                right:5px;
+                                top:5px;
+                                border-radius: 5px;
+                            }
+                        </style>
+                        <button ng-show="show" ng-click="start()">某个事件</button>
+                        <div ng-show="content" class="box">
+                          <span>{{msg}}</span> <button ng-click="close()" class="close">X</button> 
+                        </div>
+                    </div>
+                    `,
+                    scope:{
+                        msg:'='
+                    },
+                    controller:['$scope',function($scope){
+                        $scope.show = true;
+                        $scope.content = false;
+                        $scope.start=function(){
+                            $scope.show = false;
+                            $scope.content = true;
+                        }
+                        $scope.close = function(){
+                            $scope.show = true;
+                            $scope.content = false;
+                        }
+                    }]                    
+                }
+            }])
+        
+
+</script>

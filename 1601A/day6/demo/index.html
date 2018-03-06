@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <div ng-repeat="item in data">
+        <div> <span ng-bind="item.name"></span> <span ng-bind="item.price"></span> <span ng-click="delete(item)">删除</span> </div>
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+           .controller('main',['$scope',function($scope){
+                $scope.data = [
+                    {
+                        name:'商品1',
+                        price:'000001'
+                    },{
+                        name:'商品2',
+                        price:'000010'
+                    },{
+                        name:'商品3',
+                        price:'000100'
+                    },{
+                        name:'商品4',
+                        price:'001000'
+                    },{
+                        name:'商品5',
+                        price:'010000'
+                    },{
+                        name:'商品6',
+                        price:'100000'
+                    }
+                ]
+                $scope.delete = function(item){
+                    
+                    var arr = $scope.data;
+
+                    arr.forEach(function(value,index,array){
+                       if(value === item) {
+                            arr.splice(index,1)
+                       }
+                    });
+
+                    $scope.data = arr;
+                    
+                }
+           }])
+</script>

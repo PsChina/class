@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" class="a">
+    <!-- html 内含有 class  A 吗？   1  ['html'] -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body> 
+    <!-- 2  ['html'] -->
+    <div>1</div>
+     <!-- 3  ['html'] -->
+    <div>2</div>
+    <!-- 4  ['html'] -->
+    <div>3</div>
+    <!-- 5  ['html'] -->
+    <div class="a">4</div>
+    <!-- 6  ['html',' <div class="a">4</div>' ] -->
+    <div>5</div>
+     <!-- 7  ['html',' <div class="a">4</div>' ] -->
+    <div>6</div>
+     <!-- 8  ['html',' <div class="a">4</div>' ] -->
+    <div class="a">7</div>
+     <!-- 9  ['html','<div class="a">4</div>','<div class="a">7</div>' ] -->
+    <div>8</div>
+     <!-- 10  ['html','<div class="a">4</div>','<div class="a">7</div>' ] -->
+    <div>9</div>
+     <!-- 11  ['html','<div class="a">4</div>','<div class="a">7</div>' ] -->
+    <div>10</div>
+     <!-- 12  ['html','<div class="a">4</div>','<div class="a">7</div>' ] -->
+
+     <p></p>
+     <p ng-> {{}} </p> <!-- 这样的dom 就会被存在angularJS中直到app被关闭 -->
+     <p></p>
+</body>
+</html>
+<script>
+//    var dom = document.getElementsByClassName('a') // 有10个div 至少计算几次
+// //['html','<div class="a">4</div>','<div class="a">7</div>' ] 
+//     console.log(dom)
+
+    function removeClass(){
+        var dom = document.getElementsByClassName('a') 
+        $('.a') // 和 44 行的效果是一样的 只是简单一些而已  性能是一样的
+    // for(/*/... */){
+    //     dom[i].className = '';
+    // } 
+    } // 44行 dom 就找不到了 释放掉了
+
+    function changeWith(){
+        var dom = document.getElementsByClassName('a') 
+        $('.a')
+    } // 48行 dom 就找不到了 释放掉了
+</script>

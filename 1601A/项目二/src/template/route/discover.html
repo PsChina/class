@@ -1,0 +1,36 @@
+<div>
+    <style>
+        .css-app-discover-nav{
+            height: .8rem;
+            width: 100%;
+            display: flex;
+        }
+        .css-app-discover-nav-item{
+            flex: 1;
+            text-align: center;
+            color: #666666;
+            font-size: .28rem;
+            height: .8rem;
+            line-height: .8rem;
+        }
+        .css-app-discover-nav-active{
+            color: #cd3d3d;
+            border-bottom: solid #cd3d3d 0.02rem;
+            box-sizing: border-box;
+        }
+    </style>
+    <div>
+        <div class="css-app-discover-nav">
+            <div 
+            ng-repeat="nav in navArr" 
+            ng-bind="nav.routeName" 
+            class="css-app-discover-nav-item"
+            ui-sref="{{nav.routeState}}"
+            ui-sref-active="css-app-discover-nav-active"
+            >
+        </div>
+        </div>
+    </div>
+    <ui-view></ui-view> 
+    <!-- 显示二级页面 -->
+</div>

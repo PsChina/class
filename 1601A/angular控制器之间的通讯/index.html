@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+
+    <div ng-controller="a">
+        {{ dataA }}
+        <button ng-click="send()"> 发送消息 </button>
+    </div>
+
+    <div ng-controller="b">
+        {{ dataB }}
+
+    </div>
+
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope',function($scope){ // 在父控制器内监听冒泡
+                $scope.msg = 'Hello World!';
+                $scope.$on('$msgA',function(event,newVal){ 
+                    console.log(`父控制器收到消息${newVal}`)
+                    // 监听到之后广播 给所有子控制器
+                        $scope.$broadcast('broadMsgA',newVal);
+                })
+            }]) 
+            .controller('a',['$scope',function($scope){
+                $scope.dataA = 'a的数据'
+                $scope.send = function(){ //在send 方法内 冒泡事件
+                    console.log('发送消息')
+                    $scope.$emit('$msgA',$scope.dataA) // 发送msgA事件传递数据 dataA
+                } 
+            }])
+            .controller('b',['$scope',function($scope){ // 在目标控制器监听广播
+                $scope.dataB = '控制器B'
+                $scope.$on('broadMsgA',function(event,value){
+                    $scope.dataB = value; // 赋值
+                })
+            }])
+</script>

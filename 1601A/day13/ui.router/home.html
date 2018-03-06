@@ -1,0 +1,34 @@
+<div>
+    <style>
+        .home-nav-bar{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            display: flex;
+        }
+        .home-nav-item{
+            flex: 1;
+            text-align: center;
+            line-height: 60px;
+            border: orange solid 1px;
+            background: white;
+        }
+        .home-nav-active{
+            background: orange;
+        }
+        .home-content{
+            position: absolute;
+            top: 60px;
+            left: 0;
+        }
+    </style>
+    <div class="home-nav-bar">
+        <button class="home-nav-item" ui-sref="home.livingroom" ui-sref-active="home-nav-active">客厅</button>
+        <button class="home-nav-item" ui-sref="home.kitchen" ui-sref-active="home-nav-active">厨房</button>
+        <button class="home-nav-item" ui-sref="home.bedroom" ui-sref-active="home-nav-active">卧室</button>        
+    </div>
+
+    <ui-view class="home-content"></ui-view>
+</div>

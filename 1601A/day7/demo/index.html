@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    
+    <label for=""> 搜索 <input type="text" ng-model="filterVal" placeholder="输入要搜索的内容">  </label>
+
+    <table>
+        <tr> <th ng-click="order('name')">名字</th> <th ng-click="order('age')">年龄</th> <th>操作</th>  </tr>
+        <tr ng-repeat="child in childrenArray|filter:filterVal | orderBy:attr">
+            <td ng-bind="child.name"> </td> <td ng-bind="child.age"> </td> <td ng-click="delete(child)">删除</td>
+        </tr>
+    </table>
+
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+        .controller('main',['$scope',function($scope){
+
+            $scope.attr = 'name';
+
+            $scope.childrenArray = [
+                {name:'kimi',age:3},
+                {name:'cindy',age:4},
+                {name:'anglar',age:4},
+                {name:'shitou',age:6},
+                {name:'tiantian',age:5},
+                {name:'mike',age:7},
+                {name:'lilei',age:8},
+                {name:'hanmeimei',age:9}                
+            ]
+            $scope.order = function(val){
+                var firstChar = $scope.attr.charAt(0);
+                if(firstChar === '-'){
+                    $scope.attr = val;
+                }else{
+                    $scope.attr = '-'+val;
+                }
+                
+
+            }
+            $scope.delete = function(value){
+                var arr = $scope.childrenArray.concat();
+
+                angular.forEach(arr, function(child,index,array){
+                    if( value === child ){
+                        array.splice(index,1);
+                    }
+                } )
+
+                $scope.childrenArray = arr;
+
+            }
+        }]) 
+</script>

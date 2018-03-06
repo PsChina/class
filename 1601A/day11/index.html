@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{ msg }}
+    <a href="#!/home?user=zhangsan" > home </a>
+    <span ng-click="to('/about')"> about </span>
+    <a href="#!/me/zhangsan/18" > me </a>
+    <ng-view></ng-view>
+
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-route.js"></script>
+</html>
+<script>
+    angular.module('app',['ngRoute']) // 依赖注入
+            .controller('main',['$scope','$location',function($scope,$location){
+                $scope.msg = 'Hello World!';
+                $scope.to = function(url){
+                	var params = '?path=about&time='+new Date().getSeconds()
+                	url += params;
+                	$location.url( url );
+                }
+               
+            }])
+            .config(['$routeProvider',function ($routeProvider) {
+
+
+            	$routeProvider.when('/home',{
+            		template:'<div>home</div>',
+            		controller:['$scope','$location',function($scope,$location){
+            			console.log( $location.search() )
+            		}]
+            	})
+            	.when('/about',{
+            		template:'<div>about</div>',
+            		controller:['$location',function($location){
+            		    console.log($location.search())	
+            		}]
+            	})
+            	.when('/me/:user/:age',{
+					template:'<div>me</div>',
+					controller:['$routeParams',function($routeParams){
+						console.log($routeParams);
+					}]
+            	})	
+
+
+            }])
+
+
+// 第一种传参
+// 1、<a href="#!/home" > home </a>   =>  <a href="#!/home?user=zhangsan&age=18" > home </a> 
+//		
+// 2、controller:['$scope','$location',function($scope,$location){}  //在控制器注入$location
+//		
+// 3、$location.search()  可以拿到传递的参数
+//
+
+// 第二种传参
+// 1、 不使用 a 连接 跳转 使用 ng-click 跳转  实现点击事件 并且传递路径
+// 2、 在父控制器内实现 点击事件并且注入$loaction
+// 3、 使用 $location.url() 来跳转 跳转的时候 提前拼接好 参数
+
+// 第三种传参
+// 1、.when('/me',{}) =>  .when('/me/:user/:age',{})
+// 2、 <a href="#!/me" > me </a> => <a href="#!/me/zhangsan/18" > me </a>
+// 3、 在 me 这个路由的控制器 注入 $routeParams  这个 服务就是参数
+
+
+// 当我们有多个 同类型 商品 需要展示 的时候 我们可以只定义一个模版 
+// 通过改变模版内的数据来改变 这个页面的信息
+// 而不需要定义多个重复的页面 比如说有100台手机 就不需要定义100个详情页
+// 只需要定义一个详情页模版
+// 通过传递不同的参数来请求相应的数据 从而达到显示不同的商品详情的目的
+
+// 例如
+/*
+	 <div> 商品名称: <span>{{ data.name }}</span> </div>
+	 <div> 价格: <span>{{ data.price }}</span> </div>
+	 <div> 大小: <span>{{ data.size }}</span> </div>
+	 <div> 图片: <img ng-src="{{data.src}}" /> </div>
+	 <div> 内存: <span>{{data.ram}}</span> </div>
+	 //等等
+*/
+
+
+</script>

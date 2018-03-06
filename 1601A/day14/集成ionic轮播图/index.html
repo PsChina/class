@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./src/css/ionic.css">
+    <link rel="stylesheet" href="./src/css/style.css">
+</head>
+<body ng-controller="main">
+        <ion-slide-box 
+        does-continue="true" 
+        auto-play="true" 
+        slide-interval="2000"
+        pager-click="click(index)"
+        >
+            <ion-slide ng-repeat="src in imgArr">
+                <img ng-src="{{src}}" class="slide-img">
+            </ion-slide>
+        </ion-slide-box>
+</body>
+<script src="./src/js/lib/angular.js"></script>
+<script src="./src/js/lib/angular-ui-router.js"></script>
+<script src="./src/js/lib/ionic.bundle.js"></script>
+<script src="./src/js/lib/ionic.js"></script>
+<script src="./src/js/lib/ionic-angular.js"></script>
+<script src="./src/js/common/app.js"></script>
+<script src="./src/js/common/controller.js"></script>
+</html>

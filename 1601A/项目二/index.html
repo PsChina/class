@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=.5, minimum-scale=.5, maximum-scale=.5, user-scalable=no">
+    <!--  
+    initial-scale=.5, minimum-scale=.5, maximum-scale=.5, user-scalable=no
+    初始大小 缩小一倍  最小大小缩小一倍    最大大小缩小一倍    用户缩放网页 禁止
+    -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./src/css/ionic.css">
+    <link rel="stylesheet" href="./src/css/style.css">
+    <link rel="stylesheet" href="./src/iconfont/iconfont.css">
+</head>
+<body ng-controller="main">
+        <app-header></app-header>
+        <ui-view></ui-view>
+        <app-player></app-player>
+</body>
+<script src="./src/js/base/rem.js"></script>
+<script src="./src/js/lib/angular.js"></script>
+<script src="./src/js/lib/angular-ui-router.js"></script>
+<script src="./src/js/lib/ionic.bundle.js"></script>
+<script src="./src/js/lib/ionic.js"></script>
+<script src="./src/js/lib/ionic-angular.js"></script>
+<script src="./src/js/common/app.js"></script>
+<script src="./src/js/common/filter.js"></script>
+<script src="./src/js/common/service.js"></script>
+<script src="./src/js/common/config.js"></script>
+<script src="./src/js/common/run.js"></script>
+<script src="./src/js/common/controller.js"></script>
+<script src="./src/js/common/directive.js"></script>
+</html>

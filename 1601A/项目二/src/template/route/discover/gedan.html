@@ -1,0 +1,13 @@
+<div>
+    <style>
+    </style>
+    <div>
+        <song-item 
+        ng-repeat="songItem in appValue.appPlayerValue.songList"
+        song="{{songItem}}"
+        play="playerManager.playWithIndex($index);"
+        index="$index"
+        >
+        </song-item>
+    </div>
+</div>

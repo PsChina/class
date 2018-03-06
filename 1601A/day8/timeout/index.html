@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{ msg }}
+    {{ time | date :'yyyy-MM-dd hh:mm:ss' }}
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope','$timeout','$interval','$location',function($scope,$timeout,$interval,$location){
+                // setTimeout
+                $scope.msg = 'Hello World!';
+                    // setTimeout(function(){
+                    //     $scope.msg = '你好世界！'
+                    //     console.log($scope.msg);
+                    //     $scope.$apply() // 脏检查 脏值检测
+                    // },2000)
+                var id = $timeout(function(){
+                    $scope.msg = '你好世界！'
+                },2000)
+                //$timeout.cancel(id); // 取消
+                // $timeout 与 setTimeout 的区别
+
+                // 优点 
+                // 1 自动脏检查
+                // 2 错误处理能力强  它内部 会有一个 try catch  来运行你的代码 即便你的代码会崩溃 也不会使得程序终止
+                // 本质 
+                // 本质上就是包装了 setTimeout + $scope.$aplly();
+
+                var interval = $interval( function(){
+                    $scope.time = new Date().getTime();
+                },1000 )
+
+                $timeout( function(){
+                    $interval.cancel(interval)
+                } ,1000*10) // 10 秒之后取消
+                
+                console.log( $location.search());
+                // 更加符合angular 写法
+                
+            }]) 
+            .factory('timeout',['$rootScope',function($rootScope){ // 自定义服务 factory 
+                function $timeout(fn,time){
+
+                    return setTimeout( function(){
+                        try {
+                            fn()
+                        } catch (error) {
+                            throw new Error(error)
+                        } finally{
+                            $rootScope.$apply()
+                        }
+                    } ,time )
+
+                }
+
+                $timeout.cancel = function(id){
+                    clearTimeout(id)
+                }   
+
+                return $timeout;
+            }])
+</script>

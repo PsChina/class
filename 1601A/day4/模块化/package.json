@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "browserify": "^15.2.0",
+    "gulp": "^3.9.1",
+    "gulp-collector": "^0.1.0",
+    "gulp-connect": "^5.2.0",
+    "gulp-rev": "^8.1.1",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}

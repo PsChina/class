@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <div>
+        <div ng-bind="number"></div>
+        <button ng-click="generateRandomNumber()">生成随机数</button>
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope','randomNumber',function($scope,randomNumber){
+                $scope.msg = 'Hello'
+                $scope.number = 0;
+                $scope.generateRandomNumber = function(){ //先定义 函数  再封装成服务
+                    $scope.number = randomNumber( 20 , 80 , 'real' )
+                }
+            }])
+            .factory('randomNumber',[function(){
+                return function(min,max,type){ // 下限  上限 数据类型
+
+                    type = type ? type : 'real'; // 默认参数
+                    min = min ? min : 0; // 默认参数
+                    max = max ? max : 1; // 默认参数
+
+                    if( type === 'integer' ){ // 返回整数
+                    
+                        min = parseInt( min );
+                        max = parseInt( max );
+
+                       return min +  Math.floor(Math.random()*( (max-min) + 1 )); // min +1 +1 ... max
+
+                    } else if( type === 'real' ){ // 返回实数
+                        min = parseFloat( min );
+                        max = parseFloat( max );
+
+                        return min + Math.random()*(max-min); // 注意 取不到最大值 [min,max)
+                    }
+
+
+                }
+            }])
+</script>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{ msg }}
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope','$http','$timeout',function($scope,$http,$timeout){
+                $scope.msg = 'Hello World!'; // 原来是 hello world 
+                $http({
+                    url:'http://localhost:8080/json.json'
+                })
+                .then( function(result){ // 网络请求的时间不固定 所以我不知道它什么时候变成了[1,2,3];
+                    $scope.msg = result.data; // 后来变成了123
+                } , function(error){
+                    throw new Error(error);
+                } )
+                $timeout(function(){
+                    $scope.msg = '$timeout设置的值'
+                },3000)
+                // 有什么办法能够在第一时间知道它改变了呢 
+
+                // 那就是 用$watch
+
+                // 如何使用
+
+                $scope.$watch('msg',function(newVal,oldVal){
+                    console.log(newVal);
+                })
+            }]) 
+
+
+
+
+
+
+
+</script>

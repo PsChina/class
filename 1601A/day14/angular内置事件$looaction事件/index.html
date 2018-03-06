@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{ msg }}
+    <button ng-click="changeUrl()">改变url</button>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope','$location',function($scope,$location){
+                $scope.msg = 'Hello World!';
+                $scope.changeUrl = function(){
+                    $location.url('/home');
+                }
+            }]) 
+            .run(['$rootScope',function($rootScope){
+                // 刚才学的 $on 监听事件
+                $rootScope.$on('$locationChangeStart',function(event,newPath,oldPath){
+                    console.log('路径开始改变','new:'+newPath.split('#!')[1],'old:'+oldPath.split('#!')[1]);
+                  
+                })
+                $rootScope.$on('$locationChangeSuccess',function(event,newPath,oldPath){
+                    console.log('路径改变成功','new:'+newPath.split('#!')[1],'old:'+oldPath.split('#!')[1]);
+                })
+            }])
+</script>

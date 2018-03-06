@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>$q</title>
+</head>
+<body ng-controller="main">
+    {{ msg }}
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+
+    angular.module('app',[])
+            .controller('main',['$scope','$http','$q',function($scope,$http,$q){
+                $scope.msg = 'Hello World!';
+
+                function getData(){
+                    var defer = $q.defer() // 返回一个 promise 对象 状态是 进行中
+                    // var data = false;
+                    $http({ // 发送网络请求的 ajax 技术是异步的
+                        url:'./data.json', //http://localhost:8080
+                        method:'GET'
+                    })
+                    .then(function(result){
+                        // data = result.data;
+                        defer.resolve( result.data ) // 将进行中的状态 改为 已完成 将结果传递到promise里
+                    },function(error){
+                        defer.reject( error ) // 已失败  将 进行中的状态 改变为 已失败 的状态
+                        //data = false;
+                    })
+
+                    return defer.promise.$$state;
+                    // return data; // 在网络请求成功或者失败之前 先返回了
+                    // 这样写 期望它是同步的 结果不是
+                    // 那怎么解决
+                    // 用$q 来解决
+                    // $q 是用于解决异步编程的
+                    // 使用同步的编程风格来进行异步编程
+
+                }
+
+                var data = getData()
+                console.log(data);
+                // 这个函数 是否有不妥的地方 
+
+                // 如果有 是什么
+
+                // $q 解决异步编程
+
+                // $q.defer() 能返回一个 promise 对象
+
+                // promise 对象上 有2个方法
+
+                // 1 resolve 他能将promise 的状态由 等待变为已完成
+
+                // 2 reject 他能将promise 的状态变成 已失败
+
+                // 异步转 同步
+            }])
+    
+</script>

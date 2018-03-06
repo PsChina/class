@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <!-- {{ msg }} -->
+    <!-- E element-->
+    <!-- <directive></directive> -->
+    <!-- C class-->
+    <!-- <span class="directive"></span> -->
+    <!-- M 注释 -->
+    <!-- directive: directive--> <!-- 把空格打开就好了 -->
+    <!-- <span directive></span> -->
+
+    <!-- <span directive1 directive2></span> -->
+    <my-directive> <my-header>头部</my-header> <my-footer>脚部</my-footer> </my-directive>
+
+    
+    <div ng-controller="controllerA">
+        <!-- 作用域链 -->
+        {{ data2 }}
+        {{ data1 }}
+        <my-directive-scope d1="data2" d2 = "{{data1}}" fn="fn()"></my-directive-scope>
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('controllerA',['$scope','$timeout',function($scope,$timeout){
+                console.log('来自controllerA的id:'+$scope.$id)
+                $scope.data1 = '1'
+                $scope.data2 = '2'
+                $scope.data3 = '3'
+                // $timeout(function(){
+                //     $scope.data1 = '10'
+                // },2000)
+                $scope.fn = function(){
+                    console.log('点击了')
+                }
+               
+            }])
+            .controller('main',['$scope',function($scope){
+                $scope.msg = 'Hello World!';
+                console.log('来自main的id:'+$scope.$id);
+            }])
+            .directive('directive1',[function(){
+                return {
+                    restrict:'ECMA', // 有4种使用方法
+                    // template:'<div>我的自定义指令 {{ a }} </div>',
+                    replace:true, // 如果要使用M来显示的话 replace 为false 的时候 指令会保留父元素 为true的时候 父元素被指令本身替换
+                    controller:['$scope',function($scope){ // 匿名 控制器
+                        $scope.a="局部作用域"
+                        console.log('我是directive1')
+                    }],
+                    controllerAs:'myConrtoller', // 给自定义指令的匿名控制器 取别名
+                    priority:1, // 默认是0 优先级越高越先执行
+                    terminal:true // 默认为false 如果为true 则会阻止优先级比自己低的指令执行。
+                }
+            }])
+            .directive('directive2',[function(){
+                return {
+                    // template:'<div>自定义指令2</div>',
+                    priority:2, // 默认是0 优先级越高越先执行
+                    controller:[function(){
+                        console.log('我是directive2')
+                    }]
+                }
+            }])
+            .directive('myDirective',function(){
+                return {
+                    restrict:'ECMA',
+                    template:'<div> <span ng-transclude="footer"></span> 我的指令 <span ng-transclude="header"></span> </div>',
+                    transclude:{ // transclude
+                        header:'myHeader',
+                        footer:'myFooter'
+                    }
+                }
+            })
+            .directive('myDirectiveScope',function(){ // 目前这个myDirectiveScope自定义指令 有没有的scope
+                return{
+                    restrict:'ECMA', // 4种使用方式
+                    template:'<div ng-click="fn()">我的指令 {{ d1 }}   {{ d2 }} </div>',
+                    controller:['$scope','$timeout',function($scope,$timeout){
+                        console.log('自定义指令输出的id:'+$scope.$id);
+                        console.log($scope.d1);
+                    //     $timeout( function(){
+                    //     $scope.d1 = 200;
+                    //   } , 2000 )        
+                        $timeout(function(){
+                            $scope.d2 = '10'
+                        },2000)                
+                    }],
+                    scope:{ // 它就有自己的作用域 并且还继承了 父作用域的所有的变量.
+                        d1:'=', // 双向绑定 父子绑定
+                        d2:'@',  // 单向绑定 传值的时候需要用 {{  }} 传递  父级改变能使得子级改变 但是反过来不行
+                        fn:'&' // 传递函数
+                    } 
+                        
+                     
+                }
+            })
+            // transclude
+            /**
+            
+            <my-directive-scope d1="data2"></my-directive-scope>
+            scope:{ // 它就有自己的作用域 并且还继承了 父作用域的所有的变量.
+                 d1:'=' // 双向绑定
+            }             
+            
+            */
+
+</script>
