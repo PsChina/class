@@ -1,0 +1,68 @@
+<div style="height:100%;text-align:center;position:relative">
+    <style lang="">
+        .time{
+            background: orange;
+            color: white;
+            font-size: .14rem;
+            padding: .03rem;
+        }
+        .text-color{
+            color: #4298d6
+        }
+        .page-control{
+            width: 100%;
+            /* display: inline-block; */
+            position: absolute;
+            bottom:.5rem;
+            left: 0;
+        }
+        .page-control div{
+            display: inline-block;
+            height: .5rem;
+            width: auto;
+        }
+        .page-control-item{
+            float: left;
+            width: .5rem;
+            height: .5rem;
+            text-align: center;
+            line-height: .5rem;
+            background-color: #4298d6;
+            cursor:pointer;
+        }
+        .page-control-active{
+            background: pink;
+        }
+    </style>
+    <table class="table table-striped table-hover table-bordered text-center">
+        <thead>
+            <tr>
+            <th class="text-center">试卷名称</th>
+            <th class="text-center">分数</th>
+            <th class="text-center">开始时间</th>
+            <th class="text-center">结束时间</th>
+            <th class="text-center">考试操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="eaxm in data">
+                <td class="text-color" ng-bind="eaxm.examName+(eaxm.id)"></td>
+                <td class="text-color" ng-bind="eaxm.score"></td>
+                <td> <span class="time" ng-bind="eaxm.startTime|date:'yyyy-MM-dd hh:mm:ss'"></span> </td>
+                <td> <span class="time" ng-bind="eaxm.endTime|date:'yyyy-MM-dd hh:mm:ss'"></span> </td>
+                <td><button class="btn btn-info btn-sm" ng-click="delete(eaxm)">删除</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="page-control">
+        <div>
+                <span class="page-control-item" ng-click="manager.goPre()" ng-show="maxPage>=2">上一页</span>
+                <span class="page-control-item" ng-click="manager.go(1)" ng-class="firstBtnClass">1</span>
+                <span class="page-control-item" ng-show="pre">...</span>
+                <span class="page-control-item" ng-click="manager.go(value)" ng-class=" {{ 'active'+value }} " ng-repeat="value in array" ng-bind="value"></span>
+                <span class="page-control-item" ng-show="next">...</span>
+                <span class="page-control-item" ng-click="manager.go(maxPage)" ng-class="lastBtnClass" ng-bind="maxPage" ng-show="maxPage>=2"></span>
+                <span class="page-control-item" ng-click="manager.goNext()" ng-show="maxPage>=2">下一页</span>
+        </div>
+    </div>
+</div>
