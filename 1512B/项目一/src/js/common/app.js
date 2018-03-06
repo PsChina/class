@@ -1,1 +1,0 @@
-var app = angular.module('bootStrapApp',['ui.bootstrap','ngAnimate','ui.router']);
