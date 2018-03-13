@@ -1,0 +1,15 @@
+@keyframes abc{
+    from {
+        width: 0
+    }
+    to {
+        width: 100px;
+    }
+}
+div{
+    transform: translateX(20px);
+    display: flex;
+    animation: abc 2s;
+    width: 200px;
+    height: 100px;
+}

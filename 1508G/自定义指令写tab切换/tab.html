@@ -1,0 +1,36 @@
+<div>  <!-- rootElement -->
+   <style>
+       .box{
+           display: flex;
+       }
+       .left{
+            flex: 3
+       }
+       .right{
+            flex: 7
+       }
+       .right-item{
+           display: flex
+       }
+       .item-right{
+           flex: 1
+       }
+       .item-left{
+           flex: 1
+       }
+       .active{
+           background: red
+       }
+   </style>
+   <div class="box">
+        <div class="left">
+            <div ng-repeat="cai in obj" ng-click="changeCaiList(cai.list,$index)" ng-class="$index == currentIndex ? 'active' : '' ">{{cai.type}}</div>
+        </div>
+        <div class="right">
+            <div ng-repeat="value in array" class="right-item" ng-style="{ background: value.select ? 'orange' : '' }" ng-click="value.select = !value.select; localStorage.foodList = JSON.stringify(obj)">
+                <div class="item-right">{{value.name}}</div>
+                <div class="item-left">{{value.price}}</div>
+            </div>
+        </div>
+   </div>
+</div>

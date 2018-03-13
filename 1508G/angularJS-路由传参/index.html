@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <a href="#!/home/1/2">home</a>
+    <a href="#!/phone?user=zhangsan">phone</a>
+    <div ng-click="goTo('shoe')">shoe</div>
+    <ng-view></ng-view>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-route.js"></script>
+</html>
+<script>
+    angular.module('app',['ngRoute'])
+           .controller('main',['$scope','$location',function($scope,$location){
+                $scope.msg = 'Hello world!'
+                $scope.goTo = function(pathname){
+                    var fullPath = '/'+pathname+'?parmas1=111';
+                    $location.url(fullPath)
+                }
+           }])
+           .run(['$rootScope',function($rootScope){
+                $rootScope.$on('$routeChangeStart',function(event,currentRoute,previoudRoute){
+                    console.log(arguments);
+                })
+                $rootScope.$on('$routeChangeSuccess',function(event,currentRoute,previoudRoute){
+                    console.log('success',arguments)
+                })
+                $rootScope.$on('$routeUpdate',function(){
+                    console.log('updata')
+                })
+                $rootScope.$on('$routeChangeError',function(){
+                    
+                })
+           }])
+           .config(['$routeProvider',function($routeProvider){
+
+                $routeProvider.when('/home/:key1/:key2',{ // 必须传参
+                    templateUrl:'./home.html',
+                    controller:['$routeParams',function($routeParams){
+                        console.log($routeParams)
+                    }]
+                })
+                .when('/phone',{
+                    templateUrl:'./phone.html',
+                    controller:['$location',function($location){
+                        console.log($location.search())
+                        console.log(window.location.hash)
+                    }]
+                })
+                .when('/shoe',{
+                    templateUrl:'./shoe.html',
+                    controller:['$location',function($location){
+                        console.log($location.search())
+                    }]
+                })
+                .when('/home',{
+                    redirectTo:'/home/default/default'
+                })
+
+           }])
+
+</script>

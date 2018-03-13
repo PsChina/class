@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{msg}}
+    
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+           .controller('main',['$scope','$rootScope','$http','$interval','$timeout','$location',function($scope,$rootScope,$http,$interval,$timeout,$location){
+                $scope.msg = 'Hello world!'
+                var id =  setTimeout(function(){
+                    $scope.msg = 'hello'
+                    console.log($scope.msg)
+                    $scope.$apply() //vm 
+                },2000)
+                clearInterval(id);
+
+                var a = $timeout(function(){
+                    $scope.msg = 'hello'
+                },1000)
+
+                $timeout.cancel(a)
+
+                
+
+
+
+           }])
+           .run(['$rootScope',function($rootScope){
+               
+           }])
+</script>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{data.value}}
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+           .controller('main',['$scope','$ajax',function($scope,$ajax){
+                $scope.msg = 'Hello world!'
+                $scope.data = $ajax({
+                    url:'a.json',
+                    method:'GET'
+                })
+           }])
+           .factory('$ajax',['$http','$q',function($http,$q){
+               
+
+                function fn(options){
+
+                    var defer = $q.defer()  // promise 对象  现在的状态是 未完成 也就是等待状态
+
+                    $http(options)
+                        .then(function(result){
+                            
+                            defer.resolve(result.data) // 发送一个通知把未完成状态修改为已完成状态 并且把数据传递过去。
+
+                        },function(error){
+
+                            defer.reject(error) // 发送一个通知 把未完成状态修改为 已失败状态 并且把错误信息传递过去。
+
+                        })
+
+                    return defer.promise.$$state;
+
+                }
+
+                return fn;
+           }])
+
+           /*
+var str = '{';
+var asciiCode = 97
+var j = 1;
+for(var i=0; i<100; i++){
+
+	str += '"'+String.fromCharCode(asciiCode++)+'":'+'"数据'+ j++ +'",'
+
+}
+str = str.substring(0,str.length-1);
+str+='}'
+console.log(str)
+
+           */
+</script>

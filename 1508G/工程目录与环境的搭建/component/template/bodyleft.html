@@ -1,0 +1,61 @@
+<div>
+    <style>
+        .middle-left {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.3rem;
+            bottom: 0;
+            background-color: #f2f2f2;
+        }
+
+        .middle-left-item {
+            line-height: .5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .panel-body {
+            padding: 0;
+        }
+
+        .panel-heading {
+            padding: .1rem .15rem;
+            border-bottom: .01rem solid transparent;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            background: url(./img/1_08.png) no-repeat;
+            text-indent: .2rem;
+        }
+
+        .panel-heading :hover{
+            color: #438eb9
+        }
+
+        .middle-left-item-hover{
+            float: left;
+            visibility: hidden;
+            margin: 0 .1rem;
+        }
+        .middle-left-item:hover .middle-left-item-hover{
+            visibility: visible;
+            color: #438eb9
+        }
+        .middle-left-item:hover{
+            color: #438eb9
+        }
+    </style>
+    <div class="middle-left">
+        <uib-accordion close-others="oneAtATime">
+            <div ng-repeat="item in listData" uib-accordion-group class="panel-default" heading="{{item.title}}">
+                <div 
+                ng-repeat="content in item.value" 
+                class="middle-left-item"
+                ng-click="go(content)"
+                >
+                    <div class="iconfont icon-jiantou-copy1 middle-left-item-hover"></div> <div>{{content.title}}</div>
+                </div>
+            </div>
+        </uib-accordion>
+    </div>
+</div>

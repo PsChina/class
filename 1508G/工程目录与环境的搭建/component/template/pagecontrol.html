@@ -1,0 +1,68 @@
+<div>
+    <style>
+        .pagecontrol{
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+        .pagecontrol-content{
+
+        }
+        .pagecontrol-box{
+            display: inline-block;
+            width: auto;
+            height: .5rem;
+            margin: 0 auto;
+            margin-top: 5rem;
+        }
+        .pagecontrol-item{
+            float: left;
+            width: .8rem;
+            height: .5rem;
+            line-height: .5rem;
+            border: .01rem solid orange;
+            text-align: center;
+            user-select: none;
+            cursor: pointer;
+        }
+        .pagecontrol-active{
+            background: green;
+        }
+    </style>
+    <div class="pagecontrol">
+        <div style="width:100%;height:1px;"></div>
+        <div class="pagecontrol-content">
+
+            <!-- {{pageDate.value}} -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox"></th>
+                        <th>试卷名称</th>
+                        <th>考试时间</th>
+                        <th>分数</th>
+                        <th>考试操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in pageDate.value" class="history-tr">
+                        <td><input type="checkbox"></td>
+                        <td class="history-item-color">{{item.examName}} <input ng-model="item.examName" class="history-input" ng-show="item.flag" type="text"></td>
+                        <td class="history-item-color">{{item.examTime | date:'yyyy-MM-dd hh:mm:ss'}} <input ng-model="item.showTime" class="history-input" ng-show="item.flag" type="text" ng-change="changeTime(item)"></td>
+                        <td>{{item.score}} <input ng-model="item.score" class="history-input history-last-input" ng-show="item.flag" type="text"></td>
+                        <td><button type="button" class="btn btn-info" ng-click="edit($event,item)">编辑</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagecontrol-box">
+            <div class="pagecontrol-item" ng-click="goPre()">上一页</div>
+            <div class="pagecontrol-item" ng-click="go(1)" ng-class="firstBtnClass">1</div>
+            <div class="pagecontrol-item" ng-show="pre">...</div>
+            <div class="pagecontrol-item" ng-repeat="btn in btnArray" ng-click="go(btn)" ng-class="{{ 'active'+btn }}">{{btn}}</div>
+            <div class="pagecontrol-item" ng-show="next">...</div>
+            <div class="pagecontrol-item" ng-click="go(maxPage)" ng-class="lastBtnClass">{{maxPage}}</div>
+            <div class="pagecontrol-item" ng-click="goNext()">下一页</div>
+        </div>
+    </div>
+</div>

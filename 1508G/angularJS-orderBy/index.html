@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{msg}}
+    <div>
+        <table>
+            <tr ng-init="attr='name'"><th ng-click="orderBy('name')">名字</th><th ng-click="orderBy('age')">年龄</th></tr>
+            <tr ng-repeat="item in array | orderBy:attr"><td>{{item.name}}</td><td>{{item.age}}</td></tr>
+        </table>
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+           .controller('main',['$scope',function($scope){
+                $scope.msg = 'Hello world!'
+                $scope.array = [
+                {name:'kimi',age:3},
+                {name:'cindy',age:4},
+                {name:'anglar',age:4},
+                {name:'shitou',age:6},
+                {name:'tiantian',age:5}
+                ];
+                $scope.orderBy = function(value){
+                    if($scope.attr.indexOf(value)!=-1){
+
+                        $scope.attr = $scope.attr.charAt(0) == '-' ? value : '-' + value;
+
+                    }else{
+                        
+                        $scope.attr  = value;
+                    }
+                    
+
+                }
+           }])
+</script>

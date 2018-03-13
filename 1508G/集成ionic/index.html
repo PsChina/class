@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=s, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/ionic.css">
+    <link rel="stylesheet" href="./css/iconfont.css">
+    <link rel="stylesheet" href="./css/swiper.css">
+    <script src="./js/rem.js"></script>
+    <script>
+        rem(3.6);
+    </script>
+    <style>
+        body {
+            font-size: .32rem;
+        }
+
+        .header {
+            width: 100%;
+            height: 1.1rem;
+            background: #cd3d3d;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 .15rem;
+        }
+
+        .header-center {
+            display: flex;
+        }
+
+        /* .header-other{
+            flex: 1.25;
+            font-size: .6rem;
+            line-height: 1.1rem;
+            text-align: center;
+            color: white;
+        } */
+
+        .header-right {
+            font-size: .6rem;
+            line-height: 1.1rem;
+            color: white;
+        }
+
+        .header-left {
+            font-size: .6rem;
+            line-height: 1.1rem;
+            color: white;
+        }
+
+        .header-center-item {
+            font-size: .6rem;
+            line-height: 1.1rem;
+            text-align: center;
+            color: rgba(255, 255, 255, .5);
+            padding: 0 .25rem;
+        }
+
+        .header-center-active {
+            color: white;
+        }
+
+        .player-box {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: .98rem;
+            display: flex;
+        }
+
+        .player-info {
+            flex: 6;
+        }
+
+        .player-control {
+            flex: 4;
+        }
+
+        .song-icon {
+            float: left;
+            width: .8rem;
+            height: .8rem;
+            margin: .09rem .15rem;
+        }
+
+        .song-info {
+            float: left;
+        }
+
+        .song-name {
+            height: .55rem;
+            line-height: .55rem;
+            font-size: .28rem;
+            color: #2b312f
+        }
+
+        .singer-name {
+            height: .43rem;
+            line-height: .43rem;
+            font-size: .18rem;
+            color: #828687
+        }
+
+        .playBtn {
+            float: right;
+            font-size: .8rem;
+            text-align: center;
+            line-height: .98rem;
+            width: 1rem;
+            color: #cd3d3d;
+        }
+
+        .nextBtn {
+            float: right;
+            font-size: .8rem;
+            text-align: center;
+            line-height: .98rem;
+            width: .74rem;
+            margin-right: .07rem;
+            color: #cd3d3d;
+        }
+
+        .progressBar {
+            width: 100%;
+            height: .4rem;
+            position: fixed;
+            left: 0;
+            bottom: .98rem;
+        }
+
+        .progress {
+            width: 0;
+            height: .04rem;
+            background-color: #cd3d3d;
+            margin-top: .36rem;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body ng-controller="main">
+    <div class="header">
+        <div class="header-left iconfont icon-lisimoshicaidandaohang"></div>
+        <div class="header-center">
+            <div class="header-center-item iconfont icon-wangyiyunyinlezizhi-copy" ui-sref="discover" ui-sref-active="header-center-active"></div>
+            <div class="header-center-item iconfont icon-yinle1" ui-sref="music" ui-sref-active="header-center-active"></div>
+            <div class="header-center-item iconfont icon-yonghuzu" ui-sref="socialupdate" ui-sref-active="header-center-active"></div>
+        </div>
+        <div class="header-right iconfont icon-sousuo_sousuo"></div>
+    </div>
+    <ui-view></ui-view>
+    <div style="line-height:.5rem; color:orange">{{playerManager.currentTime | formatTime}}</div>
+    <div class="player-box">
+        <div class="progressBar" ng-touchstart="playerManager.startChangeProgress($event)" ng-touchmove="playerManager.changingProgress($event)"
+            ng-touchend="playerManager.finishedChangeProgress()">
+            <div class="progress" let-dom="progress"></div>
+        </div>
+        <div class="player-info">
+            <img ng-src="{{playerManager.songIcon}}" alt="" class="song-icon">
+            <div class="song-info">
+                <div class="song-name">{{playerManager.songName}}</div>
+                <div class="singer-name">{{playerManager.singerName}}</div>
+            </div>
+        </div>
+        <div class="player-control">
+            <div class="iconfont icon-quanjuxiayiqu nextBtn " ng-touchend="playerManager.nextSong()"></div>
+            <div class="iconfont playBtn " ng-class="playerManager.playBtnClass" ng-touchend="playerManager.playOrStop($event)"></div>
+        </div>
+        <audio id="player" ng-src="{{playerManager.currentMusiceSrc}}" style="display:none"></audio>
+    </div>
+</body>
+<script src="./js/angular.js"></script>
+<script src="./js/ionic.bundle.js"></script>
+<script src="./js/ionic.js"></script>
+<script src="./js/ionic-angular.js"></script>
+<script src="./js/angular-ui-router"></script>
+<script src="./js/swiper.js"></script>
+
+</html>
+<script>
+    angular.module('app', ['ionic', 'ui.router'])
+        .controller('main', ['$scope', 'appConst', 'playerManager', function ($scope, appConst, playerManager) {
+            $scope.songList = [
+                {
+                    src: './music/周杰伦 - 听妈妈的话.m4a',
+                    songName: '听妈妈的话',
+                    singerName: '周杰伦',
+                    songIcon: './img/icon_01.png'
+                }, {
+                    src: './music/周杰伦 - 告白气球.m4a',
+                    songName: '告白气球',
+                    singerName: '周杰伦',
+                    songIcon: './img/icon_02.png'
+                }, {
+                    src: './music/周杰伦 - 爱我别走.m4a',
+                    songName: '听妈妈的话',
+                    singerName: '周杰伦',
+                    songIcon: './img/icon_03.png'
+                }, {
+                    src: './music/王力宏 - 你不知道的事.mp3',
+                    songName: '你不知道的事',
+                    singerName: '王力宏',
+                    songIcon: './img/icon_04.png'
+                }
+            ]
+
+            $scope.appConst = appConst;
+            playerManager.initPlayer({
+                audio: player,
+                btnClass: 'icon-bofang',
+                songList: $scope.songList,
+                currentMusicIndex: 0,
+                playClass: 'icon-bofang',
+                stopClass: 'icon-stop'
+            })
+
+            $scope.playerManager = playerManager;
+        }])
+        .filter('formatTime', function () {
+            return function (input) {
+                var output;
+
+                var h = Math.floor(input / 3600);
+
+                var m = Math.floor(input / 60) % 60;
+
+                var s = Math.floor(input % 60)
+
+                var partH = (isNaN(h) ? 0 : h) + ':';
+
+                var partM = (isNaN(m) ? 0 : m) + ':';
+
+                var partS = (isNaN(s) ? 0 : s) + '';
+
+                partH = partH.length > 2 ? partH : '0' + partH;
+
+                partM = partM.length > 2 ? partM : '0' + partM;
+
+                partS = partS.length > 1 ? partS : '0' + partS;
+
+                partH = partH > 0 ? partH : '';
+
+                output = partH + partM + partS;
+
+                return output;
+            }
+        })
+        .directive('ngTouchmove', function () {
+            return function ($scope, $element, $attribute) {
+
+                $element.on('touchmove', function (event) {
+                    $scope.$event = event;
+                    $scope.$apply($attribute['ngTouchmove'])
+                })
+
+            }
+        })
+        .directive('letDom', ['$rootScope', function ($rootScope) {
+            return function ($scope, $element, $attribute) {
+                $rootScope[$attribute['letDom']] = $element[0];
+            }
+        }])
+        .service('playerManager', ['$interval', '$rootScope', '$timeout', function ($interval, $rootScope, $timeout) {
+            var _this = this;
+            this.modelList = [
+                {
+                    id: 0,
+                    modelName: '单曲播放'
+                }, {
+                    id: 1,
+                    modelName: '单曲循环'
+                },
+                {
+                    id: 2,
+                    modelName: '列表播放'
+                },
+                {
+                    id: 3,
+                    modelName: '列表循环'
+                },
+                {
+                    id: 4,
+                    modelName: '随机播放'
+                }
+            ]
+            this.currentModle = 0;
+            this.initPlayer = function (obj) {
+                _this.setPlayer(obj['audio'])
+                _this.setPlayBtnClass(obj['btnClass'])
+                _this.setSongList(obj['songList']);
+                if (obj['songList']) {
+                    if (angular.isDefined(obj['currentMusicIndex'])) {
+                        _this.setSongInfo(obj['currentMusicIndex']);
+                    }
+                } else {
+                    _this.setSrc(obj['src'])
+                    _this.setSongName(obj['songName'])
+                    _this.setSingerName(obj['singerName'])
+                    _this.setSongIcon(obj['songIcon'])
+                }
+                _this.setPlayClass(obj['playClass']);
+                _this.setStopClass(obj['stopClass']);
+
+            }
+            this.setSongList = function (songList) {
+                _this.songList = songList;
+            }
+            this.setSongInfo = function (index) {
+                var song = _this.songList[index];
+                _this.setSrc(song['src'])
+                _this.setSongName(song['songName'])
+                _this.setSingerName(song['singerName'])
+                _this.setSongIcon(song['songIcon'])
+                _this.currentMusicIndex = index;
+            }
+            this.setStopClass = function (className) {
+                _this.stopClass = className;
+            }
+            this.setPlayClass = function (className) {
+                _this.playClass = className;
+            }
+            this.setPlayer = function (audio) {
+                _this.audio = audio;
+            }
+            this.setSrc = function (src) {
+                _this.currentMusiceSrc = src;
+            }
+
+            this.setPlayBtnClass = function (className) {
+                _this.playBtnClass = className;
+            }
+
+            this.setSongName = function (songName) {
+                _this.songName = songName
+            }
+
+            this.setSingerName = function (singerName) {
+                _this.singerName = singerName;
+            }
+
+            this.setSongIcon = function (iconSrc) {
+                _this.songIcon = iconSrc;
+            }
+            this.playOrStop = function (event) {
+                if (_this.audio.paused) {
+                    _this.play()
+                } else {
+                    _this.stop()
+                }
+            }
+            this.play = function () {
+
+                $timeout(function () {
+                    _this.audio.play();
+                }, 0)
+                _this.updataProgress();
+                _this.playBtnClass = _this.stopClass;
+            }
+            this.stop = function () {
+                _this.audio.pause();
+                _this.stopUpdataProgress(_this.timer);
+                _this.playBtnClass = _this.playClass;
+            }
+            this.stopUpdataProgress = function (id) {
+                $interval.cancel(id);
+                _this.timer = null;
+            }
+            this.updataProgress = function () {
+                if (!_this.timer) {
+                    _this.timer = $interval(function () {
+                        _this.currentTime = _this.audio.currentTime;
+                        $rootScope.progress.style.width = (_this.audio.currentTime / _this.audio.duration) * window.screen.width * 2 + 'px'
+                    }, 17);
+                }
+            }
+            this.startChangeProgress = function (event) {
+                _this.stopUpdataProgress(_this.timer);
+                _this.startTarget = event.target;
+                _this.beforChangeWith = _this.audio.currentTime / _this.audio.duration * window.screen.width * 2;
+            }
+            this.changingProgress = function (event) {
+                $rootScope.progress.style.width = event.touches[0].pageX + 'px';
+                _this.percent = event.touches[0].pageX / (window.screen.width * 2);
+                _this.endTarget = document.elementFromPoint(event.touches[0].pageX, event.touches[0].pageY)
+                _this.currentTime = _this.percent 　* _this.audio.duration;
+            }
+            this.finishedChangeProgress = function () {
+                if (_this.startTarget == _this.endTarget) {
+                    _this.audio.currentTime = _this.audio.duration * _this.percent;
+                    _this.play();
+                } else {
+                    /*
+                    将进度条还原
+                    */
+                    if (_this.audio.paused) {
+                        $rootScope.progress.style.width = _this.beforChangeWith + 'px';
+                    } else {
+                        _this.updataProgress();
+                    }
+                }
+
+            }
+            this.nextSong = function () {
+
+                var index = ++_this.currentMusicIndex % _this.songList.length;
+
+                _this.setSongInfo(index);
+
+                _this.play();
+
+            }
+            this.playWithModel = function () {
+
+            }
+        }])
+        .directive('ngTouchend', function () {
+            return function ($scope, $element, $attribute) {
+                $element.on('touchend', function (event) {
+                    $scope.$event = event;
+                    $scope.$apply($attribute['ngTouchend']);
+                })
+            }
+        })
+        .directive('ngTouchstart', function () {
+            return function ($scope, $element, $attribute) {
+                $element.on('touchstart', function (event) {
+                    $scope.$event = event;
+                    $scope.$apply($attribute['ngTouchstart']);
+                })
+            }
+        })
+        .constant('appConst', {
+            discoverTitleArr: [{
+                title: '个性推荐',
+                routerName: 'discover.gexing'
+            }, {
+                title: '歌单',
+                routerName: 'discover.gedan'
+            }, {
+                title: '主播电台',
+                routerName: 'discover.diantai'
+            }, {
+                title: '排行榜',
+                routerName: 'discover.paihang'
+            }]
+        })
+        .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+            /*
+             **
+             ** 默认路由
+              */
+            $urlRouterProvider.otherwise('/discover');
+            $urlRouterProvider.when('/discover', '/discover/gexing');
+            $stateProvider.state('discover', {
+                url: '/discover',
+                templateUrl: './template/discover.html',
+                controller: ['$state', function ($state) {
+                    $state.go('discover.gexing');
+                }]
+            }).state('music', {
+                url: '/music',
+                templateUrl: './template/music.html',
+                controller: ['$timeout', function ($timeout) {
+                    console.log(1);
+                    $timeout(function () {
+
+                    }, 0)
+                }]
+            }).state('socialupdate', {
+                url: '/socialupdate',
+                templateUrl: './template/socialupdate.html',
+                controller: [function () {
+
+                }]
+            })
+                .state('discover.gexing', {
+                    url: '/gexing',
+                    templateUrl: './template/discover/gexing.html',
+                    controller: ['$scope', '$ionicSlideBoxDelegate', function ($scope, $ionicSlideBoxDelegate) {
+                        $scope.pathArr = ['./img/banner1.jpg', './img/banner2.jpg', './img/banner3.jpg', './img/banner4.jpg']
+                        $scope.goTo = function (index) {
+                            $ionicSlideBoxDelegate.slide(index, 2000) //跳转到传入的 那个索引页面 耗时2秒
+                        }
+                    }]
+                })
+                .state('discover.gedan', {
+                    url: '/gedan',
+                    templateUrl: './template/discover/gedan.html',
+                    controller: [function () {
+
+                    }]
+                })
+                .state('discover.diantai', {
+                    url: '/diantai',
+                    templateUrl: './template/discover/diantai.html',
+                    controller: [function () {
+
+                    }]
+                })
+                .state('discover.paihang', {
+                    url: '/paihang',
+                    templateUrl: './template/discover/paihang.html',
+                    controller: [function () {
+
+                    }]
+                })
+        }])
+        .directive('repeatFinish', ['$timeout', function ($timeout) {
+            return function ($scope, $element, $attribute) {
+                if ($scope.$last == true) {
+                    console.log('最后一个元素渲染完毕')
+                    $timeout(function () {
+                        new Swiper('.swiper-container', {
+                            speed: 400,
+                            autoplay: {
+                                delay: 1000,
+                            },
+                            loop:true
+                        })
+                    }, 0)
+
+
+                }
+            }
+        }])
+
+
+</script>

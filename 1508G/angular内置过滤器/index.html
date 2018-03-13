@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <!-- currency -->
+        <!-- 用法1 无参用法 效果 $1,000.00 -->
+        {{ 1000 | currency}}  
+        <!-- 用法2 有参用法 效果 ¥1,000.00 -->
+        {{ 1000 | currency :'¥'}}
+    <!-- date -->
+        <!-- 1、无参 效果 Nov 3, 2017-->
+        {{ 1509698054865 | date }}
+        <!-- 2、有参 效果 
+            'yyyy'=>2017 
+            'MM'=>11 
+            'dd'=>3 
+            'hh'=>16 
+            'mm'=>36 
+            'ss'=>14 
+            'EEEE'=>Friday 
+            'yy'=>17 
+            'EEE'=>'Fri' 
+        -->
+        <!-- 
+            通过自由组合 'yyyy、MM、dd、hh、mm、ss、EEEE、yy、EEE' 以及其他字符
+            你可获取想要的格式
+         -->
+        {{ 1509698054865 | date :'yyyy年MM月' }}
+    <!-- filter -->
+         <!-- 有参用法1 -->
+         <input type="text" ng-model="filter">
+         {{ ['string','number','object','function','boolean','undefined','null'] | filter :filter }}
+         <!-- 有参用法2 -->
+         <input type="text" ng-model="condition" ng-change="change()">
+         {{ [1,2,3,4,5,6,7,8,9] | filter : fn }}
+    <!-- json -->
+         {{ obj | json }} <!-- JSON.parse + JSON.stringify -->
+    <!-- limitTo -->
+         {{ [1,2,3] | limitTo : 2 }}
+         {{ 'string' | limitTo : 3 }}
+    <!-- uppercase -->
+         {{ 'Hello World!' | uppercase }}
+    <!-- lowercase -->
+         {{ 'Hello World!' | lowercase }}
+    <!-- number  -->
+         <!-- 无参用法 -->
+         {{ '3.141592653' | number }}  <!-- 默认精确到第三位 -->
+         <!-- 有参用法 -->
+         {{ '3.141592653' | number : 4 }}
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+           .controller('main',['$scope',function($scope){
+                $scope.msg = 'Hello world!';
+                $scope.change=function(){
+                    $scope.fn = function(value){ return value>$scope.condition }
+                }
+                $scope.obj = {
+                    a:"A",
+                    b:'B',
+                    fn:function(){
+
+                    },
+                    fun:function(){
+
+                    }
+                }
+           }])
+</script>

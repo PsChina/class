@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body ng-controller="main">
+    {{msg}}
+</body>
+<script src="./angular.js"></script>
+
+</html>
+<script>
+    angular.module('app', [])
+        .controller('main', ['$scope', 'constant','value','service','factory','provider', function ($scope, constant,value,s,factory,provider) {
+            $scope.msg = 'Hello world!'
+            console.log(constant,value)
+            console.log(s.sleep(),s.name)
+            console.log(factory)
+            console.log(provider.name)
+        }])
+        .constant('constant',[1,2,3])  //返回一个对象 /函数 /基本数据  //建议将常量定义在此
+        .value('value',true) //建议将变量定义在此
+        .config(['constant',function(constant){
+            console.log(constant)
+        }])
+        .run(['$rootScope',function($rootScope){
+            $rootScope.name = 'zhangsan'
+        }])
+        // 1. value不能在config 里面使用 但constant 能
+        // 2. 一般情况下value 定义可变量 constant定义常量 或者固定不变的函数
+
+        .service('service',['$rootScope',function(a){ //它是一个构造函数 系统会自动用new 来调用它 
+            this.name = a.name
+            this.sleep = function(){
+                console.log('sleep')
+            }
+            // return {
+            //     a:'a',
+            //     sleep:function(){
+
+            //     },
+            //     name:'aaa'
+            // }
+        }])
+        .factory('factory',['$rootScope','$http',function($rootScope,$http){ 
+        
+            // return function(){
+            //     console.log('factory')
+            //     return $http({
+            //         url:''
+            //     })
+            //     .then(function(result){
+            //         return result.data;
+            //     },function(error){
+
+            //     })
+            // }
+
+            // return {
+            //     fn:function(){
+            //         console.log('我是factory的子函数')
+            //     }
+            // }
+
+            return true
+        }])
+        .provider('provider',function(){
+            // return {
+            //     $get:function(){
+            //         return new function(){ //service
+            //             this.name = 'aaabbbccc'
+            //         }
+            //     }
+            // }
+
+            // return {
+            //     $get:function(){  //factory
+            //         return {} 
+            //     }
+            // }
+
+            this.$get = function(){
+                // return {
+                //     name:'12345'
+                // }
+                return new function(){
+                    this.name = '哈哈哈'
+                }
+            }
+        })
+
+</script>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body ng-controller="main">
+    {{msg}}
+    <input type="text" ng-model="msg">
+    <!--
+ <tab>ccc</tab>
+<div class="tab"></div>
+    <div tab></div>
+            
+      -->
+
+    <!-- directive: tab-->
+    
+
+    <!-- <div directive2="1" directive1="2">priority</div> -->
+    <directive2 c='fn()'></directive2>
+</body>
+<script src="./angular.js"></script>
+
+</html>
+<script>
+    angular.module('app', [])
+        .controller('main', ['$scope','$timeout',function ($scope,$timeout) {
+            $scope.msg = 'Hello world!'
+            $scope.fn = function(){
+                console.log(123)
+            }
+
+
+        }])
+        .directive('tab', [function () { // directive 是用来 将页面中重复出现的dom 结构进行一个封装 以便于多次复用的 指令 / 它不仅仅可以复用dom结构 而且可以把一些功能也封装起来进行复用 那么这些功能主要是偏向于view层业务逻辑
+            return {
+                restrict: 'ECMA',   // 就是说这个 tab 指令 可以通过 Element Class M(注释) Attribute 来使用
+                template: '<div><span ng-transclude></span>12345</div>',
+                replace: true,
+                priority: 1,
+                transclude:true // 保存原来标签内的内容
+            }
+        }])
+        .directive('directive1', [function() {
+            return {
+                restrict: 'EA',
+                priority: 3,
+                template:function($element,$attribute){
+                    console.log('我是template里面的 function',arguments)
+                },
+                scope:true,
+                controller: ['$scope', '$element', function ($scope, $element) {
+                    console.log('directive1', $element)
+                }]
+            }
+        }])
+        .directive('directive2', [function () {
+            return {
+                restrict: 'EA',
+                priority: 1, //设置指令优先级
+                terminal:true, //优先级比这个指令低的指令将会失效
+                templateUrl:'./template.html',
+                controller: ['$scope', '$element','$timeout', function ($scope, $element,$timeout) {
+                    console.log('directive2', $element)
+                    console.log($scope.$parent) 
+                    this.gg = '控制器命名测试'
+                   
+                }],
+                controllerAs:'directiveController',
+                scope:{
+                    a:'=',
+                    b:'@',
+                    c:'&'
+                }
+                ,
+                compile:function($element,$attribute){  //编译 
+                    $element //没有开始编译
+                    // $element.append('<div ng-click="c()">1234<div>');
+
+                        console.log('父 预编译')
+                        return {
+                            pre:function($scope,$element,$attribute){ //preLink 此时父指令已经编译完成 但是子指令尚未编译
+                                console.log($element[0].innerHTML)
+                                console.log('父 pre')
+                            },
+                            post:function($scope,$element,$attribute){ //postLink
+                                // $element.append('<div ng-click="c()">1234<div>')
+                                    console.log('父 post')
+                            }
+                        }
+                    //预编译阶段
+                }
+                ,
+                link:function($scope,$element,$attribute){ //即将绑定到dom树上之前 提供一个修改结构 表现 行为 的接口
+                    //缺点 不能绑定 angular 指令
+                    $element.append('<div ng-click="c()">1234<div>')
+                }
+                //默认值 是false directive2本身没有作用域 在controller的$scope会使用父控制器的作用域
+                // 如果是true 那么 意味着 这个指令本身拥有自己的作用域 只不过这个作用域里面存在的变量和父作用域一模一样 也就是拷贝了一份，是一个独立的作用域和父作用域没关系。 
+                // 如果是一个对象 那么会拥有自己的作用域 但是不会copy父作用域的 的属性，而是有选择性的接收
+                // '=' 以双向绑定的形式接收数据
+                // '@' 单向绑定
+                // '&' 传递fn的一种方式
+            }
+        }])
+        .directive('directive3',function(){
+            return {
+                restrict:'ECMA',
+                template:'<div ng-repeat="item in [1,2,3,4,5]">{{item}}</div>',
+                compile:function(){
+                    console.log('子 预编译')
+                    return {
+                        pre:function(){
+                            console.log('子 pre')
+                        },
+                        post:function(){
+                            console.log('子 post')
+                        }
+                    }
+                }
+            }
+        })
+</script>

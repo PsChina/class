@@ -1,0 +1,31 @@
+<div>
+    <style>
+        /* 
+        discover 是这个组件的 class名的 命名空间
+         */
+        .discover-header{
+            height: .8rem;
+            display: flex;
+        }
+        .discover-header-item{
+            flex: 1;
+            text-align: center;
+            line-height: .8rem;
+            box-sizing: border-box;
+        }
+        .discover-active{
+            border-bottom: .04rem solid #cd3d3d;
+        }
+    </style>
+    <div class="discover-header">
+        <div 
+        ng-repeat="item in appConst.discoverTitleArr"
+        class="discover-header-item"
+        ui-sref="{{item.routerName}}"
+        ui-sref-active="discover-active"
+        >
+        {{item.title}}
+        </div>
+    </div>
+    <ui-view></ui-view>
+</div>

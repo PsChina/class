@@ -1,0 +1,45 @@
+<div class="start-exam-box table-responsive">
+    <style lang="">
+        .start-exam-box{
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+        }
+        .exam-name{
+            color:#438eb9
+        }
+        .exam-title{
+            color: gray;
+        }
+        .exam-time-color{
+            background-color:orange;
+            color: white;
+            padding: .03rem;
+            font-size: .12rem;
+        }
+    </style>
+    <div>
+        <table class="table table-striped table-bordered table-hover ">
+            <thead>
+                <tr class="exam-title">
+                    <th> <input type="checkbox"> </th>
+                    <th> 考试名称 </th>
+                    <th> 是否开放 </th>
+                    <th> 开始时间 </th>
+                    <th> 结束时间 </th>
+                    <th> 考试操作 </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="exam in examlist">
+                    <td><input type="checkbox"></td>
+                    <td class="exam-name">{{exam.examName}}</td>
+                    <td>{{exam.isOpen ? '开放' : '不开放'}}</td>
+                    <td> <span class="exam-time-color">{{exam.startTime | date:'yyyy-MM-dd hh:mm:ss'}}</span> </td>
+                    <td> <span class="exam-time-color">{{exam.endTime | date:'yyyy-MM-dd hh:mm:ss'}}</span> </td>
+                    <td><button type="button" class="btn btn-info" ng-click="deleteExam(exam.examName)">删除</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

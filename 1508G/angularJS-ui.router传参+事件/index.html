@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+        }
+        .item{
+            flex: 1;
+            text-align: center;
+            line-height: 80px;
+        }
+        .active{
+            background: orange;
+        }
+    </style>
+</head>
+<body ng-controller="main">
+    <ui-view></ui-view>
+    <div class="box">
+        <div class="item" ng-click="open('home',{key:1})" ng-class=" routeName.indexOf('home')!=-1  ? 'active' : '' ">home</div>
+        <div class="item" ng-click="open('shoe',{key:2})" ng-class=" routeName.indexOf('shoe')!=-1 ? 'active' : '' ">shoe</div>
+        <div class="item" ng-click="open('phone',{key:3})" ng-class=" routeName.indexOf('phone')!=-1 ? 'active' : '' ">phone</div>
+        
+    </div>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-ui-router.js"></script>
+<script src="./stateEvents.js"></script>
+</html>
+<script>
+    angular.module('app',['ui.router','ui.router.state.events'])
+           .controller('main',['$scope','$state',function($scope,$state){
+                $scope.msg = 'Hello world!'
+                $scope.open = function(name,params){
+                    $state.go(name,params);
+                }
+           }])
+           .config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
+            $urlRouterProvider.otherwise('/home')
+            $stateProvider.state('home',{
+                url:'/home',
+                template:'<div>home{{params}}</div>',
+                controller:['$scope','$stateParams',function($scope,$stateParams){
+                    $scope.params = $stateParams.key;
+                }],
+                params:{
+                    id:0
+                }
+            }).state('shoe',{
+                url:'/shoe',
+                template:'<div>shoe{{params}}</div>',
+                controller:['$scope','$stateParams',function($scope,$stateParams){
+                    $scope.params = $stateParams.key;
+                }],
+                params:{
+                    key:''
+                }
+            }).state('phone',{
+                url:'/phone',
+                template:'<div>phone{{params}}</div>',
+                controller:['$scope','$stateParams',function($scope,$stateParams){
+                    $scope.params = $stateParams.key;
+                }],
+                params:{
+                    key:''
+                }
+            })
+           }]).run(['$rootScope',function($rootScope){
+                $rootScope.$on('$stateChangeSuccess',function(event,currentRoute,currentParams,previousRoute,previousParams){
+                    // console.log(currentRoute.name)
+                    $rootScope.routeName = currentRoute.name;
+                })
+            }])
+</script>

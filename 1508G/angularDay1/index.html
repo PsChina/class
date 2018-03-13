@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body ng-controller="controller">
+    <script type="text/ng-template" id="template1.html">
+        <div>我是组件1</div>
+    </script>
+    <input type="text" ng-model="msg">
+    {{msg}}
+    <div ng-include="'template1.html'"></div>
+</body>
+<script src="./angular.js"></script>
+    
+</html>
+<script>
+    angular.module('app',[])
+            .controller('controller',['$scope',function($scope){ // mv* 框架
+                //$scope 是model层
+                $scope.msg = 'hello'
+            }])
+    // src="./angular.js" 引入angular 引入之后 window 下面会对一个 对象 多一个angular 对象
+    // 就像我们引入 jquery window 下会多 一个 $ 再多一个 jQuery 一样
+    // 那么我们就可以使用 angular  这个对象了
+    // 和jquery一样 我们的 angular 对象 采用了单例模式
+    // 单例是一种设计模式
+    // 设计模式 就是 解决前人所遇到的通病 所总结出来的 通用解决方案。
+    // 那么什么是 单例呢
+    // 单例能解决什么问题呢
+    // 单例就是 打个比方  你有7个老婆 
+    // 那么当这7个老婆的任何一个老婆叫老公的时候 指的都是你
+    // 但是除了这7个人其他人叫老公的时候指的不是你
+    // 就是说当我们用构造函数new 一个实例出来的时候 他会生成一个新实例 new 第二次会产生一个不一样的新实例
+    // 如果他是一个 管家 那么就会造成 信息不一致的情况
+    // 采用单例模式可以解决这个问题
+    // jquery 不是用构造函数生成的 而是用字面量生成的
+    /*
+    function Instance() {
+        this.name = 'zhangsan';
+        this.age = 19;
+    }
+
+
+    function SingletonInstance() {
+        if (!SingletonInstance.self) {
+            this.name = 'zhangsan';
+            this.age = 19;
+            SingletonInstance.self = this;
+        } else {
+            return SingletonInstance.self;
+        }
+    }
+    var instanceA = new SingletonInstance()
+    instanceA.name = 'wangwu'
+    var instanceB = new SingletonInstance()
+
+    console.log(instanceA === instanceB)
+    console.log(instanceA,instanceB)
+
+
+    var instanceC = new Instance();
+    instanceC.name = 'lisi'
+    var instanceD = new Instance();
+
+    console.log(instanceC === instanceD)
+    console.log(instanceC,instanceD)
+    */
+    
+    // ng-app="app" 这个指令 是用来规定 angular 起作用的范围 也就是 管理边界的 如果没有声明这个指令那么其他指令将不会生效
+
+    // ng-controller 它是用来声明 angularjs中  控制器的一个 管理范围的  Model View Controller 是angular的一种重要思想
+
+    // MVC 就是说
+    // 我们在开发一个应用的时候 会将它分成若干模块
+    // 每个模块我们使用mvc来划分 也就是说 具体的每个模块我们都把它划分为 model view controller
+    // 也就是说 每个模块都拥有自己的 model view coantroller
+    // 我们让他们 各司其职 精细化的处理每个细节.
+    // model 是数据模型 在我们前端 其实就是json 也有人认为是html 但我认为这是前后端未分离的情况下
+    // view 视图层 是 html+css 但是也有人认为是css
+    // controller 逻辑层 就是 js
+    
+
+    // 内置指令 
+    // ng-show   是通过更改 display block / none 来实现显示隐藏的
+    // ng-hide   是通过更改 display block / none 来实现显示隐藏的
+    // ng-if     这个是直接参数dom对象或者重新渲染dom对象来实现显示隐藏的
+    // ng-class   这个指令可以绑定 变量 也可通过 ng-class="[a,b,c]"来绑定多个变量class
+    // ng-click     这个指令可以绑定变量 变量里存方法
+    // ng-style     这个指令可以在行内样式里写变量 写弱逻辑  比如 A ? B : C 、 == 、 > 、 < 、 >= 、 <= 、  && 、 || 、!、但不支持未运算比如 | 、 &
+    // ng-repeat    这个指令用于 渲染 结构相同的 dom结构 免去了重复劳动 当数组里面存在重复的值的时候 需要使用 track by $index 来解决这个问题
+    // ng-src       这个指令可以给src 绑定以变量 可动态的改变src  而不需要操作dom
+    // ng-change    绑定onchange事件
+    // ng-href      动态的绑定href
+    // ng-bind      动态绑定 innerText
+    // ng-model     动态绑定表单元素的value
+    // ng-init      初始化计算 数据
+    // ng-include   引入一个用 scripe type="text/ng-template" 的网页模板
+    // ng-template  用 scripe 定义一个模板
+    // ng-app       规定angular 的管理边界
+    // ng-controller 规定controller 的管理边界
+    // ng-disable  动态绑定表单元素或者按钮 的 disable属性
+
+</script>

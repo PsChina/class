@@ -1,0 +1,18 @@
+<div>
+        <style>
+            .scBox{
+                display: flex;
+                width: 100%;
+                background: pink;
+            }
+            .scItem{
+                flex: 1;
+                line-height: 50px;
+                text-align: center;
+            }
+        </style>
+        <div ng-repeat="item in sclist" class="scBox" ng-show="item.select">
+            <div class="scItem">{{item.name}}</div>
+            <div class="scItem">{{item.price | currency:'¥'}}</div>
+        </div>
+    </div>

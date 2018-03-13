@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body ng-controller="main">
+
+    <a href="#!/home">home</a>
+    <a href="#!/phone">phone</a>
+    <a href="#!/shoe">shoe</a>
+
+    <ng-view></ng-view>
+
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-route.js"></script>
+
+</html>
+<script>
+    angular.module('app', ['ngRoute'])
+        .controller('main', ['$scope', function ($scope) {
+            $scope.msg = 'Hello world!'
+        }])
+        .config(['$routeProvider', function ($routeProvider) {
+
+            $routeProvider.when('/home', {
+                url: '/home',
+                controller: ['data','$scope',function (data,$scope) {
+                    $scope.data = data({
+                        url:'a.json'
+                    });
+                }],
+                templateUrl: './home.html',
+                // redirectTo:'/phone',
+                resolve:  { 
+                        data: ['$http','$q',function ($http,$q) {
+
+                            function fn(options) {
+
+                                var defer = $q.defer()  // promise 对象  现在的状态是 未完成 也就是等待状态
+
+                                $http(options)
+                                    .then(function (result) {
+
+                                        defer.resolve(result.data) // 发送一个通知把未完成状态修改为已完成状态 并且把数据传递过去。
+
+                                    }, function (error) {
+
+                                        defer.reject(error) // 发送一个通知 把未完成状态修改为 已失败状态 并且把错误信息传递过去。
+
+                                    })
+
+                                return defer.promise.$$state;
+
+                            }
+
+                            return fn;
+                        }]
+                    }
+            })
+                .when('/phone', {
+                    url: '/phone',
+                    controller: [function () {
+
+                    }],
+                    templateUrl: './phone.html'
+                })
+                .when('/shoe', {
+                    url: '/shoe',
+                    controller: [function () {
+
+                    }],
+                    templateUrl: './shoe.html'
+                })
+
+        }])
+</script>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" href="./font/iconfont.css">
+    <link rel="stylesheet" href="./font_self/iconfont.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/rem.js"></script>
+    <script>
+        rem(13.66);
+    </script>
+    <title>Document</title>
+</head>
+
+<body ng-controller="main">
+    <div ng-show="isNotLogin" style="position:absolute;left:0;top:0;right:0;bottom:0;z-index:100;background:white">
+        <input type="text" placeholder="账号" ng-model="account">
+        <input type="password" placeholder="密码" ng-model="password">
+        <button ng-click="login()">登录</button>
+        <div>{{resMsg}}</div>
+    </div>
+    <div class="top">
+        <img class="icon" src="./img/icon_03.png" alt="">
+        <div class="title">八维学生考试系统</div>
+        <div class="user">
+            <div class="btn-group" uib-dropdown is-open="status.isopen">
+                <button id="single-button" type="button" class="userBtn" uib-dropdown-toggle ng-disabled="disabled">
+                    <span class="icon-user iconfont"></span>
+                    <div class="dropdownBtnContent">
+                        <div class="wellcome">欢迎光临,</div>
+                        <div class="username">{{userName}}</div>
+                    </div>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                    <li role="menuitem">
+                        <a href="#">个人资料</a>
+                    </li>
+                    <li role="menuitem">
+                        <a href="#" ng-click="logout()">退出</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content" ng-controller="content">
+        <div class="content-left">
+            <uib-accordion>
+                <div uib-accordion-group ng-repeat="item in array" class="left_title" heading="{{item.title}}" >
+                    <div ng-repeat="value in item.value" ui-sref-active="active" ui-sref="{{value.router}}">{{value.name}}</div>
+                </div>
+            </uib-accordion>
+        </div>
+        <div class="content-right">
+            <div class="contentright-top">
+                <h2 style="float:left;color:#62a8d1">八维考试系统</h2> <div style="float:left;line-height:.4rem;font-size:18px;margin-left:.1rem;color:#999">>> {{pageName}}</div>
+            </div>
+            
+            <ui-view></ui-view>
+        </div>
+    </div>
+</body>
+<script src="./js/common/angular.js"></script>
+<script src="./js/common/ui-bootstrap-tpls.js"></script>
+<script src="./js/common/angular-animate.js"></script>
+<script src="./js/common/angular-ui-router.js"></script>
+<script src="./js/directive/pageControl.js"></script>
+<script src="./js/controller/controller.js"></script>
+</html>

@@ -1,0 +1,20 @@
+<div>
+    <style>
+        .gdBox{
+            display: flex;
+            width: 100%;
+        }
+        .gdItem{
+            flex: 1;
+            line-height: 50px;
+            text-align: center;
+        }
+        .gdActive{
+            background: pink;
+        }
+    </style>
+    <div ng-repeat="item in gdlist" class="gdBox" ng-click="item.select = !item.select" ng-class="item.select ? 'gdActive': '' ">
+        <div class="gdItem">{{item.name}}</div>
+        <div class="gdItem">{{item.price | currency:'¥'}}</div>
+    </div>
+</div>

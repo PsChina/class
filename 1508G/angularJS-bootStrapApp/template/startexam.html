@@ -1,0 +1,25 @@
+<div class="table-responsive">
+       
+    <table class="table table-striped table-bordered table-hover">
+        <tr>
+        <th> <input type="checkbox" ></th>
+        <th>试卷名称</th>
+        <th>是否开放</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>考试操作</th>
+        </tr>
+        <tr ng-repeat="item in data">
+            <td> <input type="checkbox" ></td>
+            <td style="color:#62a8d1">{{item.name}}</td>
+            <td >{{item.isOpen ? '开放':'关闭'}}</td>
+            <td ><span style="background:#f89406;color:white;padding:0.02rem">{{item.startTime | date :'yyyy-MM-dd hh:mm:ss'}}</span> </td>
+            <td ><span style="background:#f89406;color:white;padding:0.02rem">{{item.endTime | date :'yyyy-MM-dd hh:mm:ss'}}</span>  </td>
+            <td>
+                <button type="button" class="btn btn-info" ng-click="startLilun(item.name)">理论考试</button>
+                <button type="button" class="btn btn-info" ng-click="startCoding(item.name)">机试考试</button>
+            </td>
+
+        </tr>
+    </table>
+</div>

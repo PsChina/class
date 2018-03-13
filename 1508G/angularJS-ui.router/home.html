@@ -1,0 +1,33 @@
+
+<div>
+    <style>
+        .homeNav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width:100%;
+            display: flex;
+            background: grey;
+        }
+        .homeNavItem {
+            flex: 1;
+            line-height: 50px;
+            text-align: center;
+        }
+        .homeActive{
+            background: green;
+            color: pink;
+        }
+        .homeContent{
+            position: absolute;
+            top:50px;
+            left: 0;
+        }
+    </style>
+    <div class="homeNav">
+        <div class="homeNavItem" ui-sref-active="homeActive" ui-sref="home.about">about</div>
+        <div class="homeNavItem" ui-sref-active="homeActive" ui-sref="home.concat">concat</div>
+        <div class="homeNavItem" ui-sref-active="homeActive" ui-sref="home.join">join</div>
+    </div>
+    <ui-view class="homeContent"></ui-view>
+</div>

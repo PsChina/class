@@ -1,0 +1,111 @@
+<div>
+    <style>
+        .nav {
+            width: 100%;
+            height: .5rem;
+            background-color: #438eb9;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .web-icon {
+            margin-top: .11rem;
+            margin-left: .1rem;
+            float: left;
+        }
+
+        .nav-title {
+            float: left;
+            color: white;
+            font-size: .22rem;
+            line-height: .5rem;
+            margin-left: .1rem;
+        }
+
+        .nav-right {
+            width: 1.5rem;
+            height: .5rem;
+            margin-right: .1rem;
+            float: right;
+        }
+        .nav-btn{
+            width: 1.5rem;
+            height: .5rem;
+            background: #62a8d1;
+            border: none;
+            outline: none;
+            border-radius: 0;
+            color: white;
+        }
+        .nav-btn:hover{
+            color: white;
+        }
+        .nav-menu{
+            width: 1.9rem;
+            margin-left: -.35rem;
+            border-radius: 0;
+        }
+        .nav-menu-item{
+            text-align: center;
+            line-height: .5rem;
+            border-bottom: 0.01rem solid #ccc;
+        }
+        .nav-menu-item:last-child{
+            border-bottom: none;
+        }
+        .nav-menu-item:hover{
+            background-color: rgb(255, 218, 153)
+        }
+        .nav-right-btn{
+            display: flex;
+        }
+        .icon-yonghu{
+            font-size: .30rem;
+            border-radius: 50%;
+            border: 0.01rem solid white;
+            width: .48rem;
+            height: .48rem;
+            margin:0 .05rem;
+        }
+        .user-info{
+            width: 0.6rem;
+            height: 0.5rem;
+        }
+        .nav-info-line1{
+            font-size: .12rem;
+            height: .25rem;
+            line-height: .3rem;
+        }
+        .nav-info-line2{
+            font-size: .16rem;
+            height: .3rem;
+        }
+        .triangle{
+            margin-top: .22rem;
+        }
+    </style>
+    <div class="nav">
+        <img src="./img/icon_03.png" alt="" class="web-icon">
+        <div class="nav-title">八维考试系统</div>
+        <div class="nav-right">
+            <div class="btn-group" uib-dropdown is-open="status.isopen">
+                <button id="single-button" type="button" class="nav-btn" uib-dropdown-toggle ng-disabled="disabled">
+                   <div class="nav-right-btn">
+                        <div class="iconfont icon-yonghu"></div>
+                        <div class="user-info">
+                            <div class="nav-info-line1">欢迎光临,</div>
+                            <div class="nav-info-line2">{{user.name}}</div>
+                        </div>
+                        <span class="caret triangle"></span>
+                   </div>
+                </button>
+                <div class="nav-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                    <div class="nav-menu-item">个人信息</div>
+                    <div class="nav-menu-item">修改资料</div>
+                    <div class="nav-menu-item">退出</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

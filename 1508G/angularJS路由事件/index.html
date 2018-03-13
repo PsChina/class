@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+    .active{
+        background: orange;
+    }
+    </style>
+    <title>Document</title>
+</head>
+
+<body ng-controller="main">
+    <a href="#!/home" ng-class=" path == '/home' ? 'active' : '' ">home</a>
+    <a href="#!/shoe" ng-class=" path == '/shoe' ? 'active' : '' ">shoe</a>
+    <a href="#!/phone" ng-class=" path == '/phone' ? 'active' : '' ">phone</a>
+    <ng-view></ng-view>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-route.js"></script>
+
+</html>
+<script>
+    angular.module('app', ['ngRoute'])
+        .controller('main', ['$scope', function ($scope) {
+            $scope.msg = 'Hello world!'
+        }])
+        .config(['$routeProvider', function ($routeProvider) {
+            $routeProvider.when('/home', {
+                template: '<div>home</div>',
+                reloadOnSearch:false
+            })
+                .when('/shoe', {
+                    template: '<div>shoe</div>',
+                    reloadOnSearch:false
+                })
+                .when('/phone', {
+                    template: '<div>phone</div>',
+                    reloadOnSearch:false
+                })
+        }])
+        .run(['$rootScope', function ($rootScope) {
+
+            $rootScope.$on('$routeChangeStart', function (event,currentRoute,previousRoute) {  // 路由开始跳转
+                console.log()
+                if(previousRoute){
+                    console.log('$routeChangeStart','路由'+previousRoute.$$route.originalPath+'即将跳转到'+currentRoute.$$route.originalPath)
+                }
+                
+            })
+            $rootScope.$on('$routeChangeSuccess', function (event,currentRoute,previousRoute) { // 跳转成功
+                if(previousRoute){
+                console.log('$routeChangeSuccess','路由'+previousRoute.$$route.originalPath+'成功跳转到'+currentRoute.$$route.originalPath)
+                }
+
+                $rootScope.path = currentRoute.$$route.originalPath;
+            })
+            $rootScope.$on('$routeChangeError', function (event,currentRoute,previousRoute,error) { //跳转错误
+                console.log('路由跳转失败')
+            })
+            $rootScope.$on('$routeUpdate', function (event,currentRoute) { //路由更新
+                console.log('路由更新')
+                console.log(arguments);
+                //1 在路由内将  reloadOnSearch 属性设置为 false
+                //2 改变hash内 ? 后的内容 也就是参数改变就会更新路由
+            })
+        }])
+// 通过路由事件来 添加 选中样式
+</script>

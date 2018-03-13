@@ -1,0 +1,55 @@
+<div class="history-box">
+    <style lang="">
+        .history-box{
+            height: 100%;
+        }
+        .history-content{
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+        }
+        .history-item-color{
+            color:#438eb9
+        }
+        .history-input{
+            padding: 0;
+            margin: 0;
+            outline: 0;
+            height: .3rem;
+            position: absolute;
+            left: 0;
+            top: .1rem;
+            right: 0;
+            bottom: 0;
+        }
+        .history-tr td{
+            position: relative;
+        }
+        .history-last-input{
+            width: .7rem;
+        }
+    </style>
+    <div class="history-content">
+        <!-- <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>试卷名称</th>
+                    <th>考试时间</th>
+                    <th>分数</th>
+                    <th>考试操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in data" class="history-tr">
+                    <td><input type="checkbox"></td>
+                    <td class="history-item-color">{{item.examName}} <input ng-model="item.examName" class="history-input" ng-show="item.flag" type="text"></td>
+                    <td class="history-item-color">{{item.examTime | date:'yyyy-MM-dd hh:mm:ss'}} <input ng-model="item.showTime" class="history-input" ng-show="item.flag" type="text" ng-change="changeTime(item)"></td>
+                    <td>{{item.score}} <input ng-model="item.score" class="history-input history-last-input" ng-show="item.flag" type="text"></td>
+                    <td><button type="button" class="btn btn-info" ng-click="edit($event,item)">编辑</button></td>
+                </tr>
+            </tbody>
+        </table> -->
+        <page-control style="width:100%; height:100%"></page-control>
+    </div>
+</div>

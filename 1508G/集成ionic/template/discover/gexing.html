@@ -1,0 +1,18 @@
+<div>
+    <style>
+    </style>
+    <div>
+        
+        <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" pager-click="goTo(index)"
+            slide-interval="2000">
+
+            <ion-slide ng-repeat="src in pathArr">
+
+                <img class="bannerImg" ng-src="{{src}}" alt="">
+
+            </ion-slide>
+
+        </ion-slide-box>
+
+    </div>
+</div>
