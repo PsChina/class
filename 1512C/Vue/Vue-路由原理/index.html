@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <route-link to="/home" text="home"></route-link>
+        <route-link to="/about" text="about"></route-link>
+        <route-link to="/me" text="me"></route-link>
+        <route-view></route-view>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    // 假设路由 有三个页面 我们定义一下
+
+    // 定义局部组件的方式来定义路由
+
+    const home = {
+        template:'<div>我是主页</div>'  // 虚拟dom 
+    }
+
+    const about= {
+        template:'<div>我是about</div>' // 字符串
+    }
+
+    const me= {
+        template:'<div>我是me</div>'
+    }
+
+    // 我们需要一个路由对象 这个对象包含了我们所有的子页面 这一步也叫配置路由
+
+    const routes = { // 配置了 一级路由 我们目前搭建的路由是不支持嵌套的 不支持传参的 没有路由事件的 基本路由
+        '/':home, // 默认路由
+        '/home':home,
+        '/about':about,
+        '/me':me
+    }
+
+
+    // 我们需要 2个组件  一个 按钮  一个是容器
+
+    // 回忆angular 路由  ngRoute 的按钮是 a 连接  容器是 ng-view
+
+    // ui.router 的按钮是 ui-sref 容器是 ui-view 
+
+
+    // 我们定义的 按钮是 route-link 容器是 route-view
+
+    // 首先定义 按钮 
+
+    const bus = new Vue(); // 内部 bus   还个 bus  不会挂载到Vue 原型上 所以只能在局部起作用 不能全局使用
+
+    Vue.component('routeLink',{ // 组件的知识
+        props:['to','text'], // 需要知道 这个按钮 将会跳转到那个路由去  这个参数就叫做 to  还有我们需要知道这个按钮显示什么文本 这个参数叫text
+        template:`
+            <span v-text="text" @click="go"></span>
+        `,
+        methods:{
+            go(){ // 跳到对应的路由  这个时候需要改变 另一个组件 也就是容器（route-view）显示的内容 
+            // 这涉及到组件通讯 所以我们需要 bus 我们可以实现一个内部的bus
+              bus.$emit('changeRoute',this.to);
+                console.log('发送路由路径',this.to)
+              // 在点击的时候改变 window.location的路径
+              window.location.hash = `#!${this.to}` 
+            }
+        }
+    })
+
+    Vue.component('routeView',{  
+        data(){
+            return {
+                currentRoute:window.location.href.split('#!')[1]
+            }
+        },
+        computed:{
+            componentView(){ // 更具当前路由(this.currentRoute 和 routes)  计算 路由视图
+                console.log('计算出来的虚拟dom1.0', routes[ this.currentRoute ])
+                return routes[ this.currentRoute ];  // this.currentRoute被计算属性引用 所以 视图被重新计算
+            }   
+        },
+        created(){ // 当 容器创建后 需要 监听 link 发送的changeRoute事件  来改变 容器内显示的视图(页面)
+            bus.$on('changeRoute',(newRoutePath)=>{
+                console.log('接收路由路径',newRoutePath)
+                this.currentRoute = newRoutePath ; // 改变 this.currentRoute
+            })
+        },
+        render(createElement){ // 将虚拟dom 转换成真实dom
+            return createElement( this.componentView ) // 将计算属性中 计算出来的虚拟dom 转换成真实dom
+        }   
+    })
+
+
+
+    //  启动app
+
+    new Vue({
+        el:'#app'
+    })
+</script>

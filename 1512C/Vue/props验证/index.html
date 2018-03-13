@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>props验证</title>
+</head>
+<body>
+    <div id="app">
+        {{ msg }}
+        <mycomponent :data="msg"></mycomponent>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    Vue.component('mycomponent',{
+        props:{ // 上次写的是 数组['data'] 这次写的是对象{}     
+            data:{
+                required:true, // 必须传递数据的属性 没有传递会报错
+                type:[Array,String] // 可以接收数组或者字符串类型的数据
+            },
+            other:{
+                required:false, // 默认值 可选的属性
+                // type不写为任意类型
+            }
+        },
+        // props:['data'], // 传递 什么类型数据 都可以 但是 我只想要数组 不想要其他类型怎么办？
+        template:`<div> 组件接收的数据: <span v-text="data"></span> </div>`
+    })
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:[1] // 数组
+            }
+        }
+    })
+</script>

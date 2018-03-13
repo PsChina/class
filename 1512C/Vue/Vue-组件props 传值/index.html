@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <my-component v-bind:data="msg"></my-component>
+        <my-component :data="msg"></my-component>
+        <!-- 如何让msg显示在子组件？？？？ :data="msg" -->
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+
+    // const myComponent = { // 定义一个（局部）组件
+    //     props:['data'], // 接收一个数据 
+    //     template:`<div v-text="data"></div>` // 将数据显示在 div 上
+    // }
+   
+    // 定义全局组件 不需要注册
+
+    Vue.component('myComponent',{ 
+        props:['data'], // 接收一个数据 
+        template:`<div v-text="data"></div>` // 将数据显示在 div 上
+    })
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Props!' // 数据在 父组件 
+            }
+        },  
+        // components:{ //注册组件
+        //     myComponent
+        // }
+    })
+</script>

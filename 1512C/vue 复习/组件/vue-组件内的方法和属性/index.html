@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- id='app' 的这个元素就是 my-component 的父组件 -->
+    <div id="app">
+        <!-- <string></string>
+        <obj></obj> -->
+        <!-- 目前没有传递props -->
+        {{ fatherVal }}
+        <my-component @son-val="change"></my-component>
+        <!-- @自定义事件名 -->
+        <!-- :是v-bind的缩写 -->
+        <!-- 他俩都能使得等于号右边的值传递下去 而不是 变量名字符串 -->
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    // render函数
+
+    const string = {
+        template:`<div>字符串模版生成的div</div>`
+    }
+
+    const obj = { // 局部组件
+        render(h){
+            const tagName = 'div';
+            const obj = {
+                domProps:{
+                    innerText:'js对象生成的div'
+                }
+            }
+            return h( tagName,obj )
+        }
+    }
+
+
+
+
+    // -------------------------分割线--------------------
+
+
+// 组件内的 属性和方法
+
+    //重点属性 props
+
+    // const myComponent = {
+    //     props:['value'],
+    //     template:'<div>{{value}}</div>'
+    // } 
+
+    // props 验证 
+        //required 必须传递value
+        //type 必须传递type约定的类型 否则报错
+
+    const myComponent = {  // 父组件 向子组件传值
+        props:{
+            value:{
+                required:false, //默认为false 意思是 可以不用传递
+                type:[Number,String], // 兼容多种类型
+                default:'默认值'
+            }
+        },
+        data(){
+            return {
+                sonVal:null
+            }
+        },
+        template:`
+        <div>
+        {{value}}
+        <input v-model="sonVal" />
+        <button @touchend="click">发送数据到父组件</button>
+        </div>
+        `,
+        methods:{
+            click(){
+                //通过自定义事件 想父组件传值
+                console.log('点击了子组件')
+                this.$emit('son-val',this.sonVal) // 发送事件
+            }
+        },
+        beforeCreate(){
+            console.log('beforeCreate')
+        },
+        created(){
+            console.log('created')
+        },
+        beforeMount(){
+            console.log('beforeMount')
+        },
+        mounted(){
+            console.log('mounted')
+        }
+    }     
+
+    
+
+    new Vue({ // 父组件
+        el:'#app',
+        components:{ // 注册子组件
+            string,
+            obj,
+            myComponent
+        },
+        data(){
+            return{
+                fatherVal:'哈哈哈'
+            }
+        },
+        methods:{
+            change(newVal){
+                console.log('拿到新值',newVal)
+                this.fatherVal = newVal; // 将拿到的值 赋值给data
+            }
+        }
+    })
+</script>

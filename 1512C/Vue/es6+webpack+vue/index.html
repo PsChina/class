@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 使用 类比法 来学习 -->
+    <div id="app">
+        {{ msg }}
+        <button v-on:click="myFn()">按钮</button>
+        <input type="text" v-model="show">   <!-- 类似与 ng-model  -->
+        <keep-alive>
+            <!-- keep-alive 会带来 2个生命周期函数 分别是 activated 激活  deactivated 失效-->
+            <!-- 同时 使得 beforeDestroy destroyed 失效 因为压根就没销毁-->
+            <my-componnent v-if="show"></my-componnent>  <!-- 类似于 ng-if  -->
+        </keep-alive>
+        
+    </div>
+</body>
+</html>

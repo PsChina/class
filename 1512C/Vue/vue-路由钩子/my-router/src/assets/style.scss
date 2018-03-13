@@ -1,0 +1,12 @@
+$fontSize:24px;
+$mainColor:orange;
+
+body{
+    padding: 0;
+    margin: 0;
+    font-size: $fontSize;
+}
+
+.active{
+    background:$mainColor;
+}

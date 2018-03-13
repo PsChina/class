@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue插件</title>
+</head>
+<body>
+    <div id="app">
+        <span v-text="msg"></span>
+        <component-a></component-a>
+        <component-b></component-b>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script src="./myPlugin.js"></script>
+</html>
+<script>
+    // 如何使用插件 用Vue.use() 来使用插件
+    Vue.use(bus) // 这个bus 就是 src="./myPlugin.js" 带来的
+
+    Vue.component('componentA',{ // 组件A
+        data(){
+            return {
+                value:'' // 组件A的数据
+            }
+        },
+        template:`<div>
+                <input v-model="value" />
+                <button @click="sendMsg">发送消息给B</button>
+            </div>`,
+        methods:{
+            sendMsg(){
+                // 这个bus 就是我们定义的插件
+                this.bus.$emit('messageA',this.value)
+            }
+        }
+    })
+
+    Vue.component('componentB',{
+        data(){
+            return {
+                value:null
+            }
+        },
+        template:'<div>组件B: {{ value }} </div>',
+        created(){ // 在B 组件创建之后开始监听 事件messageA
+            this.bus.$on('messageA',(msg)=>{ // 一定要用箭头函数 绑定this
+                this.value = msg;
+            })
+        }
+    })
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Vue Plugins!'
+            }
+        }
+    })
+
+    // 什么是Vue 插件
+    // Vue插件是对 Vue 功能的扩展
+    // 插件的功能由编写者定义
+
+    // 那么问题来了
+
+    // 插件 如何定义？
+    // 插件 如何使用？
+
+    // 插件的定义
+
+</script>

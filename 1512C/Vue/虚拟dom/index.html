@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>虚拟dom</title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+    // 模拟实现虚拟dom
+
+    //虚拟dom
+    const helloWorld = {
+        tagName:'div', // 元素名称
+        nativeAttrs:{  // 元素原生属性
+            innerText:'hello world' 
+        },
+        css:{ // 样式
+            background:'red',
+            borderRadius:'50%',
+            userSelect:'none',
+            cursor:'pointer'
+        },
+        on:{ // 事件
+            click:function(){
+                console.log('点击了')
+            }
+        }
+    }
+
+    // 需要一个 将虚拟dom 转换成真实 dom 的函数
+
+    function createElement(vnode){ // 创建元素
+        // 第一步创建元素
+        const rootElement = document.createElement( vnode.tagName ) // 更具 tagName 创建元素
+        // 第二步 部署原生属性
+        const attrs = vnode.nativeAttrs;
+        for( const key in attrs ){
+            rootElement[key] = attrs[key];
+        }
+        // 第三步 部署 样式
+        const css = vnode.css;
+        for( const cssattr in css){
+            rootElement.style[cssattr] = css[cssattr];
+        }
+        // 第四步 部署 事件 
+        const events = vnode.on;
+        for( const event in events ){
+            rootElement.addEventListener(event,events[event]);
+        }
+        // 暂且写这么多
+
+        // 最后返回这个dom
+        return rootElement;
+    }
+
+    // 让虚拟dom 显示
+
+    const dom = createElement(helloWorld);
+
+    document.body.appendChild(dom);
+
+</script>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件内的布局自定义指令</title>
+    <style>
+        .app{
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="app">
+            <my-component></my-component>
+    </div>
+</body>
+<script src="./node_modules/vue/dist/vue.js"></script>
+<script src="./plugins/domFn.js"></script>
+</html>
+<script>
+
+    Vue.use(domFn);
+
+    const myComponent = {
+        data(){
+            return{
+                style:{
+                    background:'red',
+                    width:'100px',
+                    height:'100px',
+                    textAlign:'center',
+                    lineHeight:'100px',
+                    color:'white',
+                    fontSize:'18px'
+                }
+            }
+        },
+        template:`
+        <div v-slideup="fn" :style="style">
+            局部组件
+        </div>
+        `,
+        methods:{
+            fn(){
+                console.log('手指向上滑')
+            }
+        },
+        directives:{
+            slideup:{ // 向上滑动的手势
+                bind(el,binding,vNode){ // 指令绑定到 目标元素上时触发
+
+                    const userCapture = {
+                        passive:true // 提升移动端性能(大幅提升)
+                    }
+
+                    const manager = {
+                        startX:0,
+                        startY:0,
+                        endX:0,
+                        endY:0
+                    }
+
+                    function start(event){
+                        manager.startX = event.touches[0].pageX;
+                        manager.startY = event.touches[0].pageY;
+                    }
+                    function move(event){
+                        manager.endX = event.touches[0].pageX;
+                        manager.endY = event.touches[0].pageY;
+                    }
+                    function end(event){
+                        let distanceY = manager.endY - manager.startY; // 垂直距离
+                        let distanceX = manager.endX - manager.startX; // 水平距离
+                        
+                        if(  distanceY < 30 && Math.abs(distanceY)-Math.abs(distanceX)>0  ){ // 如果 垂直距离的动作大于 水平距离 判定为向上 || 向上移动固定距离判定为向上
+
+                           binding.value(); // 调用函数
+                            
+                        }
+                        //distanceY < 30 && Math.abs(distanceY)-Math.abs(distanceX)>0 
+                        // 严格 判定向上
+                        // distanceY < 30 宽松 向上判定 只要在Y方向上有 正30的移动判定为向上
+                    }
+                    el.addEventListener('touchstart',start,userCapture)
+                    el.addEventListener('touchmove',move,userCapture)
+                    el.addEventListener('touchend',end,userCapture)
+
+                },
+                inserted(el,binding,vNode){ // 元素被插入到父元素 时 触发
+
+                },
+                update(el,binding,vNode){ // 所在的组件vnode 发生更新的时候
+
+                },
+                componentUpdated(el,binding,vNode){ // 所在的组件 vnode 以及 子 vnode 发生更新的时候
+
+                },
+                unbind(el,binding,vNode){ // 指令和元素解除绑定的时候触发
+
+                }
+            }
+        }
+    }
+
+    new Vue({
+        el:'#app',
+        mounted(){
+            console.log( this.getStyle(this.$el,'fontFamily')  )
+        },
+        components:{
+            myComponent
+        }
+    })
+
+</script>

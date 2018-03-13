@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{ sayHello }}
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    const vm = new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Vue !'
+            }
+        },
+        computed:{
+            sayHello:{
+                set(val){ // 计算属性的set 方法
+                    console.log('msg 被设置了 ')
+                    //... 在这里 随意谢你想写的代码
+                    this.msg = val;
+                },
+                get(){ // 计算属性的get 方法
+                    console.log('msg 被获取了 ')
+                    //... 在这里 随意谢你想写的代码
+                    return this.msg;
+                }
+            }
+        }
+    })
+
+    // 计算属性的 set  get  方法 提供了 数据在被设置 和被获取的时候
+    // 做一些操作的可能
+
+    /**
+    set get 方法提供了数据在被设置 和被获取的时候 做一些操作的可能    
+    */
+ 
+</script>

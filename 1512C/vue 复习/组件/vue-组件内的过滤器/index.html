@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{ msg }}
+    <my-component :value="msg | upperCase()"></my-component>
+    </div>
+</body>
+<script src="./node_modules/vue/dist/vue.js"></script>
+</html>
+<script>
+
+    // 新建一个组件 讲解 组件内的 过滤器  局部过滤器
+
+    const component = {
+        props:{
+            value:{
+                default:'Default value.'
+            }
+        },
+        template:` 
+            <div>
+                <h1 v-text="value"></h1>
+            </div>
+         `
+    }
+
+    const upperCase = function(input){ // 定义局部过滤器
+        return input.toUpperCase()
+    }
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Vue!'
+            }
+        },
+        components:{//注册子组件
+            myComponent:component
+        },
+        filters:{ // 注册过滤器
+            upperCase
+        }
+    })
+
+</script>

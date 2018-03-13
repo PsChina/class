@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Component communication</title>
+</head>
+<body>
+    <div id="app">
+        <div style="width:400px;height:400px;background:orange">
+            <h2>父组件</h2>
+            <label for=""> father: <input type="text" v-model="value"> </label>
+            <my-component 
+            style="width:300px;height:200px;background:green"
+            v-bind:father-data = "value"
+            :fn = "changeValue"
+            >
+            </my-component>
+        </div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+
+    const myComponent = {
+        props:['fatherData','fn'], // 2 接收父组件定义的2个属性
+        data(){
+            sonData:''
+        },
+        template:`
+        <div> 
+            <h3>子组件</h3>
+            <span> 来自父组件的值 {{fatherData}} </span>  
+            <div>子组件的值<input v-model="sonData" /></div>
+            <button @click="change">改变值</button>      
+        </div> 
+         `,
+        methods:{
+           change(){ // 3 子组件触发自己的函数 来调桶父组件的 函数 this.fn
+               this.fn(this.sonData); // 将子组件的值传给父组件
+           }
+        }
+    }
+
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Vue Component communication!', // 组件通讯
+                value:'father' // 1 定义的属性
+            }
+        },
+        methods:{
+            changeValue(newVal){ // 定义的改变方法
+                this.value = newVal;  // 改变 data 内的value
+            }
+        },
+        components:{//注册子组件
+            myComponent
+            // myComponent:myComponent
+        }
+    })
+
+
+// 子组件 如何向父组件通信
+// 回调函数 法
+
+
+// 1 在父组件 定义一个属性 定一个改变属性的方法
+
+// 2 在子组件 props内 接收 这2个属性  
+// 3 子组件通过 父组件定义的方法这个回调函数 来达到向父组件 通信的目的
+</script>

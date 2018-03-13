@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义指令</title>
+</head>
+<body>
+    <div id="app">
+        <h2 style="width:200px;height:200px;background:red"  v-touchend="father">
+            <!-- slot 来实现 内部元素不被吃掉 -->
+            <div style="width:100px;height:100px;background:yellow" v-touchend="son"></div>
+        </h2>
+        <!-- 将指令绑定到 h2 上 -->
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    // 使用Vue 定义全局指令
+
+    // 有一个叫 directive 的api
+
+    // 我们来写一个数组去重的指令
+
+    Vue.directive('touchend',{ 
+        bind:function(el, binding, vnode){ // 固定写法 => 它是一个函数 这个函数会在指令 绑定到元素上的时候被触发一次。
+            
+            // 第一个参数 el => element(元素)  也就是说 该指令绑定在那个元素上 这个el 就是谁
+            //console.log( el ); // 输出第一个参数
+
+            // 第二个参数 binding 是一个对象 它下面有很多属性 可以供我们使用 (待会介绍) 
+            // console.log(binding);
+            // console.log(binding.expression, typeof binding.expression); // 指令等于号 右边的表达式
+            // console.log(binding.value, typeof binding.value);      // 指令等于号 右边的计算过后的值
+            // console.log(binding.name) // name 属性就是指令名称 不带v- 前缀
+            // console.log(binding.rawName) // 元素上的 指令名 带 v- 前缀
+            // console.log(binding.modifiers) // 修饰符 现在我们没有写任何修饰符
+            //修饰符 以后再讲
+            // 第三个参数 是vnode 虚拟节点 也就是vue 里面虚拟dom
+            //console.log(vnode);
+            let { once, stop, self, prevent, capture, passive } = binding.modifiers; // 解构赋值
+
+            // 我没有考虑兼容 所以你们自行百度
+            // stopPropagation 有兼容性问题吗?
+            // preventDefault 有兼容性问题吗?
+
+            // prevent, capture, passive 优化下代码
+            
+            function fn(event){
+                if( once ){
+                    if( fn.isFirstRun ){
+                        binding.value();
+                        fn.isFirstRun = false; // 下次就进不来了
+                    }
+                    return // 结束这个函数
+                }else if( stop ){
+                    if( event.stopPropagation ){
+                        event.stopPropagation();// 阻止冒泡
+                    } else {
+                        window.event.cancelBubble = true; // 兼容ie
+                    }
+                    binding.value(); // 调用函数
+                } else if (self){ 
+                    if( event.target === el ) { // 判断 目标为自己
+                        binding.value();
+                    }
+                } else if(prevent){
+                    if(event.preventDefault){
+                        event.preventDefault() // 阻止默认行为
+                    }else{
+                        window.event.returnValue = false; // 阻止默认行为 兼容
+                    }
+                    binding.value(); 
+                } else { // 否则就正常调用
+                    binding.value();
+                }
+            }
+            fn.isFirstRun = true;  // 保证once 第一次能进去
+
+            el.addEventListener('touchend',fn ,{ capture,passive }) // capture 事件捕获  touch事件 passive对移动端浏览器性能提升
+            
+            // { capture,passive } 实际上 是  { capture:capture ,passive:passive }
+            // { capture:true/fasle, passive:true/fasle } 
+
+            // Vue 自带 @touchend 不需要我们写 
+        }
+    })
+
+    new Vue({
+        el:'#app', // id="app" => '#app'  class="app" => '.app'
+        data(){
+            return {
+                msg:'Hello Vue derectives!', // 自定义指令
+                arr:[1,2,3], // 定义一个数组 给自定义指令使用
+                x:1,
+                y:100
+            }
+        },
+        methods:{
+            son(){
+                console.log('点击了黄色元素')
+            },
+            father(){
+                console.log('点击了红色元素')
+            }
+        }
+    })
+</script>

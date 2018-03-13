@@ -1,0 +1,8 @@
+body{
+    background: red;
+}
+.url-loader{
+    width: 720px;
+    height: 280px;
+    background-image: url(../img/banner1.jpg);
+}

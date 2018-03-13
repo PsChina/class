@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div v-text="sum"></div>
+        <div v-text="sum"></div>
+
+        <div v-text="ABsum"></div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    const vm = new Vue({
+        el:'#app',
+        data(){
+            return {
+                numA:1,
+                numB:2,
+                ABsum:0
+            }
+        },
+        methods:{
+            getSum(){ // 他只是一个函数
+                console.log('method计算a和b的和')
+                return Number(this.numA) + Number(this.numB);
+            }
+        },
+        computed:{
+            sum(){ // 它 只有在 numA 或者numB 改变的情况下 才会重新计算
+                console.log('computed计算a和b的和')
+                return Number(this.numA) + Number(this.numB);
+            }
+        },
+        watch:{ // 监听 摸个属性的变化   只有在变化的时候才会计算 属于比较高性能的
+            numA(newVal,oldVal){ // 监听munA的变化
+                console.log( newVal,oldVal )
+                this.ABsum = this.numB + newVal; // b+a
+            },
+            numB(newVal,oldVal){ // 监听numB的变化
+                console.log( newVal,oldVal )
+                this.ABsum = this.numA + newVal; // a+b
+            }
+        }
+    })
+
+    // computed 和 watch 有什么区别
+
+    // 只是 对应关系不一样
+    // computed 适用于 多个不同的属性计算出一个结果  一对多 一次能 计算多个属性的变化 或一个属性的变化
+    // watch 多个 观察者 获取数据   多对一  watch 一次只能观察一个 但是可以使用多次
+</script>

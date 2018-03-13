@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <span v-text="msg"></span>
+        <input type="text" placeholder="A" v-model="numA">
+        <input type="text" placeholder="B" v-model="numB">
+        <div v-text="sum()"></div>
+        <div v-text="sum()"></div>
+        <div v-text="cSum"></div>
+        <div v-text="cSum"></div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    const vm = new Vue({  //vm  => viewmodel  咱们的Vue 是一个 不完全的mvvm框架 所以我们把new 出来的实例 叫做vm
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Vue!',
+                numA:0,
+                numB:0
+            }
+        },
+        methods:{
+            sum(){
+                // console.log( typeof this.numA , typeof this.numB );
+                console.log('methods')
+                return Number(this.numA) + Number(this.numB);
+            }
+        },
+        computed:{ // 计算属性 将属性进行计算加工之后在返回
+            cSum(){
+                // 当 this.numA 或者 this.numB 改变的时候才会计算结果
+                // 如果 this.numA 和 this.numB都不发生改变 他会不计算 第二次 他会 读取缓存。
+                console.log('computed')
+                return Number(this.numA) + Number(this.numB);
+            }
+        },
+        watch:{ // 监听 摸个属性的变化
+            numA(newVal,oldVal){ // 监听munA的变化
+                console.log( newVal,oldVal )
+            },
+            numB(newVal,oldVal){ // 监听numB的变化
+                console.log( newVal,oldVal )
+            }
+        }
+    })
+</script>

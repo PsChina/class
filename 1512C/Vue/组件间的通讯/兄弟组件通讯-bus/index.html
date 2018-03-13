@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <component-a></component-a>
+        <component-b></component-b>
+        <!-- a b 是兄弟组件 -->
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+
+    // 用 bus 对象 来通讯 
+    const bus = new Vue() // bus 对象 就是 一个Vue 实例  (每个Vue 实例都实现了 $emit $on)
+    // 就是用 $emit $on 来通讯
+
+
+
+    // 定义全局组件 的方式来定义 组件A和B
+
+    Vue.component('componentA',{
+        data(){
+            return{
+                dataA:''
+            }
+        },
+        template:`
+        <div>
+            <h2>我是组件A</h2>
+            <div>组件A的值: <input v-model="dataA" /></div>
+            <button @click="send()">将A的值发送给B</button>
+        </div>
+        `,
+        methods:{
+            send(){
+                bus.$emit('sendMsgToB',this.dataA) // 将data 同过bus 发给B
+            }
+        }
+    })
+
+    Vue.component('componentB',{
+        data(){
+            return {
+                dataA:'',
+                dataB:''
+            }
+        },
+        template:`
+        <div>
+            <h2>我是组件B</h2>
+            <div>组件B的值: <input v-model="dataB" /></div>
+            <div>组件A的值: {{dataA}}</div>
+        </div>
+        `,
+        created(){ // 在B组件创建完毕之后 监听 sendMsgToB 事件
+            bus.$on('sendMsgToB',(newVal)=>{ // 一定要用箭头函数 绑定this
+                    this.dataA = newVal;
+            })
+        }
+    })
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Brother components communication!'
+            }
+        }
+    })
+</script>

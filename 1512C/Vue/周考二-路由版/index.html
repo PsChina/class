@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div class="router-link-box">
+            <router-link 
+            v-for="linkItem in linkArr" 
+            :to="linkItem.url" 
+            v-text="linkItem.text"
+            class="route-link"
+            tag="div"
+            router-link-active="router-link-active"
+            >
+            </router-link>    
+        </div>
+
+        <router-view></router-view>
+    </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <label for=""> 这是父组件 <input type="text" v-model="data">  </label>
+        </div>
+        <my-component :value="data" @changefathervalue="change"></my-component>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    //定义全局子组件
+    Vue.component('myComponent',{
+        props:['value'],
+        data(){
+            return {
+                son:''
+            }
+        },
+        template:`
+        <div style="background:red">
+            <h2>这是子组件</h2>
+            父组件的值: <span v-text="value"></span>
+            <br/>
+            <label for="">子组件的值<input v-model="son"/></label>
+            <br/>
+            <button @click="click">将子组件的值发送给父组件</button>
+        </div>
+        `,
+        methods:{
+            click(){
+                this.$emit('changefathervalue',this.son) // 把子组件 input里面的son 通过自定义事件 changefathervalue 发送给父组件
+            }
+        }
+    })
+
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello custom event communication!',
+                data:''
+            }
+        },
+        methods:{
+            change(newVal){
+                this.data = newVal; // 接收子组件的值 并改变父组件的值
+            }
+        }
+    })
+
+    // 注意 自定义事件名要小写
+</script>

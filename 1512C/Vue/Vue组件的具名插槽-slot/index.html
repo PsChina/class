@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+
+        <item> <div slot="head">头部</div> <div slot="footer">脚部</div> </item>
+
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    // 我们先来 看一个问题
+
+    Vue.component('item',{// 定义一个名叫 item的全局组件
+        template:`<div>  <slot name="head"></slot> 全局组件item  <slot name="footer"></slot></div>`
+    })
+
+
+    new Vue({
+        el:'#app'
+    })
+</script>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div class="content"><!-- 放 list  -->
+            <div v-for="subItem in currentList">
+                <!-- 遍历 list 用v-for -->
+                <img :src="subItem[0]" alt="" class="img">
+                <p v-text="subItem[1]"></p>
+            </div>            
+        </div>
+
+        <!-- 这是个tab 切换 -->
+        <div class="tab-bar">
+            <div 
+            class="tab-bar-item" 
+            v-for="item in data" 
+            v-text="item.type" 
+            @touchend="select(item)" 
+            :class="{active: currentType===item.type }"
+            >  
+            <!-- 点击一下切换一下 实现 touchend 就ok了 -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

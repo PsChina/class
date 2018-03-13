@@ -1,0 +1,21 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+.bg{
+    background: red;
+}
+.router-link-box{
+    display: flex;
+    height: 30px;
+}
+.route-link{
+    flex: 1;
+    line-height: 30px;
+    border: orange solid 1px;
+    text-align: center;
+}
+.router-link-active{
+    background-color: orange;
+    color: white;
+}

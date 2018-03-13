@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .font{
+            font-size: 20px;
+            color:pink;
+        }
+        .bg{
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>对象语法</h1>
+        <!-- 对象: {  } -->
+        <!-- v-bind:class="{}" -->
+        <!-- v-bind:class="{font:true,bg:false}" -->
+        <label for=""> 字体 <input type="text" v-model="value"></label>
+        <label for=""> 背景 <input type="text" v-model="bg"></label>
+        <div v-text="msg" v-bind:class="{font:value === 'ok',bg: bg === 'ok' }"></div>
+        <hr>
+        <!-- 数组语法 -->
+        <h1>数组语法</h1>
+        <label for="">class1 : <input type="text" v-model="class1"> </label>
+        <label for="">class2 : <input type="text" v-model="class2"> </label>
+        <div v-text="msg" v-bind:class="[ class1, class2 ]"></div> <!-- 绑定一个或多个变量 -->
+        <button @click="setClass('bg')"> set bg </button>
+        <hr>
+        <h1>组件语法</h1>
+        <myfirstcomponent v-bind:class="class1"></myfirstcomponent> <!-- angular 的自定义指令就是它的雏形 -->
+        <myfirstcomponent v-bind:class="[class1,class2]"></myfirstcomponent>
+        <myfirstcomponent v-bind:class="{ bg:true }"></myfirstcomponent>
+        <!-- 在组件上 用 和在 普通元素上用 是一样的用法 -->
+
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    // 定义一个 vue 组件
+    // 组件
+
+    // 组件的 概念 是  我们将 一个大网页 拆分成各个模块 将每个模块拆分成各个组件 
+
+    // 那么 组件就是 构成网页的 基本单元
+
+    // 它 的目的在于 使得 组件能够 可拆卸  也就是说能 够复用 能够很简单的移除
+
+    Vue.component('myfirstcomponent',{ // 全局组件
+        template:'<div>我的第一个组件</div>'
+    })
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Vue!',
+                value:'',
+                bg:'',
+                class1:'',
+                class2:''
+            }
+        },
+        methods:{
+            setClass(className){
+                if(!this.class1) {
+                    this.class1 = className;
+                } else if(!this.class2){
+                    this.class2 = className;
+                }
+                
+            }
+        }
+    })
+</script>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>事件修饰符</title>
+</head>
+<body>
+    <div id="app">
+        {{ msg }}
+        <div @click="rebeccapurple()" style="width:200px;height:200px;background:rebeccapurple">
+            <div @click.stop.self="blue()" style="width:200px;height:100px;background:blue">
+                <div @click="red()" style="width:100px;height:100px;background:red"></div>
+            </div>
+            <!-- 事件修饰符 阻止冒泡 -->
+        </div>
+    </div>
+</body>
+    <script src="./vue.js"></script>
+</html>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Vue 事件修饰符'
+            }
+        },
+        methods:{
+            red(){
+                console.log('点击了红色盒子')
+            },
+            rebeccapurple(){
+                console.log('点击了紫色盒子')
+            },
+            blue(){
+                console.log('点击了蓝色盒子')
+            },
+            up(){
+                console.log('点击了鼠标右键')
+            }
+        }
+    })
+
+// stop 阻止冒泡 相当于帮你调用了 event.stopPropagation()
+// prevent 阻止默认事件  相当于 帮你调用了 event.preventDefault()
+// capture 阻止捕获  相当于帮你调用了 ele.addEventListener(eventName,fn,{capture:false});
+// self 只能是点击元素本身的时候触发事件 相当与调用了  if(event.target === element){ fn() };
+// once 该事件只能触发一次 function vessel(){ if(vessel.isFirstClick){ fn() vessel.isFirstClick=false };  }  vessel.isFirstClick=true;
+// passive 修饰符尤其能够提升移动端的性能。 (这个自己看)
+
+</script>

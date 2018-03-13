@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    var bus = new Vue();
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'hello'
+            }
+        },
+        created(){// 组件被创建
+
+
+            bus.$on('myEvent',function(){ // 监听事件
+            // 如果这个组件多次被创建
+            // 那么由于bus 只存在一个 那么
+            // 同一个事件会被监听多次 为了保证这个事件只被监听一次 你可这样做
+
+            })
+        },
+        destroyed(){ //组件被销毁
+
+            // 在组件被销毁 这里 取消监听 做到 有监听 有销毁
+
+            bus.$off('myEvent') // 取消监听 myEvent事件
+        }
+    })
+</script>

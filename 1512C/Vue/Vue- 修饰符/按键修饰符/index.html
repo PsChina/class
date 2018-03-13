@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>按键修饰符</title>
+</head>
+<body>
+    <div id="app">
+        <span v-text="msg"></span>
+        <input type="text" @keyup.enter="keyUp">
+        <!-- 只有当你按了 回车的时候 才会触发 -->
+        <!-- 直接写keycode码也是可以的 -->
+        <!-- 要记住所有的 keycode 不太现实 -->
+        <!-- 可以记一些名称 比如 13 就是回车 enter -->
+        <div @mouseup.middle="mouseUp()">鼠标抬起</div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Vue! 按键修饰符'
+            }
+        },
+        methods:{
+            keyUp(event){
+                console.log('键盘抬起',event)
+            },
+            mouseUp(){
+                console.log('点击了鼠标')
+            }
+        }
+    })
+
+    /*
+.enter
+.tab
+.delete (捕获“删除”和“退格”键)
+.esc
+.space
+.up
+.down
+.left
+.right 
+
+.ctrl
+.alt
+.shift
+.meta 
+
+.exact
+ 
+//鼠标按键
+.left
+.right
+.middle
+
+    */ 
+
+</script>

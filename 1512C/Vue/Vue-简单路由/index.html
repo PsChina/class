@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/home" v-text="'home'"></router-link>
+        <router-link to="/about" v-text="'about'"></router-link>
+        <router-link to="/me" v-text="'me'"></router-link>
+
+        <route-view></route-view>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+
+    const bus = new Vue();
+    // 定义几个局部组件 当页面
+
+    const home = {
+        template:`<div>home</div>` // 虚拟dom1.0 字符串            虚拟dom2.0是对象(之前讲的就是它)
+    }
+
+    const about = {
+        template:'<div>about</div>'
+    }
+
+    const me = {
+        template:'<div>me</div>'
+    }
+
+    // 定义404 页面
+    const notFound = {
+        template:'<h1>404 page not found!</h1>'
+    }
+
+    // 定义一个路由对象  key是 hash(url)  value 是 页面
+
+    const routes = {  
+        '/':home, // 默认显示home
+        '/home':home,
+        '/about':about,
+        '/me':me
+    }
+
+    Vue.component('routeView',{
+        data(){
+            return {
+                currentRoute:window.location.href.split('#!')[1]
+            }
+        },
+        computed:{ // 计算属性  
+            ViewComponent(){ // 名字大家随意   要根据 data 内的路径 计算出 页面视图
+                return routes[ this.currentRoute ] || notFound; // 如果当前路劲 没有匹配到路由就加载404 页面
+            }
+        },
+        render(createElement){ // h 我们就是昨天讲的 createElement
+            return createElement(this.ViewComponent)  // this.ViewComponent 就是 虚拟dom 只不过是虚拟dom1.0
+        },
+        created(){
+            bus.$on('changeRouteHash',(newVal)=>{ 
+                window.location.hash=`#!${newVal}`; // 改变地址栏
+                this.currentRoute = newVal;
+            })
+        }
+    })
+
+    Vue.component('routerLink',{
+        props:['to','text'],
+        template:`<span v-text="text" @click="changeCurrentRoute"></span>`,
+        methods:{
+            changeCurrentRoute(){
+                bus.$emit('changeRouteHash',this.to);
+            }
+        }
+    })
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+               currentRoute:'/'
+            }
+        }
+    })
+</script>

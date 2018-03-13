@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        {{ array }}
+
+        <button @click="changeArray()">改变数组</button>
+    </div>
+</body>
+<script src="./vue.js"></script>
+
+</html>
+<script>
+    const vm = new Vue({
+        el: '#app',
+        data() {
+            return {
+                array:[1,2,3]
+            }
+        },
+        methods:{
+            changeArray(){
+                // this.array[0] = 10000;
+                // console.log( this.array );
+
+                // 解决方案 使用 变异方法
+                this.array.splice(1,1,10000);
+            }
+        }
+    })
+
+/**
+和 ng 有点像
+潘杉杉 15:24:55ng 是通过 脏检查来实现数据的 绑定
+潘杉杉 15:25:16vue 是通过 重写set get 器来实现数据的绑定
+潘杉杉 15:26:03Object.defineProperty() 重写
+潘杉杉 15:26:38使得data里所有属性 都有一个被重写的setter 和 getter‘’
+潘杉杉 15:26:51他在里面安插了一个观察者
+潘杉杉 15:26:56就和间谍一样
+潘杉杉 15:27:11这个值 一旦改变 我知道了 要去更新UI
+潘杉杉 15:27:28但是 如果你使用array[0] = '123'
+潘杉杉 15:27:39他就把属性重写了
+潘杉杉 15:27:51覆盖掉了 vue 的setter器
+潘杉杉 15:28:04特就是说这个间谍怒存在了
+潘杉杉 15:28:07不
+潘杉杉 15:28:26所以会造成 数据改变了但是 视图没有改变的情况
+潘杉杉 15:28:57可以通过 Vue的数组的编译方法来实现 数据和视图的绑定
+李博网站1512C 15:29:08变异
+李博网站1512C 15:30:11splice
+潘杉杉 15:31:08如何区分 什么方法是变异方法
+潘杉杉 15:31:23什么方法是非编译方法呢？
+潘杉杉 15:31:30你只要记住一点就可以了
+潘杉杉 15:31:41那就是 返回新数组的方法 是非变异的
+潘杉杉 15:31:57修改原数组的方法是变异的
+
+**/    
+</script>

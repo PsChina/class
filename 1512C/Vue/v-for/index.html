@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h2>v-for 迭代数组</h2>
+        <div v-for="(munber,index) in  arr" >{{index}} : {{munber}}</div>
+        <hr>
+        <h2>v-for 迭代对象</h2>
+        <div v-for="(val,key) in  obj">{{ key }} : {{ val }} </div>
+        <hr>
+        <h2>v-for 迭代数字</h2>
+        <div v-for="(val,index) in  num"  >{{ index }} : {{ val }} </div>
+        <hr>     
+        <h2>v-for 迭代组件</h2>
+        <item v-for=" item in num" ></item>
+        <hr>   
+        <h2>v-for特殊属性 :key</h2>
+        <div v-for="(number,index) in array" :key="index"> {{ number }} </div>
+        <hr> 
+    </div>
+</body>
+<script src="./vue.js"></script>
+
+</html>
+<script>
+    const item = {
+        template:'<div>我的第一个Vue组件</div>'
+    }
+
+    const vm = new Vue({
+        el: '#app',
+        data(){
+            return {
+                arr:[1,2,3],
+                obj:{
+                    a:'A',
+                    b:'B',
+                    c:'C'
+                },
+                num:10,
+                array:[1,1,1,1,1]
+            }
+        },
+        components:{  // 子组件
+            item // 将局部组件注册到父组件中
+        }
+    })
+    /*
+:key="index" 能 触发完整的生命周期函数
+前提是 当你改变 key 里面的值的时候    
+    */
+
+</script>

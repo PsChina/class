@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script src="./class-extends.js"></script>
+</html>
+<script>
+    const btn = new Button( function(){
+        console.log('点击了')
+    } )
+
+    btn.css({
+        width:'100px',
+        height:'100px',
+        background:'red',
+        textAlign:'center',
+        lineHeight:'100px'
+    }).attr({
+        innerText:'我是按钮'
+    })
+
+    document.documentElement.appendChild(btn[0]);
+
+    const div = new Div().css({width:'100px',height:'100px',background:'green'}).attr({innerText:'我是div'});
+
+    document.documentElement.appendChild(div[0]);
+    
+</script>

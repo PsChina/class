@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script src="./ajax.js"></script>
+
+</html>
+
+<script>
+
+//     var result; //  第一步 定义容器
+
+//     result = ajax({  // 第二步 请求数据
+//         url: './json.json',
+//         method: 'GET'
+//     }).then((result) => {
+//         return result; // 第三步 获取数据
+//     }, (error) => {
+//         return error;
+//     })
+
+//     console.log(result)  // 第四步 输出数据 
+
+//     // 我理想的 顺序是 1 2 3 4
+
+//     // 但是 人家是异步的 是  1 2 4 3
+
+//     // 如何把异步转同步呢 
+
+//     //Promise 
+
+//     // 如此一来就同步了
+
+//     // 异步难以理解 要能以同步的思想搞定就好了
+
+//     // 这个时候就要用到 promise 了
+
+//     //A
+//     /*
+// {
+//     "a":"a",
+//     "b":"b"
+// }    
+//     */
+//     //B
+//     /*
+//     undefined
+//     */
+
+
+//     new Promise(function timeout(resolve, reject) { // 进行中	
+//         setTimeout(function () {
+//             resolve('5秒钟之内 执行了') // 已成功	
+//         }, Math.random() * 10 * 1000) // 0-10秒会成功	
+//         setTimeout(function () {
+//             reject('5秒钟还没有执行') // 5秒钟还没成功就判定失败 已经失败	
+//         }, 5000)    
+//     })
+//     .then((a) => {
+//         console.log(a);
+//         console.log('我知道它一定是5秒钟之内的')
+//     }, (b) => {
+//         console.log(b); console.log('它一定是5秒钟之外的')
+//     })
+
+
+//     // promise 是一种 解决异步编程的 工具
+
+//     // 在他出现之前 我们用 回调函数来解决   它的弊端是 会出现 回调函数地狱
+
+
+//     // 什么是回调函数 地狱 
+
+//     // 就是 有若干个 回调函数 层层嵌套 导致代码难以阅读
+
+//     // 而使用promise 就不会出现这样的问题
+
+
+// // 他们只是写法不一样 promise更加高级
+//     //比如
+
+//     ajax({
+//         url:'http://goToSchool',
+//         method:'POST',
+//         success:function(result){ // 用回调函数解决异步编程
+//             if( result.data === '到学校了' ){
+//                 ajax( {
+//                     url:'http://goToSchool/早读',
+//                     method:'POST',
+//                     success:function(result){ // 第二个回调函数 嵌套
+//                         if( result.data === '早读完毕' ){
+//                             ajax({
+//                                 url:'http://goToSchool/早读/早餐',
+//                                 method:'POST',
+//                                 success:function(){ // 如此依赖 就会造成 回调函数地狱 难以阅读 和
+
+//                                 }
+//                             })
+//                         }else {
+
+//                         }
+//                     }
+//                 } )
+//             }
+//         }
+//     })
+
+
+//     // promise
+
+//     var ok = ajax({
+//         url:'http://goToSchool',
+//         method:'POST'
+//     })
+//     .then( (result)=>{ // 调用then 方法 注册成功的回调 和 失败的回调
+//         return result.data;
+//     } )
+
+//     if( ok === '到了学校' ){
+
+//         var done =  ajax( {
+//             url:'http://goToSchool/早读',
+//             method:'POST'
+//         })
+//         .then((result)=>{
+//             return result.data;
+//         },(error)=>{
+//             return error;
+//         })
+
+
+//         if( done === '早读完毕' ){
+            
+//         }
+
+//     } else {
+
+//     }
+    
+    // const arr = [0,2,1]
+
+    // let promiseArr = arr.map( function(value,index,array){ // 多次请求 分别请求 json1 json2 json3
+
+    //     return ajax({ // 它是一个 promise
+    //         url:`json${value}.json`,
+    //         method:'GET'
+    //     })
+
+    // } )
+
+    // Promise.all(promiseArr).then( (resultArr)=>{ // 拿到解决
+    //     // 当所有的请求都成功才会走成功
+    //     // 当所有 的成功 all 就成功
+    //     console.log( resultArr ) 
+    // }, ( errorArr )=>{
+    //     // 只有有一个失败 你的all 就失败了
+    //     // 只要有一个失败 all 就失败 
+    //     console.log( errorArr )
+    // } )
+
+//    Promise.race( promiseArr ).then((result)=>{// 一旦请求成功就成功
+//     console.log( result ) // 只有一个结果
+//     // 只要有一个结果率先成功 这个结果就以成功为准
+//    },( error )=>{ // 一旦请求失败就失败 关键是看谁快
+//     console.log('失败')  // 有一个结果率先失败 整个结果就以这个失败的结果为准
+//    })
+
+     const hello = 'hello' // 非promise 对象
+
+     let p = Promise.reject(hello);
+
+     p.then( (success)=>{
+         console.log('成功',success)
+     } , (error)=>{
+         console.log( '失败',error )
+     } )
+
+</script>

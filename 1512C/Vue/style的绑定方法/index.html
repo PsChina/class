@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        
+        <h2>对象语法</h2> 
+        <!-- 只能绑定一个 style -->
+        <div v-text="msg" v-bind:style="style"></div>
+        <div v-text="msg" v-bind:style="{ background:'green',fontSize:'20px' }"></div>
+        <hr>
+        
+        <h2>数组语法</h2> 
+        <!-- 可以绑定 多个 style -->
+        <div v-text="msg" v-bind:style="[ {background:'orange'} , style1 ]"></div>
+        <hr>
+        <!-- 自动添加前缀 -->
+        <h2>自动添加前缀</h2>
+        <!-- 我们只需要知道 它已经帮我做了前缀兼容了就可以了 -->
+        <div v-text="msg" :style="{userSelect:'none'}"></div>
+        <hr>
+        <h2>多重值</h2>  
+        <!-- :style 支持数组 多重值 会选择 最后一个浏览器支持的值为最后的结果 -->
+        <div :style="{display:['-webkit-box', '-ms-flexbox' ,'flex']}">123</div>
+        <!-- 谷歌浏览器对 '-webkit-box' 'flex' 布局属性都支持 所以 选择最后一个支持的值 -->
+        <!-- vue 会帮你选择浏览器最后一个支持的值 来生效 css 浏览器兼容 -->
+
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                style1:{ color:'blue' },
+                style:{ background:'pink',fontSize:'20px',borderRadius:'50%' },
+                msg:'Hello v-bind:style!'
+            }
+        }
+    })
+</script>

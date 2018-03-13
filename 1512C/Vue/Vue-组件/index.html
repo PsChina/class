@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1 v-text="msg"></h1>
+        <component-a :my-msg="msg"></component-a>
+    </div>
+<!--  -->
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+
+    // 定义局部组件
+
+    const componentB = {
+        template:'<span>我是组件B我将显示在组件A内部</span>'
+    }
+
+    const componentA = { // 组件A
+        props:['myMsg'], // 目前 里面的值 是undefined 如何让它有值呢 答案是 在html 上 传递
+        template:`
+        <div> <!-- 一个根元素内部可以含有多个子元素 -->
+            <h2>我的局部组件 {{myMsg}}</h2>
+            <div v-text="innerText">
+            </div>
+            <button @click="click()">点击事件</button>
+            <component-b></component-b>
+            <p> {{'test'|toUpperCase()}} </p>
+        </div>
+        `,
+        data(){ // 基本数据
+            return {
+                innerText:'我是组件AAAAA'
+            }
+        },
+        methods:{ // 函数
+            click(){
+                console.log('子组件内部按钮被点击')
+            }
+        },
+        watch:{ // 观察者
+
+        },
+        computed:{ // 计算属性
+
+        },
+        components:{ // 注册子组件
+            componentB
+            // 注册了 一个组件B 意味着 可在组件A内部 使用组件B
+        },
+        filters:{ // 注册局部过滤器
+            // 写 局部过滤器
+            toUpperCase(input){ // 这个 过滤器是局部的 只能在组件A 中使用
+                return input.toUpperCase();
+            }   
+        },
+        directives:{ // 注册 局部自定义指令 (没学)
+
+        },
+        beforeCreate(){ //1
+            console.log('子组件将要被创建') // A
+        },
+        created(){ //2
+            console.log('子组件被创建') // B
+        },
+        beforeMount(){ //3
+            console.log('组件被挂载之前')
+        },
+        mounted(){ //4
+            console.log('组件被挂载之后')
+        },
+        beforeUpdate(){ //5
+            console.log('组件被更更新之前')
+        },
+        updated(){ //6
+            console.log('组件已经更新')
+        },
+        beforeDestroy(){ //7
+            console.log('组件销毁之前')
+        },
+        destroyed(){ //8
+            console.log('组件已经被销毁')
+        },
+        activated(){ // 被 keep-alive 包裹+ v-if生效 9
+            console.log('激活')
+        },
+        deactivated(){ // 被 keep-alive 包裹+ v-if生效 10
+            console.log('失效')
+        },
+        errorCaptured(error){ // 捕捉子组件的错误 11
+
+        }
+    }
+   // Component template should contain exactly one root element
+   // 组件       模版     应该   包含     恰好    一个 根  元素 
+
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Component!'  // 我能不能在组件A里面使用 msg ?
+            }
+        },
+        components:{ // 注册子组件
+            componentA 
+            // 相当于 componentA:componentA
+        }
+    })
+</script>

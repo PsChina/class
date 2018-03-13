@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>表单输入修饰符</title>
+</head>
+<body>
+    <div id="app">
+        <label for=""> X:<input type="text" v-model="x" > </label>
+        <label for=""> Y:<input type="text" v-model.lazy.trim="y" @change="change(y)"> </label>
+        <div>x+y求和结果: <span v-text="sum"></span></div> 
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                x:0,
+                y:0
+            }
+        },
+        computed:{
+            sum(){
+                return this.x + this.y;
+            }
+        },
+        methods:{
+            change(y){
+                console.log(typeof y) 
+            }
+        }
+    })
+    // 1 number  将用户输入的 数字字符串 转换为数字
+    // 2 lazy 将input 框中的数据改变在 change事件中进行 而不是实时的
+    // 3 trim  消除 input 框内容首尾空格的。
+</script>

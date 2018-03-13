@@ -1,0 +1,22 @@
+.tab-bar{
+    position: absolute;
+    top:80px;
+    left: 0;
+    width: 100%;
+    display: flex;
+}
+.tab-bar-item{
+    flex: 1;
+    text-align: center;
+    line-height: 30px;
+    border: orange solid 1px;
+}
+.img{
+    width: 100%;
+}
+.active{
+    background: orange;
+}
+.content{
+    margin-top: 130px;
+}

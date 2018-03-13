@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script src="./loadImageAsync.js"></script>
+</html>
+<script>
+    // loadImageAsync('./img/banner1.jpg')  // 返回一个 promise
+    // .then((img)=>{ // 注册成功的回调
+    //     document.querySelector('body').appendChild(img);  // 成功的回调的内容
+    // },(error)=>{ // 注册失败的回调
+    //     throw error // 失败的回调的内容
+    // })
+
+   loadImagesAsync( ['./img/banner1.jpg','./img/banner2.jpg','./img/banner3.jpg','./img/banner4.jpg'] )
+   .then( (imageArr)=>{
+        imageArr.forEach(image => {
+            document.querySelector('body').appendChild(image); 
+        })
+   },(error)=>{
+        throw error;
+   } )
+   
+
+</script>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{ msg | uppercase(123) }}
+    </div>
+</body>
+<script src="./node_modules/vue/dist/vue.js"></script>
+</html>
+<script>
+    // 定义一个全局过滤器
+
+    Vue.filter( 'uppercase', function(data,params1){
+        console.log(params1);
+        const type = typeof data;
+        if(type !== 'string'){
+            throw new Error('The data type must be a string!')
+        } else {
+            data = data.toUpperCase()
+        }
+        return data;
+    } )
+
+
+    const vm = new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello filter!'
+            }
+        }
+    })
+    
+
+</script>

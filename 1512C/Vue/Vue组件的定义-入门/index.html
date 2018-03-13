@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <span v-text="msg"></span>
+
+        <item></item> 
+
+        <my-first-component></my-first-component>
+        
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+
+    // 定义组建 有3中方法
+
+    // 1 局部组件
+    /*
+        局部组件就是只能在当前js 文件使用的组件
+    */
+
+    // 2 全局组件
+    /*
+        全局组件 一旦定义 就会挂载在 Vue 原型上 可在全局任意地方使用  (任意js html 文件)
+    */
+
+    // 3 单文件组件
+
+    // 今天只讲2种
+
+
+
+    // 定义局部组件 
+
+    const item = { // 定义一个空对象
+        template:` <div>局部组件</div> ` // 里面有一个模版
+    }
+    // 此时 注册了吗？ 没有
+
+    // 定义全局组件  全局组件 不需要注册
+
+    Vue.component('myFirstComponent',{ // 定义好就可以直接用  myFirstComponent 是它的名字
+        // 用起来 就是 这样的 <my-first-component></my-first-component> 或者 <my-first-component/>
+        template:'<div>全局组件</div>'
+    })
+
+    // 下次详细的将 组件的定义 以及内部一些字段
+
+    // 这次只是了解一下
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello Vue Components!'// 组件
+            }
+        },
+        components:{ // 复数  可能有很多个 子 组件
+            // 在这里注册
+            item 
+            // 简写 相当于 item:item
+        }
+        
+    })
+
+
+</script>
