@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .top {
+            display: flex
+        }
+
+        .title {
+            flex: 1
+        }
+
+        .content {
+            flex: 1
+        }
+    </style>
+</head>
+
+<body ng-controller="main">
+    <input type="text" ng-model="searchVal"><span ng-click="search()">查询</span>
+    <div class="top">
+        <span style="text-align:center" ng-repeat="item in arr" class="title" ng-click="rank(item.value)">{{item.name}}</span>
+    </div>
+    <div class="content">
+        <table style="width:100%; text-align:center">
+            <tr ng-repeat="value in array | orderBy : option">
+                <td>{{value.code}}</td>
+                <td>{{value.name}}</td>
+                <td>{{value.price}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script src="./angular.js"></script>
+
+</html>
+<script>
+    angular.module('app', [])
+        .controller('main', ['$scope', function ($scope) {
+
+            $scope.arr = [{name:'产品编号',value:'code'}, {name:'产品名称',value:'name'}, {name:'产品价钱',value:'price'}];
+
+            var array = [
+                {
+                    code: '5555',
+                    name: 'phone1',
+                    price: '(rmb)4,000,00'
+                },
+                {
+                    code: '4444',
+                    name: 'phone2',
+                    price: '(rmb)5,000,00'
+                },
+                {
+                    code: '3333',
+                    name: 'phone3',
+                    price: '(rmb)1,000,00'
+                },
+                {
+                    code: '2222',
+                    name: 'phone4',
+                    price: '(rmb)2,000,00'
+                },
+                {
+                    code: '1111',
+                    name: 'phone5',
+                    price: '(rmb)1,000,00'
+                }
+            ]
+            $scope.array = array;
+            $scope.search = function () {
+                console.log($scope.searchVal);
+                var arr = [];
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i].code.indexOf($scope.searchVal) != -1 || array[i].name.indexOf($scope.searchVal) != -1 || array[i].price.indexOf($scope.searchVal) != -1)
+                        arr.push(array[i])
+                }
+                $scope.array = arr;
+            }
+            $scope.option = '';
+            $scope.rank= function(item){
+
+               $scope.option = $scope.option.charAt(0)=='-' ?  item : '-'+item;
+
+            }
+        }])
+
+</script>

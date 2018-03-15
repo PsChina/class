@@ -1,0 +1,167 @@
+.top {
+    width: 100%;
+    height: .45rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #438eb9
+}
+
+.content {
+    position: absolute;
+    top: .45rem;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+h1,h2,h3,h4,h5,h6{
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+.content-left {
+    width: 1.89rem;
+    height: 100%;
+    overflow: hidden;
+    float: left;
+    background: #f2f2f2;
+    margin-right: .3rem;
+}
+
+.content-right {
+    width: 100%;
+    height: 100%;
+    background: white;
+    padding: 0 .3rem;
+}
+
+img {
+    display: block;
+}
+
+.icon {
+    margin-top: .13rem;
+    margin-left: .22rem;
+    float: left;
+}
+
+.title {
+    float: left;
+    font-size: .2rem;
+    color: white;
+    line-height: .45rem;
+}
+
+.user {
+    float: right;
+    margin-right: .20rem;
+}
+
+.icon-user {
+    font-size: .30rem;
+    color: white;
+    float: left;
+}
+
+.caret {
+    color: white;
+    float: right;
+    margin-top: .2rem;
+    margin-right: .08rem;
+}
+
+/* 62a8d1 
+class="btn btn-primary"
+*/
+
+.userBtn {
+    width: 1.27rem;
+    line-height: .45rem;
+    background: #62a8d1;
+    outline: none;
+    border: none;
+    text-indent: .05rem;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    height: .45rem;
+}
+
+.dropdownBtnContent {
+    width: .7rem;
+    float: left;
+    height: .45rem;
+    color: white;
+}
+
+.wellcome {
+    line-height: 0.2rem;
+    font-size: .12rem;
+}
+
+.username {
+    line-height: 0.25rem;
+    font-size: .16rem;
+}
+
+.dropdown-menu {
+    width: 1.6rem!important;
+    position: absolute;
+    top: 100%;
+    left: -.3rem!important;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 1rem!important;
+    padding: 0!important;
+    margin: 0!important;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 0!important;
+    margin-top: -.06rem!important;
+}
+
+.dropdown-menu li {
+    margin: 0;
+    padding: 0;
+    line-height: .43rem!important;
+    text-align: center;
+}
+
+.dropdown-menu li a {
+    margin: 0;
+    padding: 0;
+    line-height: .43rem!important;
+}
+.left_title{
+    background: url(../img/gengduo_normal.png) no-repeat;
+    text-indent: .3rem;
+}
+.panel-collapse div{
+    background: white;
+    cursor: pointer
+}
+.panel-collapse div div:hover{
+    color: #acbcd6
+}
+.active{
+    color: #acbcd6
+}
+.contentright-top{
+    height: .5rem;
+    margin-bottom: .1rem;
+    border-bottom: 0.01rem dashed grey;
+    margin-top: .1rem;
+}

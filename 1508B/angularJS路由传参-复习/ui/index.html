@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    .active{
+        background: red
+    }
+    </style>
+</head>
+<body ng-controller="main">
+    <div ui-sref="a({key:[1,2,3]})" ui-sref-active="active">a</div>
+    <div ng-click="go('b')" ui-sref-active="active">b</div>
+    <div ui-sref="c" ui-sref-active="active">c</div>
+    <ui-view></ui-view>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-ui-router.js"></script>
+</html>
+<script>
+    angular.module('app',['ui.router'])
+            .controller('main',['$scope','$state',function($scope,$state){
+                $scope.msg = 'hello'
+                $scope.go = function(routeState){
+                    $state.go(routeState,{key:'value'});
+                    
+                }
+            }])
+            .config(['$stateProvider',function($stateProvider){
+                $stateProvider.state('a',{
+                    url:'/a',
+                    template:'<div>a{{msg}}</div>',
+                    controller:['$scope','$stateParams',function($scope,$stateParams){
+                        $scope.msg = $stateParams.key;
+                    }],
+                    params:{
+                        key:''
+                    }
+                })
+                .state('b',{
+                    url:'/b',
+                    template:'<div>b{{msg}}</div>',
+                    controller:['$scope','$stateParams',function($scope,$stateParams){
+                        $scope.msg = $stateParams
+                    }],
+                    params:{
+                        key:'123'
+                    }
+                })
+                .state('c',{
+                    url:'/c',
+                    template:'<div>c</div>'
+                })
+            }])
+            
+</script>

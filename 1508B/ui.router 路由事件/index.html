@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+    .active{
+        background: red;
+    }
+
+    </style>
+</head>
+<body ng-controller="main">
+    <div ui-sref="d" ui-sref-active="active">d</div>
+    <div ui-sref="a" ui-sref-active="active">a</div>
+    <div ui-sref="b" ui-sref-active="active">b</div>
+    <div ui-sref="c" ui-sref-active="active">c</div>
+    <ui-view></ui-view>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-ui-router.js"></script>
+<script src="./stateEvents.js"></script>
+</html>
+<script>
+    // ui.router 将路由事件 提取出来了 但是 ngRoute 并没有
+    angular.module('app',['ui.router','ui.router.state.events'])
+            .controller('main',['$scope',function($scope){
+                $scope.msg = 'hello'
+            }])
+            .config(['$stateProvider',function($stateProvider){
+
+                $stateProvider.state('a',{
+                    url:'/a',
+                    template:`<div>a</div>`
+                }).state('b',{
+                    url:'/b',
+                    template:`<div>b</div>`                    
+                }).state('c',{
+                    url:'/c',
+                    templateUrl:`<div>c</div>`                    
+                })
+
+            }])
+            .run(['$rootScope',function($rootScope){
+                $rootScope.$on('$stateChangeStart',function(event,currentRoute,currentParams,preRoute,preParams,options,allObj){
+                    
+                })
+                $rootScope.$on('$stateChangeCancel',function(){ // 暂时没法触发
+                    // 是 跳转开始后被终止触发
+                })
+                $rootScope.$on('$stateChangeSuccess',function(event,currentRoute,currentParams,preRoute,preParams,options,allObj){
+                    // 是 跳转成功后触发
+                    console.log(event.name);
+                })
+                $rootScope.$on('$stateChangeError',function(event,currentRoute,currentParams,preRoute,preParams,options,allObj,error){
+                    // 是 跳转失败后触发
+                    console.log(event.name);
+                })
+                $rootScope.$on('$stateNotFound',function(event,wantTo,preRoute,preParams){
+                    console.log('not found')
+                    console.log(arguments)
+                })
+            }])
+
+// $stateChangeStart;
+// $stateChangeCancel;
+// $stateChangeSuccess;
+// $stateChangeError;
+// $stateNotFound;            
+</script>

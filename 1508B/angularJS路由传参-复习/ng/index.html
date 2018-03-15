@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <a href="#!/a/value/20">a</a>
+    <a href="#!/b?key=value&age=20">b</a>
+    <a href="#!/c">c</a>      
+    <ng-view></ng-view>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-route.js"></script>
+</html>
+<script>
+    angular.module('app',['ngRoute'])
+            .controller('main',['$scope',function($scope){
+                $scope.msg = 'hello'
+            }])
+            .config(['$routeProvider',function($routeProvider){
+                $routeProvider.when('/a/:key/:age',{
+                    template:'<div>a{{msg}}</div>',
+                    controller:['$routeParams','$scope',function($routeParams,$scope){
+                        $scope.msg = $routeParams
+                    }]
+                })
+                .when('/b',{
+                    template:'<div>b</div>'
+                })
+                .when('/c',{
+                    template:'<div>c</div>'
+                })
+            }])
+</script>

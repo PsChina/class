@@ -1,0 +1,34 @@
+<div>
+    <style>
+        .discover-nav{
+            display: flex;
+            height: .8rem;
+        }
+        .discover-nav-item{
+            flex: 1;
+            text-align: center;
+            line-height: .8rem;
+            box-sizing: border-box;
+            color: #626463;
+            font-size: .28rem;
+        }
+        .discover-active{
+            border-bottom: 0.04rem solid #cd3d3d;
+            color: #cd3d3d;
+        }
+        .modeBtn{
+            font-size: .28rem;
+            line-height: .4rem;
+        }
+    </style>
+    <div class="discover-nav">
+            <div class="discover-nav-item" ui-sref="discoverMusic.gexing" ui-sref-active="discover-active">个性推荐</div>
+            <div class="discover-nav-item" ui-sref="discoverMusic.gedan" ui-sref-active="discover-active">歌单</div>
+            <div class="discover-nav-item" ui-sref="discoverMusic.diantai" ui-sref-active="discover-active">主播电台</div>
+            <div class="discover-nav-item" ui-sref="discoverMusic.paihang" ui-sref-active="discover-active">排行榜</div>
+    </div>
+    <ui-view></ui-view>
+    <div ng-touchend="playerManager.changeMode()" class="modeBtn">
+        {{currentMode}}
+    </div>
+</div>

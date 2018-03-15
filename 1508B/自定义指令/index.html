@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body ng-controller="main">
+
+    {{msg}}
+    <eiv a="fn()">
+        <eiv>
+
+</body>
+<script src="./angular.js"></script>
+
+</html>
+<script>
+
+    /*
+    <directive></directive>
+    <div class="directive"></div>
+    <!-- directive: directive -->
+    <div directive></div>
+    {
+        a:'='
+    }
+    */
+
+    angular.module('app', [])
+        .controller('main', ['$scope', '$timeout', function ($scope, $timeout) {
+            $scope.msg = 'hello'
+            $scope.bb = 'bb';
+            $timeout(function () {
+                $scope.msg = 'Hello World!'
+            }, 5000)
+            $scope.fn = function () {
+                console.log('点击了')
+            }
+        }])
+        .directive('eiv', [function () {
+            return {
+                restrict: 'ECMA',
+                template: `
+                <div>
+                <div ng-click="a()">自定义指令</div>
+                <div ng-repeat="i in [1,2,3]">{{i}}</div>
+                <other></other>
+                </div>
+                `,
+                replace: true,
+                scope: {
+                    a: '&'
+                },
+                controller: ['$scope', '$timeout', function ($scope, $timeout) {
+
+                    $timeout(function () {
+                        $scope.a = 'world';
+                    }, 3000)
+
+                }],
+                controllerAs: 'name',
+                link:function($scope,$element,$attributes){ //在 template 绑定到dom 之前的那一瞬间   提供了一link接口 给你修改这个dom
+                     //$element 是一个 简易的jQuery 对象 他是谁？ 就是你的template里面的dom元素 但是他是编译过后的
+                     $element.append('<div>我是后来追加的dom</div>').css({background:'red'})
+                     //$scope 他是这个指令所用到的scope 有可能是自己的也有可能是父作用域的
+                    
+                },
+                compile:function($element,$attributes){
+                    //在return 之前 这个阶段被叫做编译之前  或者说编译即将开始
+                    //$element 是 完全没有编译的dom
+                    console.log('父指令的return之前')
+                    console.log($element[0].innerHTML)
+                    return {
+                        pre:function($scope,$element,$attributes){ 
+                            console.log('父指令的pre')
+                            console.log($element[0].innerHTML)
+                            
+                            //$element是编译了父指令的dom 子指令没有被编译
+                        },
+                        post:function($scope,$element,$attributes){
+                            //$element是编译了父指令并且子指令也编译玩了的dom
+                            console.log('父指令的post')
+                            console.log($element[0].innerHTML)
+                            
+                        }
+                    }
+                }
+            }
+        }])
+        .directive('other',function(){
+            return{
+                restrict:'E',
+                template:'<div>我是子指令 <sunzi></sunzi></div>',
+                compile:function($element,$attributes){
+                    console.log('子指令的return之前')
+                    return {
+                        pre:function($scope,$element,$attributes){ 
+                            console.log('子指令的pre')
+                        },
+                        post:function($scope,$element,$attributes){
+                            console.log('子指令的post')
+                        }
+                    }
+                }
+            }
+        })
+        .directive('sunzi',function(){
+            return{
+                restrict:'E',
+                template:'<div>孙子</div>',
+                compile:function($element,$attributes){
+                    console.log('孙子指令的return之前')
+                    return {
+                        pre:function($scope,$element,$attributes){ 
+                            console.log('孙子指令的pre')
+                        },
+                        post:function($scope,$element,$attributes){
+                            console.log('孙子指令的post')
+                        }
+                    }
+                }
+            }
+        })
+
+
+</script>

@@ -1,0 +1,108 @@
+html,body{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-size: .32rem;
+}
+img{
+    outline: 0;
+    padding: 0;
+    margin: 0;
+    display: block;
+}
+.top{
+    background: #cd3d3d;
+    width: 100%;
+    height: 1rem;
+    display: flex;
+}
+.top-item{
+    float: left;
+    font-size: .5rem;
+    flex: 1.646;
+    text-align: center;
+    line-height: 1rem;
+    color: #df8f8e;
+}
+.left-bar,.right-bar{
+    flex: 1.53;
+    line-height: 1rem;
+    text-align: center;
+    font-size:.5rem;
+    color: white;
+}
+.gap{
+    flex: 1;
+}
+.active {
+    color: white;
+}
+.player{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1rem;
+    background-color: rgba(255, 255, 255, .6);
+    display: flex;
+}
+.player-left{
+    flex: 7;
+}
+.player-right{
+    flex: 3;
+}
+.song-icon{
+    width: .8rem;
+    height: .8rem;
+    margin-left: .15rem;
+    margin-top: .1rem;
+    float: left;
+}
+.song-msg{
+    float: left;
+    margin-left: .1rem;
+}
+.song-name{
+    font-size: .28rem;
+    color: #333;
+    line-height: .5rem;
+}
+.singer{
+    font-size: .18rem;
+    color: #848484;
+    line-height: .5rem;    
+}
+.icon-bofang , .icon-stop{
+    width: 1rem;
+    line-height: 1rem;
+    color: #c83d38;
+    font-size: .62rem;
+    float: right;
+}
+.icon-quanjuxiayiqu{
+    width: .7rem;
+    line-height:1rem;
+    color: #c83d38;
+    font-size: .34rem;
+    float: right;
+    margin-right: .1rem;
+}
+.progressBar{
+    width: 100%;
+    height: .35rem;
+    position: fixed;
+    left: 0;
+    bottom: 1rem;
+    z-index: 1;
+}
+.currentProgress{
+    position: absolute;
+    left: 0;
+    bottom: .05rem;
+    height: .02rem;
+    background: #c83d38;
+    width: 0;
+    z-index: -1;
+}

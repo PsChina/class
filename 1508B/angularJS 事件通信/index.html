@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <div ng-controller="A">这里是控制器A{{msgFromB}}</div>
+    <div ng-controller="B">这里是控制器B 
+        <input type="text" ng-model="message">
+        <button ng-click="send()">发送给A</button>
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope',function($scope){
+                $scope.msg = 'hello'
+                $scope.$on('buttonDidClick',function(event,params1){
+                    console.log('父作用域收到信息开始广播')
+                    $scope.$broadcast('buttonDidClickDelegate',params1)
+                    
+                })
+
+            }])
+            .controller('A',['$scope',function($scope){
+                $scope.$on('buttonDidClickDelegate',function(event,params1){
+                    console.log('A收到广播')
+                    $scope.msgFromB = params1
+                })
+            }])
+            .controller('B',['$scope',function($scope){
+
+                $scope.send = function(){
+                    //发送给A
+                    console.log('B开始发消息 把'+$scope.message+'发送给A')
+
+                    $scope.$emit('buttonDidClick',$scope.message)
+
+                }
+            }])
+            .run(['$rootScope',function($rootScope){
+                $rootScope.$on('buttonDidClick',function(event,params1){
+                    console.log('rootScope也收到了'+params1+'但是不做代理')
+                })
+            }])
+
+            // 如何实现 -> 使用 $emit  $broadcast $on 来实现
+            // 这些方法在哪里  都是什么意思
+
+            // 这三个方法存在于 $scope || $rootScope 下 也就是说 是他们的属性
+
+            // $emit 事件冒泡 就是把一个事件 从底层发送至顶层的过程
+
+            // $broadcast 事件广播 就是把一个事件送顶层发送到 每个独立底层的一个过程
+
+            // $on 事件监听 就是根据一个事件名称来监听这个事件 是否被触发
+
+
+</script>

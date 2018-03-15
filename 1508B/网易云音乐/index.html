@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=.5, minimum-scale=0.5, maximum-scale=0.5,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/iconfont.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/ionic.css">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <div class="top">
+        <div class="iconfont icon-lisimoshicaidandaohang left-bar"></div>
+        <div class="gap"></div>
+
+        <div class="iconfont icon-wangyiyunyinlezizhi-copy top-item" ui-sref="discoverMusic" ui-sref-active="active"></div>
+
+        <div class="iconfont icon-yinle1 top-item" ui-sref="localMusic" ui-sref-active="active"></div>
+
+        <div class="iconfont icon-yonghuzu top-item" ui-sref="friends" ui-sref-active="active"></div>
+
+        <div class="gap"></div>
+        <div class="iconfont icon-sousuo_sousuo right-bar"></div>
+    </div>
+    <ui-view></ui-view>
+    <div class="player">
+        <div class="player-left">
+            <img class="song-icon" ng-src="{{imgIcon}}" alt="">
+            <div class="song-msg">
+                <div class="song-name" >{{songName}}</div>
+                <div class="singer" >{{singer}}</div>
+            </div>
+        </div>
+        <div class="progressBar" ng-touchstart='playerManager.fingerTouch($event)' ng-touchmove="playerManager.fingerMove($event)" ng-touchend="playerManager.fingerLeve($event)">
+            <div class="currentProgress" get-dom="bar">
+
+            </div>
+        </div>
+        <div class="player-right">
+            <div class="iconfont icon-quanjuxiayiqu" ng-click="playerManager.nextSong()"></div>
+            <div class="iconfont" ng-class="playBtnClass" ng-click="playerManager.playOrPause()"></div>
+            <audio src="" id="player" style="display:none"></audio>
+        </div>
+    </div>
+    <!-- 
+        图片大小 .8rem
+        left:15
+        top:10
+
+        歌曲名 fontsize:.28  #333333
+        歌手名 .18 #848484
+
+        播放按钮 font-size:.62rem #c83d38 size: 100,100
+        下一曲:.34 #c83d38 size:70,100
+
+     -->
+</body>
+    <script src="./js/common/angular.js"></script>
+    <script src="./js/common/angular-ui-router.js"></script>
+    <script src="./js/ionic/ionic.bundle.js"></script>
+    <script src="./js/ionic/ionic.js"></script>
+    <script src="./js/ionic/ionic-angular.js"></script>
+    <script src="./bundle/bundle-5b22af2265.js"></script>
+</html>

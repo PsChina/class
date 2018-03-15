@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 80px;
+        }
+
+        .box {
+            height: 80px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .item {
+            width: 80px;
+            height: 80px;
+            float: left;
+            text-align: center;
+            line-height: 80px;
+            margin: 0 5px;
+            border: 1px solid #000
+        }
+
+        .active {
+            background: red;
+        }
+    </style>
+</head>
+
+<body ng-controller="main">
+
+    <div class="content" style="text-align:center;">
+        {{data}}
+    </div>
+    <div class="box">
+        <div class="item" ng-click="goPre()">上一页</div>
+        <div class="item" ng-class="[firstBtn]" ng-click="go(1)">1</div>
+        <div class="item" ng-show="pre">...</div>
+        <div class="item" ng-repeat="value in array" ng-click="go(value)" ng-class="[{{'btn'+value}}]">{{value}}</div>
+        <div class="item" ng-show="next">...</div>
+        <div class="item" ng-class="[lastBtn]" ng-click="go(maxPage)" ng-show="maxPage>1">{{maxPage}}</div>
+        <div class="item" ng-click="goNext()">下一页</div>
+    </div>
+
+</body>
+<script src="./angular.js"></script>
+
+</html>
+<script>
+    angular.module('app', [])
+        .controller('main', ['$scope', function ($scope) {
+            $scope.data = '默认数据'
+
+            $scope.maxPage = 8;
+
+            var arr=[];
+
+            if($scope.maxPage<6&&$scope.maxPage>2){
+                arr = new Array($scope.maxPage-2)
+                $scope.next = false;
+            }
+            
+            if($scope.maxPage>=6){
+                arr = new Array(4);
+            
+            }
+            
+            if($scope.maxPage>6){
+                $scope.pre = false;  //去掉前面的...
+                $scope.next = true;  //打开后面的...                    
+            }
+
+            for (var i = 0, length = arr.length; i < length; i++) {
+                arr[i] = i + 2;
+            }
+            
+            $scope.array = arr;
+            $scope.firstBtn = 'active' //默认选中第一页
+            $scope.currentPage = 1;
+
+            $scope.go = function (currentPage) {
+
+                console.log('发送网络请求 请求页面'+currentPage+'的数据')
+                $scope.data = currentPage;
+
+                $scope.currentPage = currentPage;
+                // console.log(currentPage)
+
+                //清除静态按钮的高亮
+                $scope.firstBtn = '';
+                $scope.lastBtn = '';
+                //清除动态按钮的类名
+                for (var i = 0, length = arr.length; i < length; i++) {
+                    $scope['btn' + $scope.array[i]] = '';
+                }
+                if (currentPage == 1) { //点击了第一页
+                    $scope.firstBtn = 'active';
+                    $scope.pre = false;
+                    if($scope.maxPage-2>4){
+                    $scope.next = true;
+                    }
+                    for (var i = 0, length = arr.length; i < length; i++) {
+                        arr[i] = i + 2;
+                    }
+
+                } else if (currentPage == $scope.maxPage) { //点击了最大页
+                    $scope.lastBtn = 'active';
+
+                    //打开前边的省略 后面的省略号关闭
+                    if($scope.maxPage-2>4){
+                        $scope.pre = true;
+                    }
+                    $scope.next = false;
+
+                    for (var i = arr.length - 1; i >= 0; i--) {
+                        arr[i] = $scope.maxPage - (arr.length - i)
+                    }
+                    $scope.array = arr;
+
+
+                } else if (currentPage > 0) { //点击了动态页
+                    $scope['btn' + currentPage] = 'active'       
+          
+                    if (currentPage == $scope.array[0]&&currentPage>2) { //第一个动态按钮
+                       
+                        for (var i = 0, length = arr.length; i < length; i++) {
+                            $scope.array[i] = $scope.array[i] - 1;
+                        }
+                        $scope.next = true;
+                        if(currentPage<=3){
+                            $scope.pre=false;
+                        }
+
+                    } else if (currentPage == $scope.array[$scope.array.length - 1]&&currentPage<$scope.maxPage-1) { //最后一个动态按钮
+                    
+                        for (var i = 0, length = arr.length; i < length; i++) {
+                            $scope.array[i] = $scope.array[i] + 1;
+                        }
+                        $scope.pre = true;
+                        if(currentPage>=$scope.maxPage-2){
+                            $scope.next = false;
+                        }
+                    }
+
+                    
+                }
+
+            }
+            $scope.goPre=function(){
+                var currentPage = --$scope.currentPage
+                if(currentPage>0){
+                    $scope.go(currentPage)
+                }else{
+                    $scope.currentPage = 1;
+                }
+                
+
+            }
+            $scope.goNext = function(){
+                var currentPage = ++$scope.currentPage
+                if(currentPage<=$scope.maxPage){
+                    $scope.go(currentPage)
+                }else{
+                    $scope.currentPage = $scope.maxPage;
+                }
+                
+            }
+        }])
+
+</script>

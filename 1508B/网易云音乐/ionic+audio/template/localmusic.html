@@ -1,0 +1,44 @@
+<div>
+    <style>
+        .listItem{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .item-left{
+            display: flex;
+            justify-content: space-between;
+        }
+        .item-icon{
+            width: .8rem;
+            height: .8rem;
+            margin-left: .1rem;
+            margin-top: .1rem;
+        }
+        .item-msg{
+            height: 1rem;
+        }
+        .item-name{
+            line-height: .5rem;
+            font-size: .3rem;
+            color: #333;
+        }
+        .item-singer{
+            line-height: .5rem;
+            font-size: .26rem;
+            color: #666;
+        }
+    </style>
+    <div class="listItem" ng-repeat="song in playerManager.songList" ng-touchend="playerManager.playSongWithIndex($index)">
+        <div class="item-left">
+            <img class="item-icon" ng-src="{{song.icon}}" alt="">
+            <div class="item-msg">
+                <div class="item-name">{{song.name}}</div>
+                <div class="item-singer">{{song.singer}}</div>
+            </div>
+        </div>
+        <!-- <div>
+            <div class="iconfont" ng-class="playBtnClass" ng-click="playerManager.playOrPause($index)"></div>
+        </div> -->
+    </div>
+</div>
