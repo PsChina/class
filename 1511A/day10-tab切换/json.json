@@ -1,0 +1,27 @@
+[
+    {
+        "type":"凉菜",
+        "value":[
+            {"name":"拍黄瓜","price":18},
+            {"name":"拍黄瓜","price":18},
+            {"name":"拍黄瓜","price":18},
+            {"name":"拍黄瓜","price":18}
+            ]
+    },{
+        "type":"热菜",
+        "value":[
+            {"name":"热拍黄瓜","price":17},
+            {"name":"热拍黄瓜","price":17},
+            {"name":"热拍黄瓜","price":17},
+            {"name":"热拍黄瓜","price":17}
+            ]
+    },{
+        "type":"甜点",
+        "value":[
+            {"name":"甜拍黄瓜","price":16},
+            {"name":"甜拍黄瓜","price":16},
+            {"name":"甜拍黄瓜","price":16},
+            {"name":"甜拍黄瓜","price":16}
+            ]
+    }
+]

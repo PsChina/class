@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{ msg }}
+        <item :arr="array" :obj="object"></item>
+       
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    // 局部组件的注册
+    const componentA = {  // 字面量 新建局部组件
+        template:'<div>我是局部组件</div>'
+    }
+
+    // 这是 全局组件
+    Vue.component('item',{
+        props:['arr','obj'],
+        template:`
+        <div>
+        <div>来自父组件的数据: <span v-text="arr"></span> <span v-text="obj"></span> </div>
+        item组件 <span v-text="msg"></span>
+        <button @click="click">按钮</button>
+        <component-a></component-a>
+        </div>
+        `,
+        data(){
+            return {
+                msg:'组件内部数据',
+                count:0
+            }
+        },
+        methods:{
+            click(){
+                this.msg="按钮点击了"+ ++this.count +'次.';
+            }
+        },
+        beforeCreate(){
+            console.log('创建之前')
+        },
+        components:{ // 将局部组件注册到 父组件中
+           componentA
+        }
+    })
+
+
+
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello',
+                array:[{},{},{},{},{}],
+                object:{a:'a'}
+            }
+        },
+        components:{
+            myfirstcompon:componentA
+        }
+    })
+</script>

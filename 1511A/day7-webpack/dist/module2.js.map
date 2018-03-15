@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./src/js/entry2.js"],"names":[],"mappings":";;;;;;;AAAA;AAAA;AAAA;;AAEA;;AAEA,+E","file":"module2.js","sourcesContent":["console.log(2);\r\n\r\nimport $ from 'jquery';\r\n\r\n$('body').append('<div>模块2</div>')\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./src/js/entry2.js\n// module id = 2\n// module chunks = 2"],"sourceRoot":""}

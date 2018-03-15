@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model.number="a">
+        <input type="text" v-model.number="b">
+        {{ a+b }}
+        <hr>
+        <!-- 去除左右空格 -->
+        <input type="text" v-model.trim="c">
+        <input type="text" v-model="c">
+        <span>{{c}}</span>
+        <hr>
+        <!-- lazy -->
+        <input type="text" v-model.lazy="d">
+        <input type="text" v-model="d">
+        {{d}}
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                a:0,
+                b:0,
+                msg:'Hello',
+                c:'123',
+                d:0,
+                e:0
+            }
+        },
+        watch:{
+            c(newVal){
+                console.log(newVal.length)
+            },
+            d(newVal){
+                console.log(newVal)
+            }
+        }
+    })
+
+</script>

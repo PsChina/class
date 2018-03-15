@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 对象的遍历 -->
+        <div v-for="(value,key) in obj"> {{ key+':' }} {{value}}</div>
+        <div>---------------------------------------------------分割线</div>
+        <!-- 整数的迭代 -->
+        <div v-for="(n,index) in 10"> <span v-text="index"></span> <span v-text="n"></span> </div>
+        <div>---------------------------------------------------分割线</div>
+        <!-- 组件的迭代 -->
+        <item v-for="(n,index) in 5" :value="n" :key="index"></item>
+        <div>---------------------------------------------------分割线</div>
+        <!-- v-for with v-if -->
+        <div v-for="n in 5" v-if="n>3"> {{n}} </div>
+        <hr>
+        <!-- 变异方法 与 非变异方法 -->
+        <div v-for="value in array"> {{ value }} </div>
+        <div @click="changeArrayValue">非变异</div>
+        <div @click="changeValue">变异方法</div>
+        <!-- 
+        变异方法有:
+        push()
+        pop()
+        shift()
+        unshift()
+        splice()
+        sort()
+        reverse()
+        非变异方法 总是返回新数组 
+        例如：filter(), concat() 和 slice()
+         -->
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script> 
+// 注册全局 组件
+    Vue.component('item',{ 
+        props:['value'],
+        template:'<div v-text="value"></div>'
+    })
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                obj:{a:'a',s:'b',d:'c'},
+                array:[9,8,7,6,5]
+            }
+        },
+        methods:{
+            changeArrayValue(){
+                this.array[0] = 10000;
+                console.log(this.array)
+            },
+            changeValue(){
+                this.array.splice(0,1,10000);
+                console.log(this.array)
+            }
+        }
+    })
+</script>

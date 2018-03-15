@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+           {{msg}} 
+           <!-- .stop
+           .prevent
+           .capture
+           .self
+           .once -->
+
+           <!-- stop -->
+           <div @click="click">
+                父元素 对照组
+                <div @click="click">子元素对照组</div>
+            </div>
+           <div @click="click">
+               父元素 实验组
+               <div @click.stop="click">子元素实验组</div>
+           </div>
+           <hr>
+           <!-- prevent -->
+           <!-- 阻止默认行为 -->
+           
+           <!-- capture 捕获 -->
+           <div @click="father">
+                capture 对照组
+                <div @click="son">子元素对照组</div>
+            </div>
+           <div @click.capture="father">
+                capture 实验组
+               <div @click.capture="son">子元素实验组</div>
+           </div>
+           <hr> 
+           <!-- self -->
+           <div @click="father">
+                self 对照组
+                <div @click="son">子元素对照组</div>
+            </div>
+           <div @click.self="father">
+                self 实验组
+               <div @click.self="son">子元素实验组</div>
+           </div>
+           <hr>
+           <!-- once -->
+           <div @click="father">
+                once 对照组
+            </div>
+           <div @click.once="father">
+                once 实验组
+           </div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'hello'
+            }
+        },
+        methods:{
+            click(event){
+                console.log(event.target,'did click')
+            },
+            son(){
+                console.log('son')
+            },
+            father(){
+                console.log('father')
+            }
+        }
+    })
+
+</script>

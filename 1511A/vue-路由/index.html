@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>这是个假路由</title>
+</head>
+<body>
+    <div id="app">
+        {{ msg }}
+        <router-link :to="'/'" :text="'home'"></router-link>
+        <router-link :to="'/about'" :text="'about'"></router-link>
+        <router-link :to="'/me'" :text="'me'"></router-link>
+        <route-view></route-view>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+
+//  这是个假路由
+
+    const home = {
+        template:'<div>主页</div>'
+    }
+    const about = {
+        template:'<div>about</div>'
+    }
+    const me = {
+        template:'<div>me</div>'
+    }
+
+    
+    const router = {
+        '/':home,
+        '/about':about,
+        '/me':me
+    }
+
+var fn;
+
+    const routeView = {
+        data(){
+            return{
+                currentRoute:window.location.hash.split('#')[1]
+            }
+        },
+        computed:{
+            getComponentView(){
+                return router[this.currentRoute] || {template:'<div>Not fount!</div>'}
+            }
+        },
+        render(h){
+            fn = h;
+            return h( this.getComponentView )
+        }
+    }
+
+    const routerLink = {
+        props:['to','text'],
+        template:'<span v-text="text" @click="go"></span>',
+        methods:{
+            go(){
+                console.log('go',this.to)
+                window.location.hash = '#'+this.to;
+                window.location.reload();
+            }
+        }
+    }
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello simple router!'
+            }
+        },
+        components:{
+            routeView,routerLink
+        }
+    })
+</script>

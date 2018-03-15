@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style lang="">
+        html,body{
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body id="body">
+    
+</body>
+<script src="./async&await.js"></script>
+</html>
+<script>
+
+
+    class Xiala{
+        constructor(imageArr){
+            this.addTouchStart();
+            this.addTouchMove();
+            this.addTouchEnd(imageArr);
+        }
+        addTouchStart(){
+            body.addEventListener('touchstart',function(event){
+                console.log(event.touches[0].pageY)
+                window.startY = event.touches[0].pageY;
+            })
+        }
+        addTouchMove(){
+            body.addEventListener('touchmove',function(event){
+                console.log(event.touches[0].pageY)
+                window.endY = event.touches[0].pageY;
+            })            
+        }
+        addTouchEnd(imageArr){
+            body.addEventListener('touchend',function(event){
+                let distance = window.endY - window.startY ;
+            if( distance >0 ){
+                console.log('下拉')
+            }else {
+                distance = Math.abs(distance);
+                console.log('上拉')
+                console.log(distance < window.screen.height*(2/3),distance > window.screen.height/3)
+                if( distance < window.screen.height*(2/3)  && distance > window.screen.height/3 ){
+                        console.log( '111111' )
+                        loadImageAsync(imageArr[Math.floor(Math.random()*4)]).then((image)=>{
+                            image.style.width = '100%'
+                            body.appendChild(image);
+                        },(error)=>{
+                            throw new Error(error)
+                        })
+                }else if( distance >= window.screen.height*(2/3) ) {
+                        console.log( '222222' )
+                        loadImagesAsync(imageArr).then((images)=>{
+                            for( let image of images){
+                                image.style.width = '100%'
+                                body.appendChild(image);
+                            }
+                        },(error)=>{
+                            throw new Error(error)
+                        })
+                }
+            }
+            })            
+        }
+    }
+    const imageArr = ['./img/banner1.jpg','./img/banner2.jpg','./img/banner3.jpg','./img/banner4.jpg']
+    new Xiala(imageArr);
+</script>

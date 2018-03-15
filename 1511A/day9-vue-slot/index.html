@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <test> 
+            <div slot="title">头部</div>   
+            <div slot="footer">脚部</div> 
+        </test>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+
+    Vue.component('test',{
+        template:`<div>  
+                    <slot name="title"></slot>
+                     组件   
+                     <slot name="footer"></slot>    
+                  </div>`
+    })
+
+    new Vue({
+        el:'#app'
+    })
+
+</script>

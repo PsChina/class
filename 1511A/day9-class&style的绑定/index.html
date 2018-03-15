@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style lang="">
+        .bg{
+            background: green
+        }
+        .color{
+            color: orange
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- class数组语法 -->
+        <div v-bind:class="[classA,classB]">
+            {{ msg }}
+        </div>
+        <!-- class对象语法 -->
+        <div v-bind:class="{ bg:ok,color:true }">
+            <!-- 对象用法 key名必须是已经存在的 classname 值为true就生效 false 不生效 -->
+            {{ msg }}
+        </div>
+        <!-- class组件语法 -->
+        <son v-bind:class="[classA,{color:ok}]" v-bind:msg="msg"></son>
+
+        <!-- style的绑定 -->
+        <!-- style对象语法 -->
+        <div :style='{background:"red"}'>123</div>
+        <div :style='obj'>123</div>
+        <!-- 数组语法 -->
+        <div :style="[obj,obj2]">123</div>
+        <!-- 自动添加前缀 -->
+        <div :style="obj3">123</div>
+        <!-- 多重值 -->
+        <div :style="{display:['-webkit-box', '-ms-flexbox', 'flex']}">123</div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+
+    Vue.component('son',{
+        template:'<div>{{msg}}</div>',
+        props:['msg']
+    })
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello',
+                classA:'bg',
+                classB:'color',
+                ok:true,
+                obj:{color:"red"},
+                obj2:{background:'green'},
+                obj3:{userSelect:'none'}
+            }
+        }
+    })
+</script>

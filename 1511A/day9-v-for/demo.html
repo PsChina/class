@@ -1,0 +1,20 @@
+<html>
+    <div id="app">
+        <item v-for="(val,index) in array" :value="val">
+           
+        </item>
+    </div>   
+    <script src="./vue.js"></script> 
+</html>
+<script>
+    Vue.component('item',{ 
+        props:['value'],
+        template:'<div v-text="value"></div>'
+    })
+    new Vue({
+        el:'#app',
+        data:{
+            array:['苹果','梨子','香蕉']
+        }
+    })    
+</script>

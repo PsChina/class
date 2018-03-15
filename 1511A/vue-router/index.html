@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <router-link :to="'/'" tag="span">主页</router-link>
+        <router-link :to="'/about'" tag="span">关于</router-link>
+        <router-link :to="'/me'" tag="span">我</router-link>
+        <router-view></router-view>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script src="./vue-router.js"></script>
+</html>
+<script>
+
+    // Vue.use(VueRouter);
+
+    const home = {
+        template:'<div>主页</div>'
+    }
+    const about = {
+        template:'<div>about</div>'
+    }
+    const me = {
+        template:'<div>me</div>'
+    }
+    
+    const routes = [
+        { path:'/',component:home},
+        { path:'/about',component:about},
+        { path:'/me',component:me}
+    ]
+
+    const router = new VueRouter({
+        routes
+    })
+
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello'
+            }
+        },
+        router
+    })
+
+
+    //1 npm i vue  vue-router
+    //2 touch index.html
+    //3 src vue
+    //4 src vue-router
+    //5 new Vue
+    //6 const 路由组件 1，2，3
+    //7 const 路由对象 包含了三个组件 const routes = [{path:'/',component:home} ...]
+    //8 const router = new VueRouter({ routes:routes })
+    //9 new Vue({router:router})
+    //10 html router-link 以及 router-view
+</script>

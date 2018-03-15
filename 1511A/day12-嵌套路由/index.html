@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style lang="">
+        body,html{
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        #app{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .app-active{
+            background: pink;
+        }
+        .home-active{
+            background: green;
+        }
+        .tab-bar{
+            display: flex;
+            height: 80px;
+        }
+        .tab-bar-item{
+            flex: 1;
+            text-align: center;
+            line-height: 80px;
+            height: 80px;
+        }
+        .home-nav{
+            display: flex;
+            height: 50px;
+            line-height: 50px;
+        }
+        .home-nav-item{
+            flex: 1;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <router-view></router-view>
+        <div class="tab-bar">
+            <router-link active-class="app-active" class="tab-bar-item" tag="span" to="/home" v-text="home"></router-link>
+            <router-link active-class="app-active" class="tab-bar-item" tag="span" to="/about" v-text="about"></router-link>
+            <router-link active-class="app-active" class="tab-bar-item" tag="span" to="/me" v-text="me"></router-link>
+        </div>
+
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script src="./vue-router.js"></script>
+</html>
+<script>
+
+const myView = {
+    props:{
+        num:{
+            type:[Number], // 必须是 number
+            require:true // 必须传递这个参数
+        }
+    },
+    template:'<div><span>{{num}}</span><button @click="changeVal">改变值</button></div>',
+    methods:{
+        changeVal(){
+            this.$emit('changNumber',this.num - 1);
+        }
+    }
+}
+
+const home = {
+    data(){
+        return {
+            homeRoutes:[{text:'卧室',path:'/home/bedroom'},{text:'餐厅',path:'/home/diningroom'},{text:'阳台',path:'/home/balcony'}]
+        }
+    },
+    template:`
+    <div>
+        <div class="home-nav">
+                <router-link 
+                 class="home-nav-item" 
+                 active-class="home-active" 
+                 tag="span" 
+                 :to="homeRoute.path" 
+                 v-text="homeRoute.text" 
+                 v-for="homeRoute in homeRoutes" 
+                 :key="homeRoute.path">
+                 
+                </router-link>
+        </div>
+        <router-view></router-view>
+    </div>    
+    `
+}    
+const about = {
+    template:'<div>about</div>'
+} 
+const me = {
+    template:'<div>me</div>'
+} 
+
+const bedroom = {
+    data(){
+        return{
+            number:100
+        }
+    },
+    template:'<div>bedroom {{number}}<my-view :num="number" @changNumber="fn"></my-view></div>',
+    components:{
+        myView
+    },
+    methods:{
+        fn(val){
+            this.number = val;
+        }
+    }
+}
+
+const balcony = {
+    template:'<div>balcony</div>'
+}
+
+const diningroom = {
+    template:'<div>diningroom</div>'
+}
+
+const Routes = [
+    { path:'*',redirect:'/home' }, // otherwise 跳到home去
+    { path:'/home',
+      component:home,
+      children:[
+            { path:'',redirect:'/home/diningroom' },
+            { path:'bedroom',component:bedroom },
+            { path:'balcony',component:balcony },
+            { path:'diningroom',component:diningroom }
+        ] },
+    { path:'/about',component:about },
+    { path:'/me',component:me }
+]
+
+const Router = new VueRouter({
+    routes:Routes
+})
+
+new Vue({
+        el:'#app',
+        data(){
+           return {
+               msg:'Hello world!',
+               home:'首页',
+               about:'关于',
+               me:'我'
+           }
+        },
+        router:Router
+    })
+
+</script>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style lang="">
+        .bg{
+            background: green
+        }
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <!-- <input type="password" v-model="first">
+        <input type="password" v-model="second">
+        <div v-if="first!==second">两次密码不一致</div>
+        <div v-else-if="lengthOk()">密码长度不能小于6位</div>
+        <div v-else > ✔ </div>
+
+      
+
+        <div v-show="true">123</div>
+        <div v-if="true">123</div>
+
+        <div v-for="(value,index) in array" v-text="value.innerText" :style="value.style" :key="index"></div>
+
+        <div v-once>
+            <div>{{msg}}</div>
+        </div>
+
+        <div v-pre>{{msg}}</div> -->
+
+        <div v-cloak>{{msg}}</div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+
+   const vm = new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'只会渲染一次',
+                number:7,
+                first:false,
+                second:false,
+                array:[{
+                    innerText:'红',
+                    style:{
+                        background:'red'
+                    }
+                },{
+                    innerText:'橙',
+                    style:{
+                        background:'orange'
+                    }
+                },{
+                    innerText:3,
+                    style:{
+                        background:'yellow'
+                    }
+                },{
+                    innerText:4,
+                    style:{
+                        background:'green'
+                    }
+                },{
+                    innerText:5,
+                    style:{
+                        background:'limegreen'
+                    }
+                },{
+                    innerText:6,
+                    style:{
+                        background:'blue'
+                    }
+                },{
+                    innerText:7,
+                    style:{
+                        background:'purple'
+                    }
+                }]
+            }
+        },
+        methods:{
+            lengthOk(){
+
+                if(this.first['length']){
+                    console.log(this.first.length , this.first.length<6)
+                    return this.first.length<6
+                }else{
+                    console.log(this.first.length , this.first.length>6)
+                    return true
+                }
+                
+            }
+        }
+    })
+</script>

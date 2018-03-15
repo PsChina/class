@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+           <!--
+            .enter
+            .tab
+            .delete (捕获“删除”和“退格”键)
+            .esc
+            .space
+            .up
+            .down
+            .left
+            .right
+             -->
+             <label for="">任意按键生效 <input type="text" @keydown="keydown" /> </label>
+             <hr>
+             <label for="">回车键生效 <input type="text" @keydown.enter="keydown" /> </label>
+             <hr>
+             <label for="">删除或者退格键生效 <input type="text" @keydown.delete="keydown" /> </label>
+             <hr>
+             <label for="">esc键生效 <input type="text" @keydown.esc="keydown" /> </label>
+             <hr>
+             <label for="">space键生效 <input type="text" @keydown.space="keydown" /> </label>
+             <hr>
+             <label for="">up键生效 <input type="text" @keydown.up="keydown" /> </label>
+             <hr>
+             <label for="">down键生效 <input type="text" @keydown.down="keydown" /> </label>
+             <hr>
+             <label for="">left键生效 <input type="text" @keydown.left="keydown" /> </label>
+             <hr>
+             <label for="">right键生效 <input type="text" @keydown.right="keydown" /> </label>
+             <hr>
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'hello'
+            }
+        },
+        methods:{
+            keydown(event){
+                console.log(`on key down! @${event.keyCode}`)
+            }
+        }
+    })
+
+</script>

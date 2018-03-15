@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{ msg }}
+        <com1></com1>
+        <com2></com2>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script src="./bus.js"></script>
+</html>
+<script>
+    Vue.component('com1',{
+        template:`
+        <div>
+        <div>组件1</div>
+        <input v-model="value" />
+        <div @click="sendMeaageToCom2">改变组件二的值</div>
+        </div>
+        `,
+        data(){
+            return {
+                value:0
+            }
+        },
+        methods:{
+            sendMeaageToCom2(){
+                this.bus.$emit('hi Com2 i give you a little',this.value)
+            }
+        }
+    })
+    Vue.component('com2',{
+        template:`
+        <div>
+        <div>组件2</div>
+        <div>来自组件1的值{{message}}</div>
+        </div>
+        `,
+        data(){
+            return{
+                message:0
+            }
+        },
+        created(){
+            this.bus.$on('hi Com2 i give you a little',(val)=>{
+                this.message = val;
+            })
+        }
+    })
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello'
+            }
+        }
+    })
+</script>

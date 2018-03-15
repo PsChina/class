@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>app</title>
+  </head>
+  <body>
+    <div id="app">
+
+    </div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
+<script>
+    //三大框架实现响应式的原理
+//differ 算法  是 react 的核心算法
+//vue 是基于 重写setter  getter 器 的  基于 Object.defineProperty
+//angular 是基于 脏检查的
+/*
+   var dom = document.createElement('div');
+
+   vdom =  { // js 对象  支持 differ 算法  响应式
+    tag: 'div',
+    // Component props
+    props: {
+      msg: 'hi'
+    },
+    // normal HTML attributes
+    attrs: {
+      id: 'foo'
+    },
+    // DOM props
+    domProps: {
+      innerHTML: 'bar'
+    },
+    // Event handlers are nested under "on", though
+    // modifiers such as in v-on:keyup.enter are not
+    // supported. You'll have to manually check the
+    // keyCode in the handler instead.
+    on: {
+      click: this.clickHandler
+    },
+    // For components only. Allows you to listen to
+    // native events, rather than events emitted from
+    // the component using vm.$emit.
+    nativeOn: {
+      click: this.nativeClickHandler
+    },
+    // class is a special module, same API as `v-bind:class`
+    class: {
+      foo: true,
+      bar: false
+    },
+    // style is also same as `v-bind:style`
+    style: {
+      color: 'red',
+      fontSize: '14px'
+    },
+    // other special top-level properties
+    key: 'key',
+    ref: 'ref',
+    // assign the `ref` is used on elements/components with v-for
+    refInFor: true,
+    slot: 'slot'
+  }
+
+
+  function createElement(vdom){
+    var dom = document.createElement(vdom['tag']);
+    for ( var key in vdom['attrs'] ){
+        dom[key] = vdom['attrs'][key];
+    }
+    for ( var key in vdom['domProps'] ){
+        dom[key] = vdom['domProps'][key];
+    }
+    for ( var key in vdom['nativeOn'] ){
+        dom.addEventListener(key,vdom['nativeOn'][key])
+    }
+    for ( var key in vdom['style'] ){
+        //opacity
+        dom.style[key] = vdom['style'][key];
+    }
+    return dom;
+  }
+  */
+</script>

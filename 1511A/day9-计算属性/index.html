@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="a">
+        <input type="text" v-model.number="b">
+        {{ methodsSum() }}
+        {{ computedSum }}
+        {{ watchSum }}
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    
+    const vm = new Vue({
+        el:'#app',
+        data(){
+            return {
+                a:123,
+                b:-20,
+                watchSum:0
+            }
+        },
+        computed:{
+            computedSum(){
+                console.log('computed did run')
+                return  this.a  + this.b;
+            }
+        },
+        methods:{
+            methodsSum(){
+                console.log('methods did run')
+                return  this.a + this.b;
+            }
+        },
+        watch:{
+            a(newVal,oldVal){
+                this.watchSum = newVal + this.b;
+            },
+            b(newVal,oldVal){
+                if(newVal>=0){
+                    clearInterval(this.timer)
+                }
+                this.watchSum = this.a + newVal;
+            }
+        },
+        created(){
+            const _this = this;
+            this.timer = setInterval(function(){
+                _this.b++;
+                console.log(_this.b)
+            },1000)
+        }
+    })
+</script>

@@ -1,0 +1,22 @@
+[
+    {
+        "text": "外卖",
+        "path": "/takeout",
+        "icon": "icon-changyonglogo40"
+    },
+    {
+        "text": "分类",
+        "path": "/classify",
+        "icon": "icon-fenlei"
+    },
+    {
+        "text": "订单",
+        "path": "/order",
+        "icon": "icon-icon-"
+    },
+    {
+        "text": "我的",
+        "path": "/my",
+        "icon": "icon-home"
+    }
+]

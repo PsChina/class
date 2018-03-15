@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue生命周期函数</title>
+</head>
+
+<body>
+    <div id="app">
+        <span v-text="msg"></span>
+        
+        <keep-alive>
+            <son v-if="flag"></son>
+        </keep-alive>
+        
+        <div v-on:click="deleteSon" v-text="constValue"></div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+
+</html>
+<script>
+    // class Vue{
+    //     static component(){
+
+    //     }
+    //     constructor(){
+    //         this.beforeCreate()
+
+    //     }
+    //     beforeCreate(){
+
+    //     }
+    // }
+
+    Vue.component('son', {  // 静态方法 只能用类名来调用的方法 (全局的组件)
+        template: `
+            <div>
+            <div>子组件 {{number}}</div>
+            <div v-on:click="add">加一</div>
+            </div>
+       `,
+        data() {
+            return {
+                number: 0
+            }
+        },
+        methods: {
+            add() {
+                this.number += 1;
+            }
+        },
+        beforeCreate() { // vue 实例 并没有被创建
+            console.log('创建之前');
+        },
+        created() {
+            console.log('已经创建');
+        },
+        beforeMount() {
+            console.log('挂载之前')
+        },
+        mounted() {
+            console.log('已经挂载')
+        },
+        beforeUpdate() {
+            console.log('更新之前')
+        },
+        updated() {
+            console.log('已经更新')
+        },
+        beforeDestroy() {
+            console.log('销毁之前')
+        },
+        destroyed() {
+            console.log('已经销毁')
+        },
+        activated() {
+            console.log('激活')
+        },
+        deactivated() {
+            console.log('失效')
+        }
+    })
+
+    const vm = new Vue({ //构造器
+        // el: '#app',
+        data() {
+            return {
+                msg: 'Hello',
+                flag:true,
+                constValue:'卸载/安装 子组件'
+            }
+        },
+        methods:{
+            deleteSon(){
+                this.flag = !this.flag;
+            }
+        },
+        errorCaptured(event,$$vm,errorType){
+            console.log('出错了')
+            // 处理错误
+           
+                return false
+           
+            
+        }
+    })
+    // 生命周期 
+</script>

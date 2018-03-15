@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+
+<body>
+	<div id="app">
+		<div v-if="flag" class="box" v-slipleft="fn" :style="{width:'100%',height:'200px',background:'orange'}">{{msg}}</div>
+		<button @click="changeMsg">改变msg</button>
+		<div @click="flag=!flag">卸载子组件</div>
+	</div>
+</body>
+<script src="./vue.js"></script>
+
+</html>
+<script>
+	const Vue = {}
+	Vue.directive('slipup', {
+		bind: function (el, binding, vnode) {
+			const gestureManager = {}
+			function start(event) {
+				gestureManager.startPoint = [event.touches[0].pageX, event.touches[0].pageY]
+
+			}
+			function move(event) {
+				gestureManager.endPoint = [event.touches[0].pageX, event.touches[0].pageY]
+
+			}
+			function end(event) {
+				//    const distanceX= gestureManager.startPoint[0] - gestureManager.endPoint[0];
+				const distanceY = gestureManager.startPoint[1] - gestureManager.endPoint[1]
+				if (distanceY > 30) {
+					binding.value()
+				}
+
+			}
+			el.addEventListener('touchstart', start)
+			el.addEventListener('touchmove', move)
+			el.addEventListener('touchend', end)
+
+			// console.log('绑定的时候触发')
+		}
+	})
+	Vue.directive('slipleft', {
+		bind: function (el, binding, vnode) {
+			const gestureManager = {}
+			function start(event) {
+				gestureManager.startPoint = [event.touches[0].pageX, event.touches[0].pageY]
+
+			}
+			function move(event) {
+				gestureManager.endPoint = [event.touches[0].pageX, event.touches[0].pageY]
+
+			}
+			function end(event) {
+				const distanceX = gestureManager.startPoint[0] - gestureManager.endPoint[0];
+				//    const distanceY= gestureManager.startPoint[1] - gestureManager.endPoint[1];
+				if (distanceX > 30) {
+					binding.value()
+				}
+
+			}
+			el.addEventListener('touchstart', start)
+			el.addEventListener('touchmove', move)
+			el.addEventListener('touchend', end)
+
+			console.log(binding)
+			// console.log('绑定的时候触发')
+		}
+	})
+	Vue.directive('slipdown', {
+		bind: function (el, binding, vnode) {
+			const gestureManager = {}
+			function start(event) {
+				gestureManager.startPoint = [event.touches[0].pageX, event.touches[0].pageY]
+
+			}
+			function move(event) {
+				gestureManager.endPoint = [event.touches[0].pageX, event.touches[0].pageY]
+
+			}
+			function end(event) {
+				//    const distanceX= gestureManager.startPoint[0] - gestureManager.endPoint[0];
+				const distanceY = gestureManager.startPoint[1] - gestureManager.endPoint[1];
+				if (distanceY < -30) {
+					binding.value()
+				}
+
+			}
+			el.addEventListener('touchstart', start)
+			el.addEventListener('touchmove', move)
+			el.addEventListener('touchend', end)
+
+			// console.log('绑定的时候触发')
+		}
+	})
+	Vue.directive('slipright', {
+		bind: function (el, binding, vnode) {
+			const gestureManager = {}
+			function start(event) {
+				gestureManager.startPoint = [event.touches[0].pageX, event.touches[0].pageY]
+			}
+			function move(event) {
+				gestureManager.endPoint = [event.touches[0].pageX, event.touches[0].pageY]
+			}
+			function end(event) {
+				const distanceX = gestureManager.startPoint[0] - gestureManager.endPoint[0];
+				//    const distanceY= gestureManager.startPoint[1] - gestureManager.endPoint[1];
+				if (distanceX < -30) {
+					binding.value()
+				}
+
+			}
+			el.addEventListener('touchstart', start)
+			el.addEventListener('touchmove', move)
+			el.addEventListener('touchend', end)
+
+			// console.log('绑定的时候触发')
+		},
+		inserted: function (el, binding, vnode, preVnode) {
+			// console.log('插入父节点时触发',arguments)
+		},
+		update: function (el, binding, vnode, preVnode) {
+			// console.log('当前的 vnode 更新完触发',arguments);
+		},
+		componentUpdated: function (el, binding, vnode, preVnode) {
+			// console.log('当前的 vnode 以及 子 vnode 全部更新完触发',arguments);
+		},
+		unbind: function (el, binding, vnode, preVnode) {
+			// console.log('指令从vnode上解绑时触发',arguments)
+		}
+	})
+
+	new Vue({
+		el: '#app',
+		data() {
+			return {
+				msg: 'Hello',
+				flag: true
+			}
+		},
+		methods: {
+			fn() {
+				// 目前没有实现
+				console.log('向左滑动')
+			},
+			changeMsg() {
+				this.msg = 'msg has changed!'
+			}
+		}
+	})
+
+    // 自定义指令 钩子函数
+/*
+        bind:function(el,binding,vnode){
+        },
+        inserted: function (el,binding,vnode,preVnode) {
+            // console.log('插入父节点时触发',arguments)
+        },
+        update: function (el,binding,vnode,preVnode) {
+            // console.log('当前的 vnode 更新完触发',arguments);
+        },
+        componentUpdated: function (el,binding,vnode,preVnode) {
+            // console.log('当前的 vnode 以及 子 vnode 全部更新完触发',arguments);
+        },
+        unbind: function (el,binding,vnode,preVnode) {
+            // console.log('指令从vnode上解绑时触发',arguments)
+        }  
+*/
+</script>

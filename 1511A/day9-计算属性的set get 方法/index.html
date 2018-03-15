@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{ message }}
+    </div>
+</body>
+<script src="./vue.js"></script>
+</html>
+<script>
+    //vue 是一个 不完全的  mvvm 框架 其中 Vue实例相当于 vm view-model
+    const vm =new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello'
+            }
+        },
+        computed:{
+            message:{
+                set(val){
+                    this.msg = val+'lala';
+                },
+                get(){
+                    return this.msg.toUpperCase()
+                }
+            }
+        }
+    })
+</script>
