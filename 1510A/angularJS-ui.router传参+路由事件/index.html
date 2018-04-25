@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .tabBar {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            height: 80px;
+            display: flex;
+            width: 100%;
+            background: yellowgreen
+        }
+
+        .tabBarItem {
+            flex: 1;
+            text-align: center;
+            line-height: 80px;
+        }
+
+        .content {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 80px;
+        }
+
+        .active {
+            background: orange;
+            color: white
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body ng-controller="main">
+
+    <ui-view class="content"></ui-view>
+
+    <div class="tabBar">
+        <div ng-click='open("home",{"key":"1"})' ng-class=" currentRouteName.indexOf('home')!=-1 ? 'active' : '' " class="tabBarItem">home</div>
+        <div ng-click='open("shoe",{"key":"2"})' ng-class=" currentRouteName.indexOf('shoe')!=-1 ? 'active' : '' " class="tabBarItem" >shoe</div>
+        <div ng-click='open("phone",{"key":"3"})' ng-class=" currentRouteName.indexOf('phone')!=-1 ? 'active' : '' " class="tabBarItem" >phone</div>
+    </div>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-ui-router.js"></script>
+<script src="./stateEvents.js"></script>
+</html>
+<script>
+    angular.module('app', ['ui.router','ui.router.state.events'])
+        .controller('main', ['$scope','$state', function ($scope,$state) {
+            $scope.path = '';
+            $scope.msg = 'Hello world!'
+            $scope.open = function(routerName,params){
+                $state.go(routerName,params);
+            }
+            $scope.$on('$stateChangeSuccess',function(event,currentRoute,currentRouteParams,previousRoute,previousRouteParams){
+                $scope.currentRouteName = currentRoute.name
+            })
+        
+        }])
+        .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+            //$stateProvider 用于配置路由
+            //$urlRouterProvider 用于配置默认页
+            $urlRouterProvider.otherwise('/home')
+            $urlRouterProvider.when('/home','/home/about')
+            
+            $stateProvider.state('home', {
+                url: '/home',
+                templateUrl: './home.html',
+                    controller:['$stateParams','$scope',function($stateParams,$scope){
+                        $scope.p = $stateParams.key;
+                    }],
+                    params:{  // ui route 的配置
+                        key:''
+                    },
+                })
+                .state('shoe', {
+                    url: '/shoe',
+                    template: '<div>shoe{{p}}</div>',
+                    params:{  // ui route 的配置
+                        key:''
+                    },
+                    controller:['$stateParams','$scope',function($stateParams,$scope){
+                        $scope.p = $stateParams.key;
+                    }]
+                })
+                .state('phone', {
+                    url: '/phone',
+                    template: '<div>phone{{p}}</div>',
+                    controller:['$stateParams','$scope',function($stateParams,$scope){
+                        $scope.p = $stateParams.key;
+                    }],
+                    params:{  // ui route 的配置
+                        key:''
+                    },
+                })
+                .state('home.about',{
+                    url:'/about',
+                    template: '<div>about</div>'
+                })
+                .state('home.concat',{
+                    url:'/concat',
+                    template: '<div>concat</div>'
+                })
+                .state('home.join',{
+                    url:'/join',
+                    template: '<div>join</div>'
+                })
+                
+        }])
+</script>

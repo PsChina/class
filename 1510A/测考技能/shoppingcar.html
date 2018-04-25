@@ -1,0 +1,18 @@
+<div>
+    <style>
+        .shoppingCarBox {
+            display: flex;
+            background: yellowgreen
+        }
+
+        .shoppingCarItem {
+            flex: 1;
+            line-height: 50px;
+            text-align: center;
+        }
+    </style>
+    <div ng-repeat="shoppingCar in list | filter : {select:true}" class="shoppingCarBox">
+        <div class="shoppingCarItem">{{shoppingCar.name}}</div>
+        <div class="shoppingCarItem">{{shoppingCar.price}}</div>
+    </div>
+</div>

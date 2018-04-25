@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .redbg {
+            background: red;
+        }
+
+        .skybulebg {
+            background: skyblue;
+        }
+
+        .box {
+            display: flex
+        }
+
+        .box div {
+            flex: 1
+        }
+    </style>
+</head>
+
+<body ng-controller="controller">
+    <!-- <input type="text" ng-model="msg"> -->
+    <div ng-bind="msg">
+
+    </div>
+    <div>
+        {{msg}}
+    </div>
+
+    <div ng-show="show">
+        我是ng-show
+    </div>
+    <div ng-hide="show">
+        我是ng-hide
+    </div>
+    <div ng-if="show" ng-class="myClass">
+        我是ng-if
+    </div>
+    <div onclick="fn()" ng-click="fn()">
+        我是按钮
+    </div>
+    <div ng-click="changeFn()">
+        改变fn 的按钮
+    </div>
+
+    <div class="box" ng-repeat='item in arr'>
+        <div>{{item.name}}</div>
+        <div>{{item.price}}</div>
+        <div ng-click="delete(item.name)">删除</div>
+    </div>
+    <div ng-repeat="value in array track by $index">
+        {{value}}
+    </div>
+    <input type="text" ng-model="n" ng-change="changeVal()">
+    <div>{{way}}</div>
+    <div ng-style="{background:n ? 'green' : 'orange',fontSize:n?'100px':'16px'}">我是ng-style</div>
+    <img ng-src="{{path}}" alt="">
+    <a ng-href="{{url}}" ng-init="name='百度'">{{name}}</a>
+    <button ng-click="changePage()">跳到网易</button>
+    <input type="checkbox" ng-disable="{{flage}}" />
+    <div ng-click="flage = !flage;">改变选中状态</div>
+    
+
+    <script type="text/ng-template" id="template">
+        <div>我是组件1</div>
+        <p>...</p>
+    </script>
+
+    <div ng-include="'template'"></div>
+</body>
+<script src="./angular.js"></script>
+
+</html>
+<script>
+    var fn = function () {  //污染全局变量
+        console.log('我是原生js的fn')
+    }
+    /*
+        function SingletonInstance() { //单个实例
+            if (!SingletonInstance.self) {
+                this.name = 'zhangsan';
+                this.age = 18
+                SingletonInstance.self = this;
+            } else {
+                return SingletonInstance.self;
+            }
+        }
+    
+        var instanceA = new SingletonInstance();
+    
+        var instanceB = new SingletonInstance();
+    
+        console.log(instanceA===instanceB) 
+        instanceA.name = '王麻子'
+        instanceB.name = '二狗子'
+        console.log(instanceA,instanceB)
+    
+    
+        function Instance(){
+            this.name = 'lisi'; //申请内存空间
+            this.age = 19;      //申请内存空间
+        }
+    
+        var lisi1 = new Instance();
+    
+        var lisi2 = new Instance();
+    
+        console.log(lisi1===lisi2)
+        lisi1.name = 'wangwu'
+        lisi2.name = 'zhaoliu'
+        console.log(lisi1,lisi2)
+    */
+
+    angular.module('app', [])
+        .controller('controller', ['$scope', function ($scope) { //$scope是model 层
+            $scope.msg = 'Hello angular!' //它是一个容器 用于存放数据
+            $scope.show = true;
+            $scope.ind = 10;
+            $scope.ascending = function () {
+                return $scope.ind++;
+            }
+            $scope.fn = function () {
+                console.log('我是angularjs model层的fn')
+                if ($scope.myClass == 'redbg') {
+                    $scope.myClass = 'skybulebg'
+                } else {
+                    $scope.myClass = 'redbg'
+                }
+
+            }
+            $scope.myClass = 'redbg'
+            $scope.changeFn = function () {
+                $scope.fn = function () {
+                    console.log('我是改变后的fn')
+                }
+                fn = function () {
+                    console.log('我是改变后的原生fn')
+                }
+            }
+            console.log($scope)
+            $scope.delete = function (name) {
+                console.log(name)
+
+                angular.forEach($scope.arr, function (item, index, arr) {
+                    if (item.name == name) {
+                        $scope.arr.splice(index, 1);
+                    }
+                })
+
+            }
+            $scope.way = 0;
+            function frogJump(n){
+                if(n==0){
+                    return
+                }
+                if (n == 1) {
+                    return 1
+                } else if (n == 2) {
+                    return 2
+                } else {
+                    return frogJump(n - 1) + frogJump(n - 2)
+                }
+
+            }
+            $scope.changeVal = function(){
+                $scope.way = frogJump($scope.n);
+            }
+
+            $scope.arr = [{
+                name: "商品1",
+                price: .1
+            }, {
+                name: "商品2",
+                price: .2
+            }, {
+                name: "商品3",
+                price: .3
+            }, {
+                name: "商品4",
+                price: .4
+            }]
+            $scope.array = [1, 2, 3, 4, 4];
+            $scope.path = './image.png'
+            $scope.url = 'http://www.baidu.com'
+            $scope.changePage = function(){
+                $scope.name = '网易'
+                $scope.url = 'http://www.163.com'
+            }
+        }])
+
+    // {{}} 语法 被很多框架使用 比如 vue react 微信小程序
+    // 它能将数据绑定到这个花括号所在的元素的innerText 上 同时获取到这个元素保存在内存中等下次要用的时候直接使用不需要查询dom
+    // 它的功能和 ng-bind是一样的
+
+    // ng-app 在元素上定义一个 ng-app 属性  让他有一个值 比如 ng-app="app"
+    // 当你在某个双标签元素上使用了它的时候 这个元素所包裹范围内可以使用angular 的其他指令 否则这些指令将不会生效
+    // ng-app 它规定了angular 的管理边界。
+
+    // ng-controller 控制器
+    // 这个指令用来规定 控制器的管理边界 我们知道控制器 提供了 view 和 model的 通信桥梁 也就是说
+    // 控制器的范围有多大 model 起作用的范围就有多大
+
+    // ng-model 用于表单元素 input textarea select option 
+    // 这个指令会直接的操作 model 它会直接在 $scope上新建一个属性 并且双向绑定
+
+    // ng-show 这个指令控制元素显示 或 隐藏  通过修改 display block none 来实现
+    // ng-hide 这个指令控制元素隐藏 或 显示  通过修改 display block none 来实现
+    // ng-if   这个指令控制元素是否 存在 通过删除节点创建并绑定节点来实现的
+
+    // ng-click 用来代替 onclick的 
+    // ng-repeat 这个指令 根据数组里面存储的数据来渲染 重复的dom结构 ng-repeat="value in array";
+    // 通过$index 来获取索引
+
+// 村子里有 50个人 每个人有 1 只狗
+// 村子里有病狗
+// 所以人们决定找出病狗然后杀掉
+// 病不会传染
+// 没人每天能观察一次它的狗 但不能看自己的
+// 假设每个人都聪明决定能一眼就看出是否是病狗
+// 发现病狗后不能告诉狗主人 并且在推断出自己的狗是病狗的时候要立即开枪杀死自己的狗
+// 第一天 第二天 都没有枪声 第三天传来一阵枪声 请问有几条病狗。
+
+    // ng-style 是用来代替 style 行内样式的 与之不同的地方是 ng-style 可以进行逻辑运算和变量绑定，而style 只能将任何东西识别为字符串
+    // 需要注意的是 我们的angular 框架 它虽然支持在网页上进行逻辑运算 但是它只支持弱逻辑运算
+    // 并不支持强逻辑运算，
+    // 弱逻辑预算 A ? B : C   、 > = == === != !== < <= >= ! && ||
+    // 但是不支持 & | ^  Math.floor() 
+
+
+
+
+</script>

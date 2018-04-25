@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+        <!-- <div ng-class="ngView"></div> -->
+
+        <a href="#!/home">home</a> 
+        <a href="#!/phone">phone</a>
+        <a href="#!/shoe">shoe</a>
+        <ng-view></ng-view>
+
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-route.js"></script>
+</html>
+<script>
+    angular.module('app',['ngRoute'])
+           .controller('main',['$scope',function($scope){
+
+           }])
+           .config(['$routeProvider',function($routeProvider){ // 配置
+                $routeProvider.when('/home',{
+                    templateUrl:'./home.html',
+                    controller:['other',function(other){
+                        this.data = '模拟数据模拟数据'
+                        other();
+                    }],
+                    controllerAs:'routeHomeController',
+                    // redirectTo:'/shoe',
+                    resolve:{  // 预加载
+                        other:[function(){
+                            return function(){
+                                console.log('局部服务')
+                            }
+                        }]
+                    }
+                })
+                .when('/shoe',{
+                    templateUrl:'./shoe.html',
+                    controller:[function(){
+
+                    }],
+                    controllerAs:'routeShoeController'                    
+                })
+                .when('/phone',{
+                    templateUrl:'./phone.html',
+                    controller:[function(){
+
+                    }],
+                    controllerAs:'routePhoneController'                    
+                })
+                .otherwise('/home') //默认页面
+                
+           }]) 
+
+</script>

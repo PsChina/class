@@ -1,0 +1,38 @@
+<div> <!-- 根元素 -->
+    <style>
+        .active{
+            background: red;
+        }
+        .box{
+            display: flex
+        }
+        .left{
+            flex: 2
+        }
+        .right{
+            flex: 8
+        }
+        .right-item{
+            display: flex
+        }
+        .name{
+            flex: 1
+        }
+        .price{
+            flex: 1
+        }
+        .select{
+            background: green;
+        }
+    </style>
+    <div class="box">
+        <div class="left">
+            <div ng-repeat="cai in result" ng-click="fn(cai.value,$index)" ng-class="$index == index ? 'active' : '' ">{{cai.title}}</div>
+        </div>
+        <div class="right">
+           <div ng-repeat="food in cailist" class="right-item" ng-class="food.select ? 'select' : ''" ng-click="food.select = !food.select; local.foodlist = JSON.stringify(result)">
+                <div class="name">{{food.name}}</div> <div class="price">{{food.price | currency:'¥'}}</div>
+           </div>
+        </div>
+    </div>
+</div>

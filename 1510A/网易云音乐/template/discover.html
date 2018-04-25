@@ -1,0 +1,33 @@
+<div>
+    <style>
+        .discover-header{
+            width: 100%;
+            height: .8rem;
+            display: flex;
+            background-color: white;
+        }
+        .discover-header-item{
+            flex: 1;
+            line-height: .8rem;
+            text-align: center;
+        }
+        .discover-header-active{
+            color:#cd3d3d;
+            box-sizing: border-box;
+            border-bottom: .04rem solid #cd3d3d;
+        }
+    </style>
+    <div>
+        <div class="discover-header">
+            <div 
+            ng-repeat="item in appConst.itemList" 
+            class="discover-header-item" 
+            ui-sref="{{item.routerName}}"
+            ui-sref-active="discover-header-active"
+            >
+                {{item.name}}
+            </div>
+        </div>
+        <ui-view></ui-view>
+    </div>
+</div>

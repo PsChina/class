@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{msg}}
+    <div ng-controller="controllerB"></div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+
+    angular.module('app',[])
+           .controller('main',['$scope','$rootScope','$http','$timeout','$interval','$location',function($scope,$rootScope,$http,$timeout,$interval,$location){
+               $scope.msg = 'hello'
+               $scope // model 层 MVC =>  mvvm   c=>vm   MV*
+               $scope.fn = function(){
+
+               } 
+
+            //    $http({
+            //        url:'',
+            //        method:'POST',
+            //        data:{
+
+            //        }
+            //    }).then(function(result){
+            //         console.log(result.data)
+            //    },function(error){
+            //        console.log('出错了')
+            //         console.log(error)
+            //    })
+
+               var id =  $timeout(function(){
+                   $scope.msg = 'world';
+               },1000)
+
+               $timeout.cancel(id);  //clearTimeout
+
+               var id2 = $interval(function(){
+                   console.log(1);
+               },1000)
+
+               $interval.cancel(id2) //clearInterval
+
+            //    $location.url('/home')
+            //    console.log($location.search(),$location.hash())
+            console.log($location)
+
+           }])
+           .controller('controllerB',['$scope',function(){
+                
+           }])
+           .run(['$rootScope',function(a){
+                a.msg = 'aaabbccc';
+           }])
+    // function a(){
+    //     console.log(a);
+    // }
+    // 服务 的本质是  一个对象 或者是 一个函数
+    // 内置服务 就是 angularJS 里面的 已经实现了的服务
+
+</script>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <div ui-sref="a({id:1})">a</div>
+    <div ui-sref="b({id:2})">b</div>
+    <ui-view></ui-view>
+</body>
+    <script src="./angular.js"></script>
+    <script src="./angular-ui-router.js"></script>
+</html>
+<script>
+    angular.module('app',['ui.router'])
+            .controller('main',['$scope',function($scope){
+                $scope.msg = 'hello'
+            }])
+            .config(['$stateProvider',function($stateProvider){
+                $stateProvider.state('a',{
+                    url:'/a',
+                    controller:['$scope','$stateParams','$state','getData',function($scope,$stateParams,$state,getData){
+                        // $scope.data = $stateParams.id;
+                        $scope.goBack = function(){
+                            $state.go('home');
+                        }
+
+                        $scope.data = getData($stateParams.id);
+                    }],
+                    templateUrl:'template.html',
+                    params:{
+                        id:0
+                    },
+                    resolve:{
+                        getData:['$http',function($http){
+                            return function(id){
+                                $http({
+                                    url:'http://localhost:3000/detail?id='+id
+                                })
+                                .then(function(result){
+                                    return result.data
+                                },function(error){
+                                    throw new Error(error);
+                                    return -1;
+                                })
+                            }
+                        }]  
+                    }
+                })
+                .state('b',{
+                    url:'/b',
+                    controller:['$scope','$stateParams','$state',function($scope,$stateParams,$state){
+                        $scope.data = $stateParams.id;
+                        $scope.goBack = function(){
+                            $state.go('home');
+                        }
+                    }],
+                    templateUrl:'template.html',
+                    params:{
+                        id:0
+                    },
+                    resolve:{
+                        getData:[function(){
+
+                        }]
+                    }
+                })
+                .state('home',{
+                    url:'/home',
+                    templateUrl:'./home.html'
+                })
+            }])
+</script>

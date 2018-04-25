@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <a ng-click="goTo('/home/home/0123')">home</a>  <!-- 传递 -->
+    <a href="#!/shoe/shoe/002">shoe</a>
+    <a href="#!/phone/phone/003">phone</a>
+    <a href="#!/other?key1=i'm other">other</a>
+    <ng-view></ng-view>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-route.js"></script>
+</html>
+<script>
+    angular.module('app',['ngRoute'])
+           .controller('main',['$scope','$location',function($scope,$location){
+                $scope.msg = 'Hello world!'
+                $scope.goTo = function(path){
+                    $location.url(path)
+                }
+           }])
+           .config(['$routeProvider',function($routeProvider){
+                $routeProvider.when('/home/:key1/:key2',{ //配置传参
+                    templateUrl:'./template.html',
+                    controller:['$routeParams','$scope',function($routeParams,$scope){ //接收
+                        console.log($routeParams);
+                        $scope.params = $routeParams;
+                    }]
+                }).when('/shoe/:key1/:key2',{
+                    templateUrl:'./template.html',
+                    controller:['$routeParams','$scope',function($routeParams,$scope){ //接收
+                        console.log($routeParams);
+                        $scope.params = $routeParams;
+                    }]
+                }).when('/phone/:key1/:key2',{
+                    templateUrl:'./template.html',
+                    controller:['$routeParams','$scope',function($routeParams,$scope){ //接收
+                        console.log($routeParams);
+                        $scope.params = $routeParams;
+                    }]
+                }).when('/other',{
+                    template:'<div>other{{params}}<div>',
+                    controller:['$scope','$location',function($scope,$location){
+                        $scope.params = $location.search()
+                    }]
+                })
+           }])
+</script>

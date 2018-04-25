@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/ionic.css">
+    <style>
+    .bannerImg{
+        width: 100%;
+        height: auto;
+    }
+    </style>
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+{{msg}}
+<ion-slide-box 
+on-slide-changed="slideHasChanged($index)" 
+auto-play="true" 
+does-continue="true" 
+pager-click="goTo(index)" 
+slide-interval="2000">
+
+  <ion-slide ng-repeat="src in pathArr">
+
+    <img class="bannerImg" ng-src="{{src}}" alt="">
+
+  </ion-slide>
+
+</ion-slide-box>
+</body>
+<script src="./js/angular.js"></script>
+<script src="./js/angular-ui-router.js"></script>
+<script src="./js/ionic.bundle.js"></script>
+<script src="./js/ionic.js"></script>
+<script src="./js/ionic-angular.js"></script>
+</html>
+<script>
+    angular.module('app',['ui.router','ionic'])
+            .controller('main',['$scope',function($scope){
+              
+            }])
+</script>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{msg}}
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+           .controller('main',['$scope','constant','$log','factory','service','provider',function($scope,constant,$log,factory,service,provider){
+                $scope.msg = constant.a
+                $log('123')
+                factory()
+                $log(service)
+                $log(provider)
+           }])
+           .constant('constant',{ //定义常量 可以定义对象 也可以定义函数 方便复用她们  复用=> 重复使用
+               a:'a',
+               b:'b'
+           })
+           .value('$log',function(value){ // 除了不能在 config 内注入 其他的和 constant 一样只是不建议定义常量
+                console.log(value)
+           })
+           .factory('factory',[function(){ // 返回普通函数  但是 你也可以返回对象
+
+               return function(){
+                   console.log("i'm factory")
+               }
+           }])
+           .service('service',[function(){ // 构造函数
+
+                this.name = 'zhangsan'
+
+           }])
+           .provider('provider',function(){
+
+            // this.$get = function(){
+            //        return new function(){ 
+            //             this.name = 'lisi'
+            //        }
+            //    }
+            
+            // this.$get = function(){
+            //        return function(){ 
+            //             return {
+            //                 name:'lisi'
+            //             }
+            //        }
+            //    }
+
+                // return {
+                //     $get:[function(){
+                //         return new function(){
+                //             this.name = '';
+                //         }
+                //     }]
+                // }
+
+                return {
+                    $get:function(){
+                        return function(){
+                            console.log('factory')
+                        }
+                    }
+                }
+
+           })
+</script>

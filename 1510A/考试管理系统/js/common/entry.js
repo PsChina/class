@@ -1,0 +1,10 @@
+require('./controller/mainController');
+require('./directive/header');
+require('./directive/body');
+require('./directive/body-left');
+require('./directive/body-right');
+require('./service/constant');
+require('./directive/pagecontrol');
+require('./app');
+require('../base/rem')(13.66);
+angular.bootstrap(document.documentElement,['bootstrapApp'])

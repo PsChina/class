@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body ng-controller="main">
+    {{msg}} {{BB}}
+    <tab a="AA" b="{{BB}}" c="CC()"></tab>
+
+    <!-- 
+    <p class="tab"></p>
+    <div tab></div>
+     -->
+    <!-- directive: tab-->
+
+</body>
+<script src="./angular.js"></script>
+
+</html>
+<script>
+    angular.module('app', [])
+        .controller('main', ['$scope', '$timeout', function ($scope, $timeout) {
+            $scope.msg = 'Hello world!'
+
+            $scope.AA = 'aaaa';
+            $scope.BB = 'bbbb';
+            $scope.CC = function () {
+                console.log('cccccc')
+            }
+
+            $timeout(function () {
+                $scope.BB = '二狗子'
+            }, 1000)
+
+        }])
+        .run(['$rootScope', function ($rootScope) {
+            $rootScope.aa = '11'
+        }])
+        .directive('subDirective', [function () {
+            return {
+                restrict:'E',
+                template: '<p>rdgdfhfgh</p>',
+                compile: function () {
+                    console.log('子指令的预编译阶段')
+                    return {
+                        pre: function () {
+                            console.log('我是子指令的pre')
+                        },
+                        post: function () {
+                            console.log('我是子指令的post')
+                        }
+                    }
+                }
+            }
+        }])
+        .directive('tab', [function () {
+            return {
+                restrict: 'ECMA',  // E Element C Class M(注释) A Attribute
+                template: '<div ng-click="fnnnnnn()">123 {{b}} <sub-directive></sub-directive> </div>',
+                replace: true, //默认是false 是否替换 父元素。
+                priority: 1, //默认是0 优先级越高 越早执行。
+                controller: ['$scope', '$timeout', function ($scope, $timeout) {
+                    console.log($scope.msg = 'hello directiv');
+                    $timeout(function () {
+                        $scope.b = '王麻子'
+                    }, 2000)
+                    $scope.fnnnnnn = function () {
+                        console.log('点击了')
+                    }
+                }],
+                scope: {
+                    a: '=',//双向绑定
+                    b: '@',//单向绑定
+                    c: '&' //传递function 专用的一个符号
+                },
+                compile: function ($element, $attribute) {  // 编译
+                    // 预编译
+                    console.log('父指令的预编译阶段')
+                    $element.css({
+                        background: 'red'
+                    })
+                    console.log($attribute['ngClick'])
+                    return {
+                        pre: function ($scope,$element, $attribute) { //将编译子指令 preLink 即将编译子指令
+                            console.log('父指令的pre阶段')
+                        },
+                        post: function ($scope,$element, $attribute) { //子指令编译完成 postLink
+                            console.log('父指令的post阶段')
+                        }
+                    }
+                },
+                link:function($scope,$element, $attribute){ //相当与 compile 里面的最后一个post
+                    console.log('我是link')
+                }
+            }
+        }])
+</script>

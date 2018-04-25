@@ -1,0 +1,38 @@
+<div>
+    <style>
+        .nav {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            display: flex;
+            background: gray;
+            color: white
+        }
+
+        .navItem {
+            flex: 1;
+            text-align: center;
+            line-height: 50px;
+        }
+        .navActive {
+            background: pink;
+            color: skyblue;
+        }
+        .homeContent{
+            position: absolute;
+            left: 0;
+            top: 50px;
+        }
+    </style>
+    <div>
+        <div  class="nav">
+            <div ui-sref="home.about" ui-sref-active="navActive" class="navItem">about</div>
+            <div ui-sref="home.concat" ui-sref-active="navActive" class="navItem">concat</div>
+            <div ui-sref="home.join" ui-sref-active="navActive" class="navItem">join</div>
+        </div>
+        <ui-view class="homeContent"></ui-view>
+
+        <div style="margin-top:50%">{{p}}</div>
+    </div>
+</div>

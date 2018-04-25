@@ -1,0 +1,76 @@
+<div>
+    <style>
+        .middle-left {
+            position: absolute;
+            width: 2.3rem;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background: #f2f2f2;
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            background: url(./img/1_08.png) no-repeat;
+            text-indent: .2rem;
+        }
+
+        .middle-left-item {
+            line-height: .48rem;
+            text-align: left;
+            border-bottom: 0.01rem solid #ccc;
+            cursor: pointer;
+            user-select: none;
+        }
+        .panel-body {
+            padding: 0;
+        }
+        .icon-jiantou-copy1{
+            visibility: hidden;
+            float: left;
+            margin-left: .2rem;
+            margin-right: .2rem;
+            font-size: .12rem;
+        }
+        .middle-left-item:hover .icon-jiantou-copy1{
+            visibility: visible;
+            color: #438eb9;
+        }
+        .middle-left-item:hover{
+            color: #438eb9!important;
+        }
+        .middle-left-title{
+            text-decoration: none;
+        }
+        .middle-left-title :hover{
+            color:#438eb9;
+            text-decoration: none;
+        }
+        .middle-left-title :hover .middle-left-item{
+            color: black;
+        }
+    </style>
+    <div class="middle-left">
+        <uib-accordion close-others="oneAtATime">
+            <div 
+            uib-accordion-group class="panel-default middle-left-title" 
+            ng-repeat="item in listData" 
+            heading="{{item.title}}" 
+            close-others="closeOthers"
+            is-open="$index == index"
+            ng-click="changeInd($index)"
+            >
+                <div 
+                ng-repeat="option in item.value" 
+                class="middle-left-item"
+                ng-click="go(option)"
+                >
+                    <div class="icon-jiantou-copy1 iconfont"></div> {{option.title}}
+                </div>
+            </div>
+        </uib-accordion>
+    </div>
+</div>

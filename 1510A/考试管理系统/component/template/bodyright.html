@@ -1,0 +1,49 @@
+<div>
+    <style>
+        .middle-right {
+            position: absolute;
+            left: 2.3rem;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            padding: .15rem;
+        }
+        .routePath{
+            height: .5rem;
+            border-bottom: .01rem dashed #ccc
+        }
+        .span1{
+            font-size: .24rem;
+            color: #438eb9
+        }
+        .span2{
+            font-size: .16rem;
+            color: grey
+        }
+        .middle-right-content{
+            position: absolute;
+            top: .7rem;
+            left: .15rem;
+            bottom: .15rem;
+            right: .15rem;
+        }
+        html body .pathto{
+            visibility: visible;
+            float: none;
+            margin: 0;
+            color: #666
+        }
+    </style>
+    <div class="middle-right">
+        <div class="routePath">
+            <span class="span1">
+                八维考试系统
+            </span>
+            <span class="iconfont icon-jiantou-copy1 pathto"></span>
+            <span class="span2">
+                {{currentRoute}}
+            </span>
+        </div>
+        <ui-view class="middle-right-content"></ui-view>
+    </div>
+</div>

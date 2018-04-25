@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>angularJS 过滤器</title>
+</head>
+<body ng-controller="main">
+    {{ 1000.126456 | currency : '¥'}}
+    <!-- | 代表将要使用过滤器 之后的变量会被angular当成过滤器来解析 而不是变量 -->
+    <!-- currency 默认四舍五入保留2位小数 并且是 美元 加上了千位分隔符-->
+    <!-- : 代表下一个变量或者常量将会是这个过滤器的参数 可以传多个参数 : param1 : param2 :..... -->
+    <!-- 如果要传递常量 请打上引号 -->
+    <!-- ¥ 的ASCII码是 0165 那么可以使用alt+0165(小键盘数字) 得到它 alt+97 => a-->
+
+    {{ 1509948025083 | date : 'M dd, yy年HH时m分s秒'}} 
+    <!-- 年 y、yyyy => 2017 yy => 17 -->
+    <!-- 月 M、MM => 11  MMM =>Nov MMMM => November  -->
+    <!-- 日 d=>6 dd => 06  -->
+    <!-- 时 h=>2 hh=>02 H、HH=>14 -->
+    <!-- 分 mm=>00  m=>0 -->
+    <!-- 秒 s=>25 -->
+    <!-- 星期 EEE=>Mon  EEEE=>Monday -->
+    <!-- 默认格式 Nov 6, 2017 -->
+
+    <!-- i18n 做国际化的 -->
+
+    {{ ['boolean','number','object','string','function','null','undefined'] | filter :fn }}
+     <!-- 筛选你需要数据  -->
+     <!-- 如果传递的是一个值 那么只要数据中含有这个值即可 不必相等 -->
+
+     <!-- 除了传递值 还能传递函数 这个函数可以按条件筛选数据 -->
+     {{ [1,2,3,4,5,6] | filter :range }}
+
+    {{  json | json }} 
+    <!-- 把对象转成json格式 不符合的将会被丢弃 -->
+
+    {{ 'string' | limitTo :4 }}
+    <!-- 传递一个length  来限制你要过滤的数据的长度 可以限制string / array-->
+
+    {{ 'Hello World!' | uppercase}}
+    <!-- 把所有字母变成大写字母 -->
+
+    {{ 'Hello World!' | lowercase}}
+    <!-- 把所有字母变成小写字母 -->    
+
+    {{ 3.141592653 | number :4 }}
+    <!-- 默认 四舍五入保留三位小数 -->
+    <!-- 传参 按照传入位数进行 四舍五入 -->
+
+    <!-- 自定义过滤器 -->
+    {{'Hello World!' | uppercaseByRange :2 :4}}
+    <div>
+        <table>
+            <tr><th ng-click="orderBy('name')">姓名</th>
+            <th ng-click="orderBy('age')">年龄</th></tr>
+            <tr ng-repeat="item in array | orderBy: condition ">
+                <td>{{item.name}}</td>
+                <td>{{item.age}}</td>
+            </tr>
+        </table>
+    </div>
+
+
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    // $rootScope 这是一个全局作用域 也叫根作用域 它的范围和angular 的管理边界一样大 ng-app所在元素的范围就是$rootScope的作用范围。
+    // 它是一个可以在任何地方注入的服务除了config。
+    angular.module('app',[])
+           .controller('main',['$scope',function($scope){
+                $scope.fn=function(value){ //这个value 就是每个数据 
+                    
+                    return value!='object'//返回一个条件
+                }
+                $scope.range = function(value){
+                    
+                    return value>3
+                }
+                
+                $scope.json = {
+                    a:'name',
+                    b:true,
+                    c:function(){
+
+                    }
+                }
+
+                $scope.array = [
+                    {name:'tiantian',age:3},
+                    {name:'shitou',age:3},
+                    {name:'angelar',age:4},
+                    {name:'kimi',age:5},
+                    {name:'cendy',age:6}
+                ]
+
+                $scope.orderBy = function(condition){
+                    $scope.condition = condition;
+                }
+           }])
+           
+           .filter('uppercaseByRange',[function(){
+                return function(value,param1,param2){
+                    
+                    var subString = value.substring(param1,param2*1+1)
+                    
+                    return value.replace(subString,subString.toUpperCase())
+                }
+           }])
+
+</script>

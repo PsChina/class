@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=.5, minimum-scale=.5, maximum-scale=.5">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./js/rem.js"></script>
+    <script>
+        rem(3.6);
+    </script>
+    <link rel="stylesheet" href="./css/ionic.css">
+    <link rel="stylesheet" href="./css/iconfont.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Document</title>
+</head>
+
+<body ng-controller="main">
+    <div class="nav">
+        <div class="nav-left iconfont icon-lisimoshicaidandaohang"></div>
+        <div class="nav-center ">
+            <div class="iconfont icon-wangyiyunyinlezizhi-copy nav-center-item" ui-sref="discover" ui-sref-active="ui-view-active"></div>
+            <div class="iconfont icon-yinle1 nav-center-item" ui-sref="music" ui-sref-active="ui-view-active"></div>
+            <div class="iconfont icon-yonghuzu nav-center-item" ui-sref="socialupdate" ui-sref-active="ui-view-active"></div>
+        </div>
+        <div class="nav-right iconfont icon-sousuo_sousuo"></div>
+    </div>
+
+    <ui-view></ui-view>
+
+    <div style="line-height:.6rem; color:orange" ng-touchend=" playerManager.setPlayModel((playerManager.currentModel+1)%playerManager.modelList.length)">
+        {{playerManager.modelList[playerManager.currentModel].modelName}}
+    </div>
+
+    <div class="player-box" ng-controller="playerController">
+        <div class="player-song-info">
+            <img ng-src="{{playerManager.songIcon}}" alt="" class="song-icon">
+            <div class="song-info">
+                <div class="song-name">{{playerManager.songName}}</div>
+                <div class="singer-name">{{playerManager.singerName}}</div>
+            </div>
+        </div>
+        <div style="color:red">{{playerManager.currentTime | formatTime}}</div>
+        <div class="player-control">
+            <div class="progressBar" 
+            ng-touchstart = 'playerManager.startChangeProgress($event)'
+            ng-touchmove = 'playerManager.changingProgress($event)'
+            ng-touchend = 'playerManager.finishProgressChange($event)'
+            >
+                <div class="progress" let-dom = 'progress'></div>
+            </div>
+            <div class="nextSong iconfont icon-quanjuxiayiqu" ng-touchend="playerManager.playWithModel()"></div>
+            <div ng-class="playerManager.defaultClass" class="playBtn iconfont"  ng-touchend="playerManager.playOrStop($event)"></div>
+        </div>
+        <audio id="player" ng-src="{{playerManager.currentMusicUrl}}" style="display:none"></audio>
+    </div>
+
+</body>
+<script src="./js/angular.js"></script>
+<script src="./js/angular-ui-router.js"></script>
+<script src="./js/ionic.bundle.js"></script>
+<script src="./js/ionic.js"></script>
+<script src="./js/ionic-angular.js"></script>
+
+</html>
+<script>
+
+    angular.module('app', ['ui.router', 'ionic'])
+        .directive('ngTouchend',function(){
+            return function($scope,$element,$attribute){
+                $element.on('touchend',function(event){
+                    $scope.$event = event;
+                    $scope.$apply($attribute['ngTouchend']);
+                })
+            }
+        })
+        .directive('ngTouchmove',function(){
+            return function($scope,$element,$attribute){
+                $element.on('touchmove',function(event){
+                    $scope.$event = event;
+                    $scope.$apply($attribute['ngTouchmove']);
+                })
+            }
+        })
+        .directive('ngTouchstart',function(){
+            return function($scope,$element,$attribute){
+                $element.on('touchstart',function(event){
+                    $scope.$event = event;
+                    $scope.$apply($attribute['ngTouchstart']);
+                })
+            }
+        })
+        .controller('main', ['$scope', 'appConst','playerManager', function ($scope, appConst,playerManager) {
+            $scope.msg = '123'
+            $scope.appConst = appConst;
+            $scope.playerManager = playerManager;
+        }])
+        .controller('playerController',['$scope','playerManager',function($scope,playerManager){    
+                
+                $scope.songList = [{
+                    url:'./music/周杰伦 - 听妈妈的话.m4a',
+                    songIcon:'./img/icon_01.png',
+                    songName:'听妈妈的话',
+                    singerName:'周杰伦'
+                },{
+                    url:'./music/周杰伦 - 告白气球.m4a',
+                    songIcon:'./img/icon_02.png',
+                    songName:'告白气球',
+                    singerName:'周杰伦'
+                },{
+                    url:'./music/周杰伦 - 爱我别走.m4a',
+                    songIcon:'./img/icon_03.png',
+                    songName:'爱我别走',
+                    singerName:'周杰伦'
+                },{
+                    url:'./music/王力宏 - 你不知道的事.mp3',
+                    songIcon:'./img/icon_04.png',
+                    songName:'你不知道的事',
+                    singerName:'王力宏'
+                }] 
+
+                playerManager.initPlayer({
+                    scope:$scope,
+                    audio:player,
+                    songList:$scope.songList,
+                    currentMusic:0,
+                    play:'icon-stop' ,
+                    stop:'icon-bofang icon-bofang-fix'
+                })
+                $scope.playerManager = playerManager;
+                
+        }])
+        .directive('letDom',[function(){
+            return function($scope,$element,$attribute){
+                $scope[$attribute['letDom']] = $element[0];
+            }
+        }])
+        .service('playerManager',['$interval','$timeout',function($interval,$timeout){
+
+            var _this = this;
+            // this.songList = [];
+            this.modelList = [{
+                id:0,
+                modelName:'单曲播放',
+            },{
+                id:1,
+                modelName:'单曲循环'
+            },{
+                id:2,
+                modelName:'列表播放'
+            },{
+                id:3,
+                modelName:'列表循环'
+            },{
+                id:4,
+                modelName:'随机播放'
+            }]
+            this.currentModel = 0;
+            this.initPlayer = function(obj){
+                var obj = obj ? obj : {} ;
+                _this.setScope(obj['scope'])
+                _this.setBtnStyle(obj['defaultClass'] || 'icon-bofang icon-bofang-fix',obj['stop'],obj['play']);
+                _this.setAudioElement(obj['audio'] || player);
+                _this.setsongList(obj['songList'])
+
+                if(angular.isDefined(obj['currentMusic'])){
+                    _this.setSongInfo(obj['currentMusic'])
+                }else{
+                    _this.setUrl(obj['url'] || './music/周杰伦 - 告白气球.m4a');
+                    _this.setIcon(obj['songIcon'] || './img/icon_01.png');
+                    _this.setSongName(obj['songName'] || '小燕子');
+                    _this.setSingerName(obj['singerName'] || '王力宏');
+                }
+            }
+            this.setPlayModel = function(modelId){
+                _this.currentModel = modelId;
+            }
+            this.setSongInfo = function(index){
+                if(_this.songList){
+                    var song = _this.songList[index];
+                    _this.setUrl(song['url']);
+                    _this.setIcon(song['songIcon']);
+                    _this.setSongName(song['songName']);
+                    _this.setSingerName(song['singerName']);
+                    _this.currentMusicIndex = index;
+                }
+            }
+            this.setsongList = function(list){
+                _this.songList = list;
+            }
+            this.setScope = function(scope){
+                _this.scope = scope;
+            }
+            this.setUrl = function(url){
+                _this.currentMusicUrl = url;
+            }
+
+            this.setBtnStyle = function(defaultClass,stop,play){
+                _this.defaultClass = defaultClass
+                _this.stopBtnClass = stop;
+                _this.playBtnClass = play;
+            }
+
+            this.setIcon = function(songIcon){
+                _this.songIcon = songIcon;
+            }
+
+            this.setSongName = function(songName){
+                _this.songName = songName;
+            }
+
+            this.setSingerName = function(singerName){
+                _this.singerName = singerName;
+            }
+
+            this.setAudioElement = function(audio){
+                _this.audio = audio;
+            }
+
+            this.playOrStop = function(){
+                if(_this.audio.paused) {
+                    // _this.defaultClass = _this.playBtnClass||'icon-stop'
+                    _this.play();
+               }else {
+                    // _this.defaultClass = _this.stopBtnClass||'icon-bofang icon-bofang-fix'
+                    _this.stop();
+               }
+            }
+            this.changeStyle=function(className1,className2){
+                _this.defaultClass = ''+className1+(className2||'');
+                console.log(_this.defaultClass)
+            }
+            this.play = function(){
+                $timeout(function(){
+                    _this.audio.play();
+                },0)
+                _this.updataProgressBar()
+                console.log(_this.playBtnClass||'icon-stop')
+                _this.changeStyle(_this.playBtnClass||'icon-stop');
+            }
+
+            this.stop = function(){
+                _this.audio.pause();
+                _this.changeStyle(_this.stopBtnClass||'icon-bofang icon-bofang-fix');
+            }
+            this.timer;
+            this.updataProgressBar = function(){
+
+                 if(!_this.timer){
+
+                    _this.timer =  $interval(function(){
+                    var percent  = _this.audio.currentTime / _this.audio.duration ;
+                    _this.scope.progress.style.width = percent * window.screen.width*2 + 'px'
+                    _this.currentTime = _this.audio.currentTime;
+                    if(percent == 1){
+                        _this.resetUI()
+                        _this.playWithModel();
+                    }
+
+                 },17)
+
+                 }
+            }
+            this.resetUI = function(){
+                _this.stopUpdataProgressBar(_this.timer);
+                _this.scope.progress.style.width = 0 ;
+                _this.currentTime = 0;
+                _this.defaultClass = _this.stopBtnClass;
+            }
+            this.startTarget;
+            this.endTarget;
+            this.stopUpdataProgressBar = function(id){
+                $interval.cancel(id);
+                _this.timer = null;
+            }
+            this.startChangeProgress = function(event){
+                _this.stopUpdataProgressBar(_this.timer);
+                _this.startTarget = event.target;
+            }
+            this.changingProgress = function(event){
+
+                _this.scope.progress.style.width = event.touches[0].pageX + 'px';
+                _this.pageX = event.touches[0].pageX;
+                _this.endTarget = document.elementFromPoint(event.touches[0].pageX,event.touches[0].pageY);
+                var percent =  _this.pageX / (window.screen.width*2);
+                _this.currentTime = _this.audio.duration * percent;
+            }
+            this.finishProgressChange = function(event){
+                if(_this.startTarget == _this.endTarget){
+                   var percent =  _this.pageX / (window.screen.width*2);
+                  
+                   var resetStartTime = percent * _this.audio.duration ;
+                    _this.audio.currentTime = resetStartTime;
+                    _this.play();
+                } else {
+                    /*
+                    *
+                    * 更新进度条
+                    */
+                    if(_this.audio.paused){
+                        /*
+                        * 把进度条还原
+                        */
+                        var percent = _this.audio.currentTime / _this.audio.duration
+                        _this.scope.progress.style.width = percent * window.screen.width * 2 + 'px';
+                        _this.currentTime = _this.audio.duration * percent;
+                    }else{
+                        _this.updataProgressBar();
+                    }
+                    
+                }
+            }
+            this.nextSong = function(){
+
+                _this.scope.progress.style.width = 0;
+                // 判断是否在下一曲 不存在 就播放第一首
+                // 1 我需要知道 下一曲 是哪首歌
+                var index = ++_this.currentMusicIndex % _this.songList.length
+
+                // 2 需要设置 下一曲的 歌名 歌手名 图标 src 
+                _this.setSongInfo(index)
+                // 3 播放
+               
+                _this.play();
+            
+                
+
+            }
+
+            this.playWithModel = function(){
+                switch(_this.currentModel){
+                    case 1 :
+                        _this.play();
+                    break;
+                    case 2 :
+                        var index = _this.currentMusicIndex + 1;
+                        if(index<_this.songList.length){
+                            _this.setSongInfo(index);
+                            _this.play();
+                        }
+                    break;
+                    case 3 :
+                        _this.nextSong();
+                    break;
+                    case 4 :
+                        var index;
+                        do{
+                            index = Math.floor(Math.random()*_this.songList.length)
+                        }while(index == _this.currentMusicIndex);
+
+                        _this.setSongInfo(index);
+
+                        _this.play()
+
+                    break;
+                    case 0 :
+
+                    default :
+
+                    break;
+                }
+            }
+        }])
+        .constant('appConst', {
+            itemList: [{
+                name: '个性推荐',
+                routerName: 'discover.gexing'
+            }, {
+                name: '歌单',
+                routerName: 'discover.gedan'
+            }, {
+                name: '主播电台',
+                routerName: 'discover.diantai'
+            }, {
+                name: '排行榜',
+                routerName: 'discover.paihang'
+            }]
+        })
+        .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+            $urlRouterProvider.otherwise('/discover')
+            $urlRouterProvider.when('/discover', '/discover/gexing')
+            $stateProvider.state('discover', {
+                url: '/discover',
+                templateUrl: './template/discover.html',
+                controller: ['$state', function ($state) {
+                    $state.go('discover.gexing');
+                }]
+            }).state('music', {
+                url: '/music',
+                templateUrl: './template/music.html',
+                controller: [function () {
+
+                }]
+            }).state('socialupdate', {
+                url: '/socialupdate',
+                templateUrl: './template/socialupdate.html',
+                controller: [function () {
+
+                }]
+            })
+                .state('discover.gexing', {
+                    url: '/gexing',
+                    templateUrl: '/template/discover/gexing.html',
+                    controller: ['$scope','$ionicSlideBoxDelegate',function ($scope,$ionicSlideBoxDelegate) {
+                        $scope.pathArr = ['./img/banner1.jpg', './img/banner2.jpg', './img/banner3.jpg', './img/banner4.jpg']
+                        $scope.goTo = function (index) {
+                            $ionicSlideBoxDelegate.slide(index, 2000) //跳转到传入的 那个索引页面 耗时2秒
+                        }
+                    }]
+                }).state('discover.gedan', {
+                    url: '/gedan',
+                    templateUrl: '/template/discover/gedan.html',
+                    controller: [function () {
+
+                    }]
+                }).state('discover.diantai', {
+                    url: '/diantai',
+                    templateUrl: '/template/discover/diantai.html',
+                    controller: [function () {
+
+                    }]
+                }).state('discover.paihang', {
+                    url: '/paihang',
+                    templateUrl: '/template/discover/paihang.html',
+                    controller: [function () {
+
+                    }]
+                })
+        }])
+        .filter('formatTime',function(){
+            return function(input){
+                var output;
+                
+                var h =  Math.floor(input / 3600) ;
+
+                var m = Math.floor(input/60)%60 ;
+
+                var s = Math.floor(input%60);
+
+                var partH = h ? h+':' : '';
+
+                var partM = partH.length>1 ? m + ':' : (m ? ( m > 9 ? m : '0'+m ) + ':' : '00:')
+
+                var partS = s>9 ? s : '0' + (isNaN(s)? 0 : s) ; 
+
+                output = partH + partM  + partS;  
+
+                return output;
+            }
+        })
+    // views
+</script>

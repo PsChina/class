@@ -1,0 +1,121 @@
+<div>
+    <style>
+        .nav{
+            width: 100%;
+            height: .5rem;
+            background-color: #438eb9; 
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .nav-icon{
+            margin-left: .22rem;
+            margin-top:.1rem;
+            float: left;
+        }
+        .nav-title{
+            color:white;
+            font-size: .24rem;
+            line-height:.45rem; 
+            float: left;
+        }
+        .nav-right{
+            float: right;
+            margin-right: .15rem;
+        }
+        .nav-btn{
+            width: 1.55rem;
+            height: .5rem;
+            background-color: #62a8d1;
+            border-radius: 0;
+            color: white;
+            border:none;
+            outline: none;
+        }
+        .nav-btn:hover{
+            color: pink
+        }
+        .nav-right-menu{
+            width:1.9rem;
+            height: auto;
+            margin-left: -.35rem;
+            border-radius: 0;
+        }
+        .nav-right-menu-item{
+            text-align: center;
+            line-height: .5rem;
+            cursor: pointer;
+            border-bottom: .01rem solid #ccc;
+        }
+        .nav-right-menu-item:last-child{
+            border-bottom: none;
+        }
+        .nav-right-menu-item:hover {
+            background-color: rgb(255, 202, 117)
+        }
+        /* 155 
+            50
+            #62a8d1
+            5 50 5 50 5 25 15
+            12
+            16
+         */        
+        .nav-right-btn{
+            display: flex;
+            height: .5rem;
+        }
+        .user-icon{
+            font-size: .35rem;
+            color: white;
+            border-radius: 50%;
+            border: .01rem solid white;
+            width: .48rem;
+            height: .48rem;
+        }
+        .user-info{
+            width: .6rem;
+            margin:0 .05rem;
+        }
+        .nav-info-line1{
+            font-size: .12rem;
+            line-height: .2rem;
+        }
+        .nav-info-line2{
+            font-size: .16rem;
+            line-height: .3rem;
+        }
+        .triangle{
+           margin-top: .22rem;
+        }
+        /* 190
+            50
+
+         */
+    </style>
+    <div class="nav">
+       <img src="./img/icon_03.png" alt="" class="nav-icon">
+       <div class="nav-title">八维考试系统</div>
+       <div class="nav-right">
+        <div class="btn-group" uib-dropdown is-open="status.isopen">
+            <button id="single-button" type="button" class="nav-btn" uib-dropdown-toggle ng-disabled="disabled">
+
+              <div class="nav-right-btn">
+                <div class="user-icon icon-yonghu iconfont"></div>
+                <div class="user-info">
+                    <div class="nav-info-line1">欢迎光临,</div>
+                    <div class="nav-info-line2">{{user.name}}</div>
+                </div>
+                <span class="caret triangle"></span>
+            </div>
+
+             
+            </button>
+            <div class="nav-right-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+              <div role="menuitem" class="nav-right-menu-item">个人资料</div>
+              <div role="menuitem" class="nav-right-menu-item">修改资料</div>
+              <div role="menuitem" class="nav-right-menu-item">退出</div>
+            </div>
+          </div>           
+       </div>
+    </div>
+</div>

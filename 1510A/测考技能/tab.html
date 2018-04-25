@@ -1,0 +1,33 @@
+<div>
+    <style>
+        .box{
+           width: 100%;
+           position: fixed;
+           left: 0;
+           bottom: 0;
+        }
+        .tabBar{
+            display: flex;
+            width: 100%;
+        }
+        .tabBarItem{
+            flex: 1;
+            line-height: 80px;
+            text-align: center;
+        }
+        .active{
+            background: orange;
+            color: purple;
+        }
+    </style>
+    <div class="box">
+        <div class="content">
+            <goodslist ng-show="open" list = 'allGoods'></goodslist>
+            <shoppingcar ng-hide="open" list = 'allGoods'></shoppingcar>
+        </div>
+        <div class="tabBar">
+            <div class="tabBarItem" ng-click="open=true" ng-class="open ? 'active' : '' ">goodslist</div>
+            <div class="tabBarItem" ng-click="open=false" ng-class="open ? '' : 'active' ">shoppingcar</div>
+        </div>
+    </div>
+</div>

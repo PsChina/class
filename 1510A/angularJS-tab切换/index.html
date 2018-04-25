@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <tab result = 'data'></tab>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    
+    angular.module('app',[])
+           .controller('main',['$scope',function($scope){
+                $scope.msg = 'Hello world!';
+                if(localStorage.foodlist){
+                    console.log('读取本地存储')
+                    $scope.data = JSON.parse(localStorage.foodlist)
+                }else {
+                    $scope.data = [{
+                    title:'凉菜',
+                    value:[{
+                        name:'老醋花生',
+                        price:5,
+                        select:false
+                    },{
+                        name:'火山飘雪',
+                        price:5,
+                        select:false
+                    },{
+                        name:'拍黄瓜',
+                        price:5,
+                        select:false
+                    }]
+                },{
+                    title:'熟食',
+                    value:[{
+                        name:'猪蹄',
+                        price:20,
+                        select:false
+                    },{
+                        name:'肘子',
+                        price:30,
+                        select:false
+                    },{
+                        name:'烧鸡',
+                        price:50,
+                        select:false
+                    }]
+                },{
+                    title:'甜点',
+                    value:[{
+                        name:'甜甜圈',
+                        price:2,
+                        select:false
+                    },{
+                        name:'蛋挞',
+                        price:3,
+                        select:false
+                    },{
+                        name:'马卡龙',
+                        price:80,
+                        select:false
+                    }]
+                }]
+                }
+                
+
+                
+           }])
+           .directive('tab',function(){
+               return {
+                   restrict:'ECMA',
+                   templateUrl:'./tab.html',
+                   controller:['$scope',function($scope){
+                       $scope.local = localStorage;
+                       $scope.JSON = JSON;
+                     
+                    $scope.cailist =  $scope.result[0].value
+                    $scope.fn = function(value,index){
+                        // console.log(value)
+                        $scope.cailist = value
+                        $scope.index = index;
+                    }
+                    $scope.select = function(index){
+                        if($scope['select'+index]){
+                            $scope['select'+index] = '';
+                        }else {
+                            $scope['select'+index] = 'select';
+                        }
+                       
+                    }
+                   }],
+                   scope:{
+                       result:'='
+                   },
+                   controllerAs:'tabCntroller'
+               }
+           })
+</script>

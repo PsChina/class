@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+           .controller('main',['$scope','$timeout',function($scope,$timeout){
+                $scope.msg = 'Hello world!'
+                // $timeout(function(){
+                //     $scope.msg = 'hahaha';
+                // },Math.random()*10000)
+
+                // $scope.$watch('msg',function(newVal,oldVal){
+                //     console.log(newVal,oldVal)
+                // })
+           }])
+           .directive('myClick',function(){
+               return function($scope,$element,$attribute){
+                    
+               }
+           })
+</script>

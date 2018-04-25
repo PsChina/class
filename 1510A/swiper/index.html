@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./swiper.css">
+    <title>Document</title>
+</head>
+
+<body ng-controller="main">
+    <!-- <div ui-sref="home">home</div>
+    <div ui-sref="about">about</div> -->
+    <a href="#/home?id=1&user=zhangsan">home</a><a ui-sref="about({key:'value'})">about</a>
+    <ui-view></ui-view>
+</body>
+<script src="./swiper.js"></script>
+<script src="./angular.js"></script>
+<script src="./angular-ui-router.js"></script>
+
+</html>
+<script>
+    angular.module('app', ['ui.router'])
+        .config(['$stateProvider', function ($stateProvider) {
+            $stateProvider.state('home', {
+                url: '/home',
+                template: '<div>home</div>',
+                controller: ['$scope','$location', function ($scope,$location) {
+                    console.log($location.search())
+                }]
+            }).state('about', {
+                url: '/about',
+                template: `
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" ng-repeat="src in ['./img/banner1.jpg', './img/banner2.jpg', './img/banner3.jpg', './img/banner4.jpg']"
+                            dom-finishrender="eventName"
+                            >
+                                <img ng-src="{{src}}" alt="">
+                            </div>
+                        </div>
+                    </div> 
+                    `,
+                controller: ['$scope','$timeout','$stateParams', function ($scope,$timeout,$stateParams) {
+                    // $timeout(function(){
+                        console.log($stateParams)
+                    // },0)
+                }],
+                params:{
+                    key:null
+                }
+            })
+        }])
+        .controller('main', ['$scope', function ($scope) {
+            $scope.test = 'hi'
+        }])
+        .directive('domFinishrender',['$rootScope',function($rootScope){
+            return function($scope,$element,$attribute){
+                $attribute['domFinishrender']
+                console.log($scope.$last)
+                if($scope.$last == true){
+                    console.log('当前渲染最后一个dom 即将开始广播')
+                        $rootScope.$broadcast($attribute['domFinishrender']);
+                    
+                }
+            }
+        }])
+        .run(['$rootScope',function($rootScope){
+            $rootScope.$on('eventName',function(event){
+                new Swiper('.swiper-container',{
+                        loop:true,
+                        autoplay:{
+                            delay:1000
+                        }
+                    })
+            })
+
+            // $rootScope.$on('eventName2',function(event){
+            //     new Swiper('.abc',{
+            //             loop:true,
+            //             autoplay:{
+            //                 delay:1000
+            //             }
+            //         })
+            // })
+        }])
+</script>

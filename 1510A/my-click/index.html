@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <div my-click="fn()" get-dom="div">{{msg}}</div>
+    <p my-click="pclick()" get-dom="p">ppp</p>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+           .controller('main',['$scope',function($scope){
+                $scope.msg = 'Hello world!'
+                $scope.fn = function(){
+                    console.log('点击了div')
+                }
+                $scope.pclick = function(){
+                    console.log('点击了p',$scope.div,$scope.p);
+                }
+           }])
+           .directive('myClick',function(){
+               return function($scope,$element,$attribute){
+                //    console.log($scope)
+                    $element.on('click',function(event){
+                        $scope.$event = event;
+                        // var fnStr = $attribute['myClick'];
+                        // var fullFnName = '$scope.' + fnStr;s
+                        // eval(fullFnName);
+                        $scope.$apply($attribute['myClick']);
+                    })
+               }
+           })
+           .directive('getDom',function(){
+               return function($scope,$element,$attribute){
+                    $scope[$attribute['getDom']] = $element[0]
+               }
+           })
+</script>

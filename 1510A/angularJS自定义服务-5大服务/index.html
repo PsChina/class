@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{msg}}
+    <div ng-controller="A">
+        {{msg}}
+    </div>
+    <div ng-controller="B">
+        {{msg}}
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+           .controller('main',['$scope','constant','factory','factory2',function($scope,constant,factory,factory2){
+            console.log(factory.fn(),factory2())
+           }])
+           .controller('A',['$scope','constant','$http','service','provider',function($scope,constant,$http,service,provider){
+                constant.a = 'b';
+                $scope.msg = constant
+                $scope.msg = service
+                $scope.msg = provider;
+                console.log(service.sleep())
+                // $http({
+                //     url:constant.baseUrl + '/home'
+                // })
+           }])
+           .controller('B',['$scope','constant','constant2','constant3','timeout',function($scope,constant,constant2,constant3,timeout){
+            $scope.msg = constant3
+            // var id = timeout(function(){
+            //     $scope.msg = 'hello timeout'
+            // },2000)
+            // timeout.cancel(id)
+           }])
+           // api 应用程序编程接口 application programming interface   其实就是对象和方法
+           .constant('constant',{
+               a:'a',
+               baseUrl:'https://www.eeo.cn'
+           })
+           .constant('constant2',function(){
+               console.log('我是 constant2')
+           })
+           .constant('constant3',true)
+               //它是一个function 它的第一个参数是一个字符串 用来给这个自定义服务命名 第二个参数 是这个服务的具体实现 它可以是一个对象 函数 或者基本数据类型
+           // 这个服务 是一个单例
+           // 建议大家 将不变的常量 定义在 constant 里边
+           .value('value',{
+               data:null
+           })  //建议大家存变量
+           .config(['constant3',function(constant3){ //在config 里边只能注入constant
+            console.log(constant3)
+           }])
+           .factory('factory',['$rootScope','constant',function($rootScope,constant){
+                console.log(constant)
+
+                // return 'abc'
+
+                return {
+                    a:'a',
+                    fn:function(){
+                       console.log('我是 factory 里边的 fn')
+                    }
+                }
+           }])
+           .factory('factory2',[function(){
+               return function(){
+                   console.log('factory2')
+               }
+           }])
+           .factory('timeout',['$rootScope',function($rootScope){ //普通函数
+                function $timeout(fn,time){
+                    return setTimeout(function(){
+                        try{
+                        fn()
+                        }catch(e){
+                            throw new Error(e);
+                        }finally{
+                            $rootScope.$apply()
+                        }
+                    },time)
+
+                }
+                $timeout.cancel = function(id){
+                    clearTimeout(id)
+                }
+               return $timeout
+           }])
+           .service('service',[function(){ // 
+               this.name = 'zhangsan';
+               this.age = 18;
+               this.sleep = function(){
+                   console.log('sleep')
+               }
+           }]) 
+           .provider('provider',[function(){ // 供应商服务 系统在调用它的时候会用 new 关键字来调用
+            
+                // return {
+                //     $get:function(){  // factory 工厂函数
+                //             return function(){
+                //                 console.log('factory')
+                //             }
+                //     }
+                // }
+
+                    // return {
+                    //     $get:function(){
+                    //         return new function(){
+                    //             this.name = 'wangwu'
+                    //         }
+                    //     }
+                    // }
+
+                        // this.$get = function(){
+                        //     return function(){
+                        //         console.log('factory')
+                        //     }
+                        // }
+
+                        this.$get = function(){
+                            return new function(){
+                                this.name = 'wang wu'
+                            }
+                        }
+
+           }]) 
+</script>

@@ -1,0 +1,24 @@
+<div>
+    <style>
+        .commodityBox{
+            display: flex;
+        }
+        .commodityItem{
+            flex: 1;
+            line-height: 50px;
+            text-align: center;
+        }
+        .commodityActive{
+            background: green;
+        }
+    </style>
+    <div 
+    ng-repeat="commodity in list" 
+    class="commodityBox" 
+    ng-class="commodity.select ? 'commodityActive' : ''" 
+    ng-click="commodity.select = !commodity.select"
+    >
+        <div class="commodityItem">{{commodity.name}}</div>
+        <div class="commodityItem">{{commodity.price}}</div>
+    </div>
+</div>

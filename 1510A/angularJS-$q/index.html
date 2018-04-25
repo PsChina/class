@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{stateMachine.value}}
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+           .controller('main',['$scope','$ajax',function($scope,$ajax){
+
+                // var defer = $q.defer() //未完成
+                // defer.resolve // 已完成
+                // defer.reject // 已失败
+   
+                $scope.stateMachine =$ajax()
+
+           }])
+           .factory('$ajax',['$http','$q',function($http,$q){
+
+                var url="http://localhost:3000";
+                var method="GET";
+                var data={}
+
+                fn.setUrl = function(_url){
+                    if(_url!=url){
+                        url = _url
+                    }
+                }
+
+                fn.setMethod = function(_method){
+                    if(_method!=method){
+                        method = _method
+                    }                    
+                }
+
+                fn.setData = function(_data){
+                    if(_data!=data){
+                        data = _data
+                    }                     
+                }
+
+                fn.init = function(_url,_method,_data){
+                    fn.setUrl(_url);
+                    fn.setMethod(_method);
+                    fn.setData(_data);
+                }
+
+                function fn(options){
+
+                    var option = options ? options : {
+                                                        url:url,
+                                                        method:method,
+                                                        data:data
+                                                        }
+
+                    var defer = $q.defer(); // 未完成 等待
+
+                    $http(option)
+                    
+                    .then(function(result){
+
+                        defer.resolve(result.data) // 已完成
+
+                    },function(error){
+
+                        defer.reject(error) // 已失败
+
+                    })
+
+                    return defer.promise.$$state;
+                }
+
+
+                return fn
+
+           }])
+</script>

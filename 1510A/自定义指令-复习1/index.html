@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            height: 100%
+        }
+    </style>
+</head>
+
+<body ng-controller="main">
+    <tab fa="fn()" haha='messenger'></tab>
+    <tab-a temp="messenger"></tab-a>
+</body>
+<script src="./angular.js"></script>
+
+</html>
+<script>
+    angular.module('app', [])
+        .controller('main', ['$scope', function ($scope) {
+            $scope.fn = function(){
+                console.log('运行了')
+            }
+            $scope.messenger = 'a';
+        }])
+        .directive('tab', [function () {
+            return {   
+                template:`
+                    <div style="width:100px;height:100px;background:orange;"></div>
+                    <div>{{haha}}</div>
+                `,
+                scope:{
+                    fa:'&',
+                    haha: '='
+                },
+                controller:['$scope','$element',function($scope,$element){
+                    $element.on('touchmove',function(){
+                        $scope.fa()
+                    })
+                    console.log($scope.haha)
+                }]
+                }
+        }])
+        .directive('tabA', [function () {
+            return {   
+                template:`
+                    <div style="width:100px;height:100px;background:orange;" ng-click="sendMessage()"></div>
+                    {{temp}}
+                `,
+                scope:{
+                    fa:'&',
+                    temp:'='
+                },
+                controller:['$scope','$element',function($scope,$element){
+                    $element.on('touchmove',function(){
+                        $scope.fa()
+                    })
+                    $scope.sendMessage = function(){
+                        $scope.temp = '一封信'
+                    }
+                }]
+                }
+        }])
+           //自定义指令的 编程接口 简称 api 
+           // 第一个参数 接收自定义指令的名称 type  string
+           // 第二个参数 是这个指令的具体实现 type function 记得打上数组注释
+</script>

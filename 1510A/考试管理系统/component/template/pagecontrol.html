@@ -1,0 +1,71 @@
+<div style="height:100%;position:relative">
+    <style>
+        .pagecontrol{
+            height: 100%;
+            text-align: center;
+        }
+        .pagecontrol-content{
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 1rem;
+        }
+        .pagecontrol-btn-box{
+            margin-top: 4.5rem;
+            width: auto;
+            display: inline-block;
+        }
+        .pagecontrol-btn{
+            float: left;
+            width: .6rem;
+            height: .4rem;
+            line-height: .4rem;
+            border: 0.01rem solid orange;
+            text-align: center;
+            margin: 0 .05rem;
+        }
+        .active{
+            background: green;
+        }
+    </style>
+    <div class="pagecontrol">
+        <div style="height:1px;"></div>
+        <div class="pagecontrol-content">
+            <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>试卷名称</th>
+                            <th>考试时间</th>
+                            <th>分数</th>
+                            <th>编辑</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in pageData.value" class="history-tr">
+                            <td><input type="checkbox"></td>
+                            <td class="history-item-color">{{item.examName}} <input class="history-fullTd" ng-show="item.flag" type="text" ng-model="item.examName"> </td>
+                            <td class="history-item-color">{{item.examTime | date :'yyyy-MM-dd hh:mm:ss'}} <input 
+                                class="history-fullTd" 
+                                ng-show="item.flag" 
+                                type="text" 
+                                ng-model="item.showTime" ng-change="changeTime(item)">
+                            </td>
+                            <td>{{item.score}} <input class="history-fullTd" ng-show="item.flag" type="text" ng-model="item.score"></td>
+                            <td><button type="button" class="btn btn-info" ng-click="edit($event,item)">编辑</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+        <div class="pagecontrol-btn-box">
+            <div class="pagecontrol-btn" ng-click="goPre()">上一页</div>
+            <div class="pagecontrol-btn" ng-class="firstBtnClass" ng-click="go(1)">1</div>
+            <div class="pagecontrol-btn" ng-show="pre">...</div>
+            <div class="pagecontrol-btn" ng-repeat="value in btnArray" ng-class="{{ 'active'+value }}" ng-click="go(value)">{{value}}</div>
+            <div class="pagecontrol-btn" ng-show="next">...</div>
+            <div class="pagecontrol-btn" ng-class="lastBtnClass" ng-click="go(maxPage)">{{maxPage}}</div>
+            <div class="pagecontrol-btn" ng-click="goNext()">下一页</div>
+        </div>
+    </div>
+</div>
